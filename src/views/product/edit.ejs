@@ -1,0 +1,86 @@
+<%- include('../partials/head.ejs') %>
+
+    <script src="/js/jquery.js"></script>
+
+<%- include('../partials/nav.ejs') %>
+
+    <div id="product-post" style="margin: 10px auto;width: 1000px;">
+        <h3 style="text-align: center">Sử thông tin sản phẩm</h3>
+        <form>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="productName">Tên sản phẩm</span>
+                <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required value="<%= product.productName %>" data-slug="<%= product.slug %>">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="price">Giá</span>
+                <input type="number" class="form-control" placeholder="VD:2000000" name="price" required value="<%= product.price %>">
+                <span class="input-group-text">VND</span>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="discount">Giảm giá</span>
+                <input type="number" class="form-control" placeholder="VD: 20" name="discount" value="0" value="<%= product.discount %>">
+                <span class="input-group-text">%</span>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="type">Loại sản phẩm</label>
+                <select name="type" class="form-select" id="type" required data-type="<%= product.type %>">
+                    <option value="">Lựa chọn...</option>
+                    <option value="shoes">Giày</option>
+                    <option value="clothes">Quần áo</option>
+                    <option value="accessory">Phụ kiện</option>
+                    <option value="other">Khác</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="brand">Thương hiệu</span>
+                <input type="text" class="form-control" placeholder="VD: Nike" name="brand" required  value="<%= product.brand %>">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="quantity">Số lượng</span>
+                <input type="number" class="form-control" placeholder="VD: 100" name="quantity" required value="<%= product.quantity %>">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="coverImg">Ảnh bìa</span>
+                <input type="text" class="form-control" placeholder="" name="coverImg" required  value="<%= product.coverImg %>">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="quantity">Ảnh chi tiết 1</span>
+                <input type="text" class="form-control" placeholder="" name="img1" required value="<%= product.img1 %>">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="quantity">Ảnh chi tiết 2</span>
+                <input type="text" class="form-control" placeholder="" name="img2" required value="<%= product.img2 %>">
+            </div>
+            <div class="input-group">
+                <span class="input-group-text">Mô tả sản phẩm</span>
+                <textarea class="form-control" name="description" placeholder ><%= product.description %></textarea>
+              </div>
+            <button type="button" id="btn-update" class="btn btn-primary mt-3" style="width:100%">Cập nhật</button>
+        </form>
+    </div>
+
+
+    <%- include('../partials/footer.ejs') %>
+    <script>
+        const value = document.getElementById('type').getAttribute('data-type')
+        document.getElementById('type').value = value
+        $('#btn-update').click( e => {
+            let data = $('form').serializeArray().reduce((obj, item) => {
+                obj[item.name] = item.value
+                return obj
+            }, {})
+            data['slug'] = document.querySelector('[name="productName"]').getAttribute('data-slug')
+            $.ajax({
+                data: data,
+                url: '/product/edit',
+                type: 'PATCH',
+                success: () => {
+                    window.location.href = '/product/store'
+                },
+                error: (err) => {
+                    alert(err)
+                }
+            })
+        })
+
+    </script>

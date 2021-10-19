@@ -1,0 +1,28 @@
+$PrimaryColor : #4dabf7;
+
+#product-store {
+    table {
+        width: 100%;
+
+        td {
+            height: 160px;
+            width: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: wrap;
+
+            img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+                border-radius: 16px; 
+                transition: all 0.2s ease-in-out;
+            }
+        }
+    }
+}

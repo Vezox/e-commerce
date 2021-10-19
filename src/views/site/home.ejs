@@ -1,0 +1,228 @@
+<%- include('../partials/head.ejs') %>
+    <script src="/js/jquery.js"></script>
+</head>
+
+<body>
+    <header class="scroll" style="position: fixed;">
+        <div class="logo" ><a href="/">LazaPee</a></div>
+        <nav>
+            <div class="hello">Hello</div>
+
+            <div class="products">
+                Danh mục
+                <ul>
+                    <li><a href="">Giày</a></li>
+                    <li><a href="">Quần áo</a></li>
+                    <li><a href="">Phụ kiện</a></li>
+                    <li><a href="">Khác</a></li>
+                </ul>
+            </div>
+            <div class="my-shop">
+                Cửa hàng
+                <ul>
+                    <li><a href="">Đơn đặt hàng</a></li>
+                    <li><a href="/product/store">Kho</a></li>
+                    <li><a href="">Mã giảm giá</a></li>
+                    <li><a href="/product/post">Đăng sản phẩm</a></li>
+                </ul>
+            </div>
+            <div class="my-self">
+                Tài khoản
+                <ul>
+                    <li><a href="">Đơn hàng đã đặt</a></li>
+                    <li><a href="">Địa chỉ nhận hàng</a></li>
+                    <li><a href="">Thông tin cá nhân</a></li>
+                    <li><a href="">Đổi mật khẩu</a></li>
+                </ul>
+            </div>
+
+            <div id="cart">
+                <i class="fa-solid fa-cart-arrow-down"></i>
+            </div>
+
+            <a href="" id="login-out">
+                <button>Đăng xuất</button>
+            </a>
+        </nav>
+    </header>
+
+
+    <div id="baner">
+        <div>MUA và BÁN</div>
+        <div class="bg">MỌI THỨ, NGAY BÂY GIỜ</div><br>
+        <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Tìm kiếm..." id="search">
+        </div>
+        <div id="search-value">
+        </div>
+        <button onclick="window.scroll(0,690)">Xem luôn</button>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <div class="header">
+                <select class="form-select"  id="select-options">
+                    <option value="all">All</option>
+                    <option value="shoes">Giày</option>
+                    <option value="clothes">Quần áo</option>
+                    <option value="accessory">Phụ kiện</option>
+                    <option value="other">Khác</option>
+                  </select>
+
+                  <select class="form-select" id="sort-products">
+                    <option value="old">Cũ - mới</option>
+                    <option value="new">Mới - cũ</option>
+                    <option value="desc">Giá thấp - cao</option>
+                    <option value="asc">Giá cao - thấp</option>
+                  </select>
+            </div>
+
+            <div class="content-list-product" id="content-list-product">
+                <% products.forEach(item => { %>
+                    <div class="product-item">
+                        <a href="/product/details/<%= item.sllug %>">
+                            <div class="product-img">
+                                <img src="<%= item.coverImg %>" alt="">
+                            </div>
+                            <div class="product-content">
+                                <div class="product-name">
+                                    <%= item.productName %> 
+                                </div>
+                                <div class="product-price" data-price="<%= item.price * ( 100 - item.discount) / 100 %>"></div>
+                            </div>
+                        </a>
+                    </div>
+                <% }) %>  
+                
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer.ejs') %>
+    <script>
+        // header
+        const header = document.querySelector('header')
+        window.addEventListener('scroll', e => {
+            if(window.scrollY < 300){
+                header.classList.add('scroll')
+            } else {
+                header.classList.remove('scroll')
+            }
+        })
+
+        // search
+        const input = document.querySelector('#search')
+        const searchValue = document.querySelector('#search-value')
+        input.onclick = () => {
+            searchValue.classList.add('active')
+        }
+        input.onblur = () => {
+            searchValue.classList.remove('active')
+        }
+        input.onkeyup = () => {
+            let text = input.value
+            if(text != '') {
+                $.ajax({
+                    url: '/search-products',
+                    type: 'POST',
+                    data: { text },
+                    success: (data) => {
+                        let products = data.products
+                        const html = products.reduce((acc,product) => {
+                            acc.push(`
+                            <div class="search-item">
+                                <a href="/product/details/${product.slug}">
+                                    <div class="search-img">
+                                        <img src="${product.coverImg}" alt="">
+                                    </div>
+                                    <div class="search-content">
+                                        <p class="search-name">
+                                            ${product.productName}
+                                        </p>
+                                        <p class="search-price" data-price="${product.price * ( 100 - product.discount) / 100}"></p>
+                                    </div>
+                                </a>
+                            </div>
+                            `)
+                            return acc
+                        },[]).join('')
+                        
+                        searchValue.innerHTML = html
+                        const prices = document.querySelectorAll('.search-price')
+                        prices.forEach(e => {
+                            e.innerText = (e.getAttribute('data-price') - 0).toLocaleString() + ' đ'
+                        })
+                    },
+                    error: (err) => {
+                        console.log(err.message);
+                    }
+                })
+            }
+        }
+
+        // price
+        const prices = document.querySelectorAll('.product-price')
+        prices.forEach(e => {
+            e.innerText = (e.getAttribute('data-price') - 0).toLocaleString() + ' đ'
+        })
+
+
+        //filter
+        let products = null
+        let result = null
+        const selects  = document.querySelectorAll('.form-select')
+        selects.forEach( select => {    
+            select.onchange = async (e) => {
+                if(!products) {
+                    await $.ajax({
+                        url: '/get-data',
+                        type: 'GET',
+                        success: (data) => {
+                            products = data.products
+                        },
+                        error: (err) => {
+                            console.log(err.message);
+                        }
+                    })
+                }
+                const sort = document.querySelector('#sort-products').value
+                result = [...products]
+                if(sort == 'new') {
+                    result = result.reverse()
+                } else if (sort == 'desc') {
+                    result = result.sort((a, b) => a.price - b.price)
+                } else if(sort == 'asc'){
+                    result = result.sort((a, b) => b.price - a.price)
+                }
+
+                const option = document.querySelector('#select-options').value
+                const html = result.reduce((acc, product) => {
+                    console.log('sort');
+                    if(product.type == option || option == 'all') acc.push(`
+                    <div class="product-item">
+                            <a href="/product/details/${product.slug}">
+                                <div class="product-img">
+                                    <img src="${product.coverImg}" alt="">
+                                </div>
+                                <div class="product-content">
+                                    <div class="product-name">
+                                        ${product.productName}
+                                    </div>
+                                    <div class="product-price" data-price="${product.price * ( 100 - product.discount) / 100}"></div>
+                                </div>
+                            </a>
+                        </div>
+                    `)
+                    return acc
+                },[]).join('')
+
+                document.querySelector('#content-list-product').innerHTML = html
+
+                const prices = document.querySelectorAll('.product-price')
+                prices.forEach(e => {
+                    e.innerText = (e.getAttribute('data-price') - 0).toLocaleString() + ' đ'
+                })
+            }
+        })
+    </script>    

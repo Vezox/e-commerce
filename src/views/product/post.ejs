@@ -1,0 +1,59 @@
+<%- include('../partials/head.ejs') %>
+<%- include('../partials/nav.ejs') %>
+
+    <div id="product-post" style="margin: 10px auto;width: 1000px;">
+        <h3 style="text-align: center">Đăng sản phẩm</h3>
+        <form action="/product/post" method="post">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="productName">Tên sản phẩm</span>
+                <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="price">Giá</span>
+                <input type="number" class="form-control" placeholder="VD:2000000" name="price" required>
+                <span class="input-group-text">VND</span>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="discount">Giảm giá</span>
+                <input type="number" class="form-control" placeholder="VD: 20" name="discount" value="0">
+                <span class="input-group-text">%</span>
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="type">Loại sản phẩm</label>
+                <select name="type" class="form-select" id="type" required>
+                    <option value="">Lựa chọn...</option>
+                    <option value="shoes">Giày</option>
+                    <option value="clothes">Quần áo</option>
+                    <option value="accessory">Phụ kiện</option>
+                    <option value="other">Khác</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="brand">Thương hiệu</span>
+                <input type="text" class="form-control" placeholder="VD: Nike" name="brand" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="quantity">Số lượng</span>
+                <input type="number" class="form-control" placeholder="VD: 100" name="quantity" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="coverImg">Ảnh bìa</span>
+                <input type="text" class="form-control" placeholder="" name="coverImg" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="quantity">Ảnh chi tiết 1</span>
+                <input type="text" class="form-control" placeholder="" name="img1" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="quantity">Ảnh chi tiết 2</span>
+                <input type="text" class="form-control" placeholder="" name="img2" required>
+            </div>
+            <div class="input-group">
+                <span class="input-group-text">Mô tả sản phẩm</span>
+                <textarea class="form-control" name="description" placeholder></textarea>
+              </div>
+            <button type="submit" class="btn btn-primary mt-3" style="width:100%">Thêm sản phẩm</button>
+        </form>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
