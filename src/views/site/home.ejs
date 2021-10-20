@@ -78,7 +78,7 @@
                     </select>
                 </div>
 
-                <div class="content-list-product" id="content-list-product" >
+                <div class="content-list-product" id="content-list-product">
                     <% products.forEach(item=> { %>
                         <div class="product-item">
                             <a href="/product/details/<%= item.slug %>">
@@ -135,7 +135,7 @@
                 }
                 input.onblur = () => {
                     window.onclick = (e) => {
-                        if(! e.target.classList.contains('product-item')) {
+                        if (!e.target.classList.contains('product-item')) {
                             searchValue.classList.remove('active')
                         }
                     }
@@ -149,28 +149,28 @@
                             data: { text },
                             success: (data) => {
                                 let products = data.products
-                                const html = products.reduce((acc, product) => {
-                                    acc.push(`
-                                        <div class="search-item">
-                                            <a href="/product/details/${product.slug}">
-                                                <div class="search-img">
-                                                    <img src="${product.coverImg}" alt="">
-                                                </div>
-                                                <div class="search-content">
-                                                    <p class="search-name">
-                                                        ${product.productName}
-                                                    </p>
-                                                    <p class="search-price">
-                                                        ${(product.price * (100 - product.discount) / 100).toLocaleString()} đ
-                                                    </p>
-                                                </div>
-                                            </a>
-                                        </div>
+                                if (products.length > 0) {
+                                    const html = products.reduce((acc, product) => {
+                                        acc.push(`
+                                            <div class="search-item">
+                                                <a href="/product/details/${product.slug}">
+                                                    <div class="search-img">
+                                                        <img src="${product.coverImg}" alt="">
+                                                    </div>
+                                                    <div class="search-content">
+                                                        <p class="search-name">
+                                                            ${product.productName}
+                                                        </p>
+                                                        <p class="search-price">
+                                                            ${(product.price * (100 - product.discount) / 100).toLocaleString()} đ
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         `)
-                                    return acc
-                                }, []).join('')
-
-                                if(products.length > 0) {
+                                        return acc
+                                    }, []).join('')
+                                    
                                     searchValue.innerHTML = html
                                 } else {
                                     searchValue.innerHTML = '<div style="color: #000000; margin: auto; font-size: 20px">Không Tìm Thấy Sản Phẩm</div>'
@@ -240,7 +240,7 @@
                 // load products
                 const btnLoadPage = document.querySelector('#load-page')
                 btnLoadPage.onclick = async () => {
-                    if(pageTotal > pageIndex) {
+                    if (pageTotal > pageIndex) {
                         let loadProducts = null
                         await $.ajax({
                             url: '/filter-products',
@@ -281,8 +281,8 @@
                             div.classList.add('product-item')
                             listProduct.appendChild(div)
                         })
-                    } 
-                    if(pageTotal == pageIndex){
+                    }
+                    if (pageTotal == pageIndex) {
                         document.getElementById('load-page').style.display = 'none'
                     }
                 }
