@@ -1,9 +1,6 @@
 main {
-    min-height: 1000px;
     padding-top: 40px;
     .container {
-        border-left: 1px solid #ccc;
-        border-right: 1px solid #ccc;
         margin: auto;
         max-width: 1320px;
 
@@ -54,6 +51,24 @@ main {
                     }
                 }
             }
+        }
+    }
+
+    .load-page {
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+        button {
+            padding: 10px 12px;
+            border: 1px solid #4dabf7;
+            border-radius: 16px;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #4dabf7;
+            color: #fff;
         }
     }
 }

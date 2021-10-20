@@ -1,11 +1,11 @@
 const Router = require('express').Router()
 const SiteController = require('../controllers/SiteController')
 
-Router.get('/',SiteController.home)
+Router.get('/', SiteController.home)
 
-Router.get('/get-data',SiteController.getData)
+Router.post('/filter-products', SiteController.filterProducts)
 
-Router.post('/search-products',SiteController.searchProducts)
+Router.post('/search-products', SiteController.searchProducts)
 
 
 

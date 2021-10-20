@@ -95,35 +95,35 @@ header.scroll {
     background-color: #4dabf7;
     border: 1.6px solid #4dabf7; }
 
-#baner {
+#banner {
   padding-top: 16vh;
   text-align: center;
   background-image: url(../img/banner.jpg);
   background-size: cover;
   height: 100vh; }
-  #baner div {
+  #banner div {
     font-size: 50px;
     color: #fff;
     font-weight: 600; }
-  #baner .bg {
+  #banner .bg {
     background: #4dabf7;
     display: inline-block;
     padding: 0 16px;
     font-weight: 700;
     border-radius: 1px; }
-  #baner .search {
+  #banner .search {
     margin-top: 40px;
     display: flex;
     justify-content: center;
     text-align: center; }
-    #baner .search i {
+    #banner .search i {
       color: #000;
       padding: 8px 16px;
       background-color: #fff;
       font-size: 1.4rem;
       display: flex;
       align-items: center; }
-    #baner .search input {
+    #banner .search input {
       padding: 8px 4px;
       width: 700px;
       height: 50px;
@@ -131,7 +131,7 @@ header.scroll {
       font-size: 18px;
       outline: none;
       border: none; }
-  #baner #search-value {
+  #banner #search-value {
     position: absolute;
     border-top: 2px solid #000;
     height: 380px;
@@ -140,37 +140,37 @@ header.scroll {
     display: none;
     text-align: left;
     padding: 0 36px; }
-    #baner #search-value .search-item {
+    #banner #search-value .search-item {
       padding: 14px;
       width: 290px;
       height: 100%; }
-      #baner #search-value .search-item a {
+      #banner #search-value .search-item a {
         text-decoration: none;
         color: #000; }
-        #baner #search-value .search-item a .search-img {
+        #banner #search-value .search-item a .search-img {
           width: 100%;
           height: 290px;
           overflow: hidden; }
-          #baner #search-value .search-item a .search-img img {
+          #banner #search-value .search-item a .search-img img {
             width: 100%;
             height: 100%;
             object-fit: cover; }
-        #baner #search-value .search-item a .search-content {
+        #banner #search-value .search-item a .search-content {
           background: #fff;
           height: 68px; }
-          #baner #search-value .search-item a .search-content .search-name {
+          #banner #search-value .search-item a .search-content .search-name {
             font-size: 14px;
             color: black;
             padding: 4px 0;
             margin: 0; }
-          #baner #search-value .search-item a .search-content .search-price {
+          #banner #search-value .search-item a .search-content .search-price {
             opacity: .8;
             font-size: 14px;
             color: black;
             margin: 0; }
-  #baner #search-value.active {
+  #banner #search-value.active {
     display: flex; }
-  #baner button {
+  #banner button {
     margin-top: 160px;
     height: 50px;
     width: 140px;
@@ -182,11 +182,8 @@ header.scroll {
     color: #fff; }
 
 main {
-  min-height: 1000px;
   padding-top: 40px; }
   main .container {
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
     margin: auto;
     max-width: 1320px; }
     main .container .header {
@@ -219,6 +216,19 @@ main {
               padding: 4px 0; }
             main .container .content-list-product .product-item a .product-content .product-price {
               opacity: .8; }
+  main .load-page {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0; }
+    main .load-page button {
+      padding: 10px 12px;
+      border: 1px solid #4dabf7;
+      border-radius: 16px;
+      background-color: #fff;
+      transition: all 0.2s ease-in-out; }
+    main .load-page button:hover {
+      background-color: #4dabf7;
+      color: #fff; }
 
 footer {
   background-color: #ccc; }
