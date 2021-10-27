@@ -21,9 +21,9 @@
                     Cửa hàng
                     <ul>
                         <li><a href="">Đơn đặt hàng</a></li>
-                        <li><a href="/product/store">Kho</a></li>
+                        <li><a href="/my/store/product">Kho</a></li>
                         <li><a href="">Mã giảm giá</a></li>
-                        <li><a href="/product/post">Đăng sản phẩm</a></li>
+                        <li><a href="/my/store/product/post">Đăng sản phẩm</a></li>
                     </ul>
                 </div>
                 <div class="my-self">
@@ -52,11 +52,10 @@
             <div class="bg">MỌI THỨ, NGAY BÂY GIỜ</div><br>
             <div class="search">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Tìm kiếm..." id="search">
+                <input type="text" placeholder="Tìm kiếm..." id="search-input" class="search-input">
             </div>
             <div id="search-value">
             </div>
-            <button onclick="window.scroll(0,690)">Xem luôn</button>
         </div>
 
         <main id="main">
@@ -71,8 +70,8 @@
                     </select>
 
                     <select class="form-select" id="sort-products">
-                        <option value="old">Cũ - mới</option>
                         <option value="new">Mới - cũ</option>
+                        <option value="old">Cũ - mới</option>
                         <option value="asc">Giá thấp - cao</option>
                         <option value="desc">Giá cao - thấp</option>
                     </select>
@@ -128,18 +127,16 @@
 
 
                 // search
-                const input = document.querySelector('#search')
+                const input = document.querySelector('#search-input')
                 const searchValue = document.querySelector('#search-value')
-                input.onclick = () => {
-                    searchValue.classList.add('active')
-                }
-                input.onblur = () => {
-                    window.onclick = (e) => {
-                        if (!e.target.classList.contains('product-item')) {
-                            searchValue.classList.remove('active')
-                        }
+                window.onclick = (e) => {
+                    if (e.target.classList.contains('search-input') || e.target.classList.contains('search-link')) {
+                        searchValue.classList.add('active')
+                    } else {
+                        searchValue.classList.remove('active')
                     }
                 }
+
                 input.onkeyup = () => {
                     let text = input.value
                     if (text != '') {
@@ -155,13 +152,13 @@
                                             <div class="search-item">
                                                 <a href="/product/details/${product.slug}">
                                                     <div class="search-img">
-                                                        <img src="${product.coverImg}" alt="">
+                                                        <img src="${product.coverImg}" alt="" class="search-link">
                                                     </div>
                                                     <div class="search-content">
-                                                        <p class="search-name">
+                                                        <p class="search-name search-link">
                                                             ${product.productName}
                                                         </p>
-                                                        <p class="search-price">
+                                                        <p class="search-price search-link">
                                                             ${(product.price * (100 - product.discount) / 100).toLocaleString()} đ
                                                         </p>
                                                     </div>
@@ -170,7 +167,7 @@
                                         `)
                                         return acc
                                     }, []).join('')
-                                    
+
                                     searchValue.innerHTML = html
                                 } else {
                                     searchValue.innerHTML = '<div style="color: #000000; margin: auto; font-size: 20px">Không Tìm Thấy Sản Phẩm</div>'
@@ -182,7 +179,6 @@
                         })
                     }
                 }
-
 
                 //filter products
                 let pageIndex = 1
@@ -204,6 +200,7 @@
                             },
                             success: (data) => {
                                 products = data.products
+                                pageTotal = data.pageTotal
                                 pageIndex = 1
                             },
                             error: (err) => {
@@ -213,27 +210,31 @@
 
                         const html = products.reduce((acc, product) => {
                             acc.push(`
-                        <div class="product-item">
-                            <a href="/product/details/${product.slug}">
-                                <div class="product-img">
-                                    <img src="${product.coverImg}" alt="">
+                                <div class="product-item">
+                                    <a href="/product/details/${product.slug}">
+                                        <div class="product-img">
+                                            <img src="${product.coverImg}" alt="">
+                                        </div>
+                                        <div class="product-content">
+                                            <div class="product-name">
+                                                ${product.productName}
+                                            </div>
+                                            <div class="product-price">
+                                                ${(product.price * (100 - product.discount) / 100).toLocaleString()} đ
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                                <div class="product-content">
-                                    <div class="product-name">
-                                        ${product.productName}
-                                    </div>
-                                    <div class="product-price">
-                                        ${(product.price * (100 - product.discount) / 100).toLocaleString()} đ
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    `)
+                            `)
                             return acc
                         }, []).join('')
 
                         listProduct.innerHTML = html
-                        document.getElementById('load-page').style.display = 'inline-block'
+                        if (pageTotal == pageIndex) {
+                            document.getElementById('load-page').style.display = 'none'
+                        } else {
+                            document.getElementById('load-page').style.display = 'inline-block'
+                        }
                     }
                 })
 

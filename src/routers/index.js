@@ -1,8 +1,12 @@
 const siteRouter = require('./site')
-const productRouter = require('./product')
+const storeRouter = require('./store')
+const authRouter = require('./auth')
 
 module.exports = app => {
     app.use('/', siteRouter)
 
-    app.use('/product', productRouter)
+    app.use('/auth', authRouter)
+
+    app.use('/my/store', storeRouter)
+
 }

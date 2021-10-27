@@ -32,7 +32,6 @@ header {
             font-weight: 600;
             transition: all .2s ease-in-out;
             cursor: pointer;
-            border-radius: 8px;
             position: relative;
 
             ul {
@@ -43,7 +42,7 @@ header {
                 background-color: #fff;
                 color: #000;
                 width: 180px;
-                border-radius: 4px;
+                border-radius: 1px;
                 list-style: none;
                 padding: 8px;
                 opacity: 0;
@@ -53,8 +52,8 @@ header {
                 z-index: 1;
 
                 li {
-                    border-radius: 4px;
-                    
+                    border-radius: 1px;
+
                     a {
                         padding: 6px;
                         text-decoration: none;
@@ -96,17 +95,17 @@ header {
             align-items: center;
             text-decoration: none;
             transition: all 0.2s ease-in-out;
-
+            
             button {
                 padding: 0 8px;
                 height: 90%;
-                border-radius: 24px;
                 cursor: pointer;
                 font-weight: 500;
                 transition: all 0.3s ease-in-out;
                 background-color: #fff;
                 color: #000;
                 border: 1.6px solid $PrimaryColor;
+                border-radius: 2px;
             }
 
             button:hover {
@@ -132,7 +131,6 @@ header.scroll {
     #login-out {
 
         button {
-
             background-color: rgba(0, 0, 0, 0);
             color: #fff;
             border: 1.6px solid #fff;

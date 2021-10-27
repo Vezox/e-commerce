@@ -2,7 +2,7 @@ const express = require('express')
 const routers = require('./src/routers')
 require('dotenv').config()
 
-const DataBase = require('./src/configs/DataBase')
+const dataBase = require('./src/configs/dataBase')
 
 const app = express()
 
@@ -17,7 +17,7 @@ app.set('views', './src/views')
 // static
 app.use(express.static(__dirname + '/src/public'))
 
-DataBase.connect()
+dataBase.connect()
 
 routers(app)
 

@@ -11,11 +11,11 @@ class SiteController {
         }, (err, products) => {
             if (err) res.status(500).send(err)
             res.render('site/home', { products })
-        }).limit(6)
+        }).sort({createdAt: -1}).limit(4)
     }
 
     filterProducts(req, res) {
-        const LIMIT = 6
+        const LIMIT = 4
         let find = { status: 'pending' }
         if (req.body.options != 'all') find['type'] = req.body.options
 
@@ -41,7 +41,7 @@ class SiteController {
                 slug: 1,
                 type: 1,
             }).sort(sort).skip(skip * LIMIT).limit(LIMIT),
-            Product.countDocuments({ find })
+            Product.countDocuments(find)
         ])
             .then(data => {
                 res.json({ products: data[0], pageTotal: Math.ceil(data[1] / LIMIT) })

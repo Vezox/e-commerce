@@ -1,0 +1,65 @@
+<%- include('../partials/head.ejs') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="/js/jquery.js"></script>
+
+    <%- include('../partials/nav.ejs') %>
+
+        <div id="details">
+            <div class="product">
+                <div id="carouselExampleDark" class="carousel slide carousel-dark" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="<%= product.coverImg %>" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="<%= product.img1 %>" class="d-block w-100" alt="">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="<%= product.img2 %>" class="d-block w-100" alt="">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <div class="button-product">
+                    <label>
+                        <%= product.brand %>
+                    </label>
+                    <h5>
+                        <%= product.productName %>
+                    </h5>
+                    <p class="price" data-product-price="<%= product.price %>"></p>
+                    <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+                    <p>Danh mục: <%= product.type %>
+                    </p>
+                    <p class="description">
+                        <%= product.description %>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../partials/footer.ejs') %>
+            <script>
+                const price = document.querySelector('.price')
+                price.innerText = (price.getAttribute('data-product-price') - 0).toLocaleString() + ' đ'
+            </script>

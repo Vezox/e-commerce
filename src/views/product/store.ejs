@@ -1,4 +1,5 @@
 <%- include('../partials/head.ejs') %>
+   
 <%- include('../partials/nav.ejs') %>
 
     <div id="product-store" style="margin: 10px auto;max-width: 1100px;">
@@ -24,7 +25,7 @@
                     <td><%= product.quantity%></td>
                     <td>
                         <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-outline-primary">Xem lại</button></a>
-                        <a href="/product/edit/<%= product.slug %>"><button type="button" class="btn btn-outline-success">Sửa</button></a>
+                        <a href="/my/store/product/edit/<%= product.slug %>"><button type="button" class="btn btn-outline-success">Sửa</button></a>
                         <button type="button" class="btn btn-outline-danger">Xóa</button>
                     </td>
                 </tr>

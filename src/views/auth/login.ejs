@@ -1,0 +1,69 @@
+<%- include('../partials/head.ejs') %>
+
+<script src="/js/jquery.js"></script>
+
+<%- include('../partials/nav.ejs') %>
+
+<div id="login">
+    <div id="login-form">
+        <p>Tên đăng nhập</p>
+        <input type="text" name="username" id="username">
+        <label for="username">Tên đăng nhập không tồn tại</label>
+        <p>Mật khẩu</p>
+        <input type="password" name="password" id="password">
+        <label for="password">Mật khẩu không chính xác</label>
+        <div><button id="btn-login">Đăng nhập</button></div>
+    </div>
+
+    <div id="create-account">
+        <div>Bạn chưa có tài khoản ? <a href="/auth/register">Đăng kí ngay</a></div>
+    </div>
+</div>
+
+
+<%- include('../partials/footer.ejs') %>
+
+<script>
+    const btn = document.getElementById('btn-login')
+    btn.onclick = () => {
+        const username = document.getElementById('username').value
+        const password = document.getElementById('password').value
+        $.ajax({
+            url: '/auth/verify',
+            type: 'POST',
+            data: { username, password },
+            success: (data) => {
+                const message = data.message
+                if(message == 'success') {
+                    setCookie('token', data.token, 1)
+                    localStorage.setItem('role', data.role)
+                    localStorage.setItem('firstName', data.firstName)
+                    localStorage.setItem('lastName', data.lastName)
+                    localStorage.setItem('avatar', data.avatar)
+                    window.location.href = '/'
+                } else {
+                    document.getElementById(message).classList.add('err')
+                    document.querySelector(`[for="${message}"]`).classList.add('err')
+                }
+            },
+            error: (err) => {
+                console.log(err)
+            }
+        })
+    }
+
+    const inputs = document.querySelectorAll('input')
+    inputs.forEach(input => {
+        input.onkeyup = (evt) => {
+            evt.target.classList.remove('err')
+            document.querySelector(`[for="${evt.target.id}"]`).classList.remove('err')
+        }
+    })
+
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+</script>

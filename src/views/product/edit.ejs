@@ -1,6 +1,6 @@
 <%- include('../partials/head.ejs') %>
 
-    <script src="/js/jquery.js"></script>
+  <script src="/js/jquery.js"></script>
 
 <%- include('../partials/nav.ejs') %>
 
@@ -9,7 +9,7 @@
         <form>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="productName">Tên sản phẩm</span>
-                <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required value="<%= product.productName %>" data-slug="<%= product.slug %>">
+                <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required value="<%= product.productName %>">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="price">Giá</span>
@@ -69,13 +69,12 @@
                 obj[item.name] = item.value
                 return obj
             }, {})
-            data['slug'] = document.querySelector('[name="productName"]').getAttribute('data-slug')
             $.ajax({
                 data: data,
-                url: '/product/edit',
+                url: '/my/store/product/edit',
                 type: 'PATCH',
                 success: () => {
-                    window.location.href = '/product/store'
+                    window.location.href = '/my/store/product'
                 },
                 error: (err) => {
                     alert(err)

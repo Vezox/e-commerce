@@ -1,9 +1,10 @@
 <%- include('../partials/head.ejs') %>
+    
 <%- include('../partials/nav.ejs') %>
 
     <div id="product-post" style="margin: 10px auto;width: 1000px;">
         <h3 style="text-align: center">Đăng sản phẩm</h3>
-        <form action="/product/post" method="post">
+        <form action="/my/store/product/post" method="post">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="productName">Tên sản phẩm</span>
                 <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required>
