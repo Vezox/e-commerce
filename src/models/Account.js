@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const Account = new Schema({
     role: { type: Number, default: 1},
     accountType: { type: String, default: 'local'},
-    username: { type: String },
+    username: { type: String, unique: true },
     password: { type: String },
     firstName: { type: String, required: true},
     lastName: { type: String, required: true },

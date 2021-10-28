@@ -299,37 +299,34 @@ footer {
         margin: 0;
         font-size: 14px; }
 
-#login {
-  width: 400px;
-  margin: 80px auto; }
-  #login #login-form {
+.login-register {
+  width: 440px;
+  margin: 40px auto; }
+  .login-register .login-register-form {
     width: 100%;
     padding: 40px;
     border-radius: 16px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2); }
-    #login #login-form p {
+    .login-register .login-register-form p {
       margin-bottom: 4px;
       font-size: 18px; }
-    #login #login-form input {
+    .login-register .login-register-form input {
       width: 100%;
       height: 50px;
       border: 2px solid #b1b1b1;
       border-radius: 8px;
       padding: 0 12px; }
-    #login #login-form input:focus {
+    .login-register .login-register-form input:focus {
       border: none;
       outline: 2px solid #4dabf7;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); }
-    #login #login-form input.err {
+    .login-register .login-register-form input.err {
       border: 2px solid red; }
-    #login #login-form label {
+    .login-register .login-register-form label {
       font-size: 12px;
       color: red;
-      margin-left: 12px;
-      opacity: 0; }
-    #login #login-form label.err {
-      opacity: 1; }
-    #login #login-form button {
+      margin-left: 8px; }
+    .login-register .login-register-form button {
       font-size: 20px;
       font-weight: 700;
       margin-top: 10px;
@@ -340,7 +337,7 @@ footer {
       color: #fff;
       border-radius: 8px;
       box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); }
-  #login #create-account {
+  .login-register #create-account {
     opacity: .99;
     font-weight: 600;
     font-size: 18px;

@@ -32,10 +32,34 @@ class AccountController {
                     firstName: acc.firstName,
                     lastName: acc.lastName,
                     avatar: acc.avatar,
-                    token: token
                 })
             }
         })
+    }
+
+    register(req, res) {
+        res.render('auth/register')
+    }
+
+    async createAccount(req, res) {
+        let account = req.body
+        try {
+            const result = await Account.findOne({ username: account.username })
+            if (result) return res.json({ message: 'username' })
+            const hmac = createHmac('sha256', Buffer.from(process.env.HASH_KEY))
+            hmac.update(account.password)
+            account.password = hmac.digest("hex")
+            account['userName'] = account.username
+            await Account.create(account)
+            return res.json({ message: 'success' })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500)
+        }
+    }
+
+    success(req, res) {
+        res.render('auth/success')
     }
 }
 

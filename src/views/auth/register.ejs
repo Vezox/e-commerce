@@ -1,0 +1,103 @@
+<%- include('../partials/head.ejs') %>
+
+<script src="/js/jquery.js"></script>
+
+<%- include('../partials/nav.ejs') %>
+
+<div class="login-register">
+
+
+    <div class="login-register-form">
+        <p>Họ</p>
+        <input type="text" name="lastName" id="lastName" placeholder="VD: Trương">
+        <label for="lastName"></label>
+        <p>Tên</p>
+        <input type="text" name="firstName" id="firstName" placeholder="VD: Đức Thăng">
+        <label for="firstName"></label>
+        <p>Tên đăng nhập</p>
+        <input type="text" name="username" id="username" placeholder="VD: thangTD123">
+        <label for="username"></label>
+        <p>Mật khẩu</p>
+        <input type="password" name="password" id="password" placeholder="VD: tD9@$5">
+        <label for="password"></label>
+        <div><button id="btn-register">Đăng kí</button></div>
+    </div>
+
+</div>
+
+
+<%- include('../partials/footer.ejs') %>
+
+<script>
+    const btn = document.getElementById('btn-register')
+    const inputs = document.querySelectorAll('input')
+    const firstName = document.getElementById('firstName')
+    const lastName = document.getElementById('lastName')
+    const username = document.getElementById('username')
+    const password = document.getElementById('password')
+    btn.onclick = () => {
+        let isValidated = false
+        const usernameRegex = /^[a-zA-Z0-9]+$/
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/
+
+        inputs.forEach(input => {
+            if(input.value.length == 0) {
+                input.classList.add('err')
+                document.querySelector(`[for="${input.id}"]`).innerText = 'Vui lòng nhập trường này'
+            } else {
+                // check username
+                if(username.value.length < 5) {
+                    username.classList.add('err')
+                    document.querySelector(`[for="username"]`).innerText = 'Tên đăng nhập tối thiểu 6 kí tự'
+                    isValidated = false
+                } else if(!username.value.match(usernameRegex)) {
+                    username.classList.add('err')
+                    document.querySelector(`[for="username"]`).innerText = 'Tên đăng nhập phải thuộc a-z, A-Z, 0-9'
+                    isValidated = false
+                } else {
+                    isValidated = true
+                }
+                // check password
+                if(password.value.length < 6) {
+                    password.classList.add('err')
+                    document.querySelector(`[for="password"]`).innerText = 'Mật khẩu tối thiểu 6 kí tự'
+                    isValidated = false
+                } else if(!password.value.match(passwordRegex)) {
+                    password.classList.add('err')
+                    document.querySelector(`[for="password"]`).innerText = 'Mật khẩu phải bao gồm chữ hoa, chữ thường, số và kí tự đặc biệt'
+                    isValidated = false
+                } else {
+                    isValidated = true
+                }
+            }
+            input.onkeyup = () => {
+                input.classList.remove('err')
+                document.querySelector(`[for="${input.id}"]`).innerText = ''
+            }
+        })
+
+        if(isValidated) {
+            $.ajax({
+                url: '/auth/register',
+                type: 'POST',
+                data: {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    username: username.value,
+                    password: password.value
+                },
+                success: (data) => {
+                    if(data.message == 'username') {
+                        username.classList.add('err')
+                        document.querySelector(`[for="username"]`).innerText = 'Tên đăng nhập đã tồn tại'
+                    } else if(data.message == 'success'){
+                        window.location.href = '/auth/register/success'
+                    }
+                },
+                error: (error) => {
+                    console.log(error)
+                }
+            })
+        }
+    }
+</script>

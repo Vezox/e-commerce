@@ -5,4 +5,11 @@ Router.get('/login', AuthController.getLogin)
 
 Router.post('/verify', AuthController.verify)
 
+Router.get('/register', AuthController.register)
+
+Router.post('/register', AuthController.createAccount)
+
+Router.get('/register/success', AuthController.success)
+
+
 module.exports =  Router
