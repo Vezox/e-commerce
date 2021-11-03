@@ -1,7 +1,112 @@
-<footer>
+<footer id="footer">
+    <div class="content">
+        <div class="logo">
+            <a href="#" class="lazapee">LazaPee</a>
+            <div class="footer-social-logo">
+                <a href="https://www.facebook.com/vezox.it">
+                    <i class='bx bxl-facebook-circle'></i>
+                </a>
+                <a href="https://github.com/Vezox">
+                    <i class='bx bxl-github'></i>
+                </a>
+            </div>
+            <div class="copyright">
+                Copyright &copy; vezox 2021
+            </div>
+        </div>
 
+        <div class="contact">
+            <div>
+                <p class="footer-title">Email</p>
+                <p class="footer-body">tdthang.it.@gmail.com</p>
+            </div>
+            <div>
+                <p class="footer-title">Điện thoại</p>
+                <p class="footer-body">0376856832</p>
+            </div>
+            <div>
+                <p class="footer-title">Địa chỉ</p>
+                <p class="footer-body">Nghe An, Viet Nam</p>
+            </div>
+        </div>
+
+        <div class="email">
+            <div>
+                <p class="footer-title">Liên Hệ</p>
+                <p class="footer-body">Để lại email nếu có thắc mắc !</p>
+                <form class="email-submit">
+                    <input type="email" placeholder="your@email.com">
+                    <button type="submit">Enter</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </footer>
-
 </body>
+
+<script>
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+    const head = document.querySelector('header')
+    const role = getCookie('role')
+    const nav = document.createElement('nav')
+    if (role == 1) {
+        const firstName = localStorage.getItem('firstName')
+        nav.innerHTML = `
+                <div class="products">
+                    Danh mục
+                    <ul>
+                        <li><a href="">Giày</a></li>
+                        <li><a href="">Quần áo</a></li>
+                        <li><a href="">Phụ kiện</a></li>
+                        <li><a href="">Khác</a></li>
+                    </ul>
+                </div>
+                <div class="my-shop">
+                    Cửa hàng
+                    <ul>
+                        <li><a href="">Đơn đặt hàng</a></li>
+                        <li><a href="/my/store/product">Kho</a></li>
+                        <li><a href="">Mã giảm giá</a></li>
+                        <li><a href="/my/store/product/post">Đăng sản phẩm</a></li>
+                    </ul>
+                </div>
+                
+                <div id="cart">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                </div>
+                <div class="my-self">
+                    <i class='bx bx-face'></i>
+                    <span>${firstName}</span>
+                    <ul>
+                        <li><a href="">Đơn hàng đã đặt</a></li>
+                        <li><a href="">Thông tin cá nhân</a></li>
+                        <li><a href="">Đổi mật khẩu</a></li>
+                        <li><a href="/auth/logout">Đăng xuất</a></li>
+                    </ul>
+                </div>
+        `
+    } else {
+        nav.innerHTML = `
+        <a href="/auth/login" id="login-out">
+            <button>Đăng nhập</button>
+        </a>`
+    }
+    head.appendChild(nav)
+
+</script>
 
 </html>

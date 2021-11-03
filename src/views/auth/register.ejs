@@ -9,16 +9,16 @@
 
     <div class="login-register-form">
         <p>Họ</p>
-        <input type="text" name="lastName" id="lastName" placeholder="VD: Trương">
+        <input class="input-register" type="text" name="lastName" id="lastName" placeholder="VD: Trương">
         <label for="lastName"></label>
         <p>Tên</p>
-        <input type="text" name="firstName" id="firstName" placeholder="VD: Đức Thăng">
+        <input class="input-register" type="text" name="firstName" id="firstName" placeholder="VD: Đức Thăng">
         <label for="firstName"></label>
         <p>Tên đăng nhập</p>
-        <input type="text" name="username" id="username" placeholder="VD: thangTD123">
+        <input class="input-register" type="text" name="username" id="username" placeholder="VD: thangTD123">
         <label for="username"></label>
         <p>Mật khẩu</p>
-        <input type="password" name="password" id="password" placeholder="VD: tD9@$5">
+        <input class="input-register" type="password" name="password" id="password" placeholder="VD: tD9@$5">
         <label for="password"></label>
         <div><button id="btn-register">Đăng kí</button></div>
     </div>
@@ -30,7 +30,7 @@
 
 <script>
     const btn = document.getElementById('btn-register')
-    const inputs = document.querySelectorAll('input')
+    const inputs = document.querySelectorAll('.input-register')
     const firstName = document.getElementById('firstName')
     const lastName = document.getElementById('lastName')
     const username = document.getElementById('username')
@@ -43,6 +43,7 @@
         inputs.forEach(input => {
             if(input.value.length == 0) {
                 input.classList.add('err')
+                console.log(input.value)
                 document.querySelector(`[for="${input.id}"]`).innerText = 'Vui lòng nhập trường này'
             } else {
                 // check username

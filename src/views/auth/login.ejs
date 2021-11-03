@@ -26,34 +26,46 @@
 <script>
     const btn = document.getElementById('btn-login')
     btn.onclick = () => {
-        const username = document.getElementById('username').value
-        const password = document.getElementById('password').value
-
-        $.ajax({
-            url: '/auth/verify',
-            type: 'POST',
-            data: { username, password },
-            success: (data) => {
-                const message = data.message
-                if(message == 'success') {
-                    localStorage.setItem('role', data.role)
-                    localStorage.setItem('firstName', data.firstName)
-                    localStorage.setItem('lastName', data.lastName)
-                    localStorage.setItem('avatar', data.avatar)
-                    window.location.href = '/'
-                } else {
-                    document.getElementById(message).classList.add('err')
-                    let text = 'Tên đăng nhập không tồn tại'
-                    if(message == 'password') {
-                        text = 'Mật khẩu không chính xác'
+        const username = document.getElementById('username')
+        const password = document.getElementById('password')
+        if (!username.value.match(/^[a-zA-Z0-9]+$/)) {
+            username.classList.add('err')
+            document.querySelector(`[for="username"]`).innerText = 'Tên đăng nhập phải thuộc a-z, A-Z, 0-9'
+        } else if (!password.value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/)) {
+            password.classList.add('err')
+            document.querySelector(`[for="password"]`).innerText = 'Mật khẩu bao gồm chữ hoa, chữ thường, số và kí tự đặc biệt'
+        } else {
+            $.ajax({
+                url: '/auth/verify',
+                type: 'POST',
+                data: { 
+                    username: username.value,
+                    password: password.value
+                },
+                success: (data) => {
+                    const message = data.message
+                    if(message == 'success') {
+                        // const d = new Date();
+                        // d.setTime(d.getTime() + (2 * 60 * 60 * 1000))
+                        // let expires = "expires=" + d.toUTCString();
+                        // document.cookie = "role=" + data.role + ";" + expires + ";path=/"
+                        localStorage.setItem('firstName', data.firstName)
+                        localStorage.setItem('avatar', data.avatar)
+                        window.location.href = '/'
+                    } else {
+                        document.getElementById(message).classList.add('err')
+                        let text = 'Tên đăng nhập không tồn tại'
+                        if(message == 'password') {
+                            text = 'Mật khẩu không chính xác'
+                        }
+                        document.querySelector(`[for="${message}"]`).innerText = text
                     }
-                    document.querySelector(`[for="${message}"]`).innerText = text
+                },
+                error: (err) => {
+                    console.log(err)
                 }
-            },
-            error: (err) => {
-                console.log(err)
-            }
-        })
+            })
+        }
     }
 
     const inputs = document.querySelectorAll('input')

@@ -1,4 +1,4 @@
-const Account = require('../Models/Account')
+const Account = require('../models/Account')
 const createHmac = require('create-hmac')
 const jwt = require('jsonwebtoken')
 
@@ -25,16 +25,24 @@ class AccountController {
             if (acc.password != hashPass) {
                 res.json({ message: 'password' })
             } else {
-                const token = jwt.sign({ _id: acc._id }, process.env.JWT_TOKEN_SECRET)
-                return res.json({
+                const token = jwt.sign({ _id: acc._id }, process.env.JWT_TOKEN_SECRET , { expiresIn: '2h' })
+                res.cookie('token', token, {httpOnly: true, maxAge: 2*60* 60 * 1000})
+                res.cookie('role', acc.role, {maxAge: 2*60* 60 * 1000})
+                res.status(200).send({
                     message: 'success',
                     role: acc.role,
                     firstName: acc.firstName,
-                    lastName: acc.lastName,
                     avatar: acc.avatar,
+                    token: token
                 })
             }
         })
+    }
+
+    logout(req, res) {
+        res.cookie('token', '', {maxAge: 2})
+        res.cookie('role', '', {maxAge: 1})
+        res.redirect('/auth/login')
     }
 
     register(req, res) {

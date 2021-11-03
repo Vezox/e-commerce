@@ -20,7 +20,7 @@ main {
             
             .product-item {
                 width: 290px;
-                height: 400px;
+                height: 404px;
                 margin: 16px 0 32px;
                 box-shadow:0 1px 5px rgba(0, 0, 0, .1);
                 transition: all .2s ease-in-out;
@@ -41,14 +41,16 @@ main {
                     }
 
                     .product-content {
-                        margin-top: 10px;
+                        margin-top: 4px;
                         background: #fff;
                         text-align: center;
                         font-weight: 600;
                         
 
                         .product-name {
-                            padding: 4px 0;
+                            font-size: 16px;
+                            padding: 4px 8px 0px;
+                            height: 50px;
                         }
 
                         .product-price {

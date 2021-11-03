@@ -4,7 +4,7 @@ header {
   justify-content: space-between;
   align-items: center;
   height: 80px;
-  padding: 10px 40px;
+  padding: 10px 110px;
   transition: all 0.4s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -16,14 +16,17 @@ header {
     text-decoration: none; }
   header nav {
     display: flex;
-    justify-content: space-around; }
+    justify-content: space-around;
+    height: 100%; }
     header nav div {
       padding: 8px 16px;
       font-size: 1.2rem;
       font-weight: 600;
       transition: all .2s ease-in-out;
       cursor: pointer;
-      position: relative; }
+      position: relative;
+      display: flex;
+      align-items: center; }
       header nav div ul {
         position: absolute;
         transform: translateX(32px);
@@ -31,19 +34,19 @@ header {
         font-size: 1rem;
         background-color: #fff;
         color: #000;
-        width: 180px;
+        width: 170px;
         border-radius: 1px;
         list-style: none;
-        padding: 8px;
+        padding: 0;
         opacity: 0;
         pointer-events: none;
         transition: all 0.3s ease-in-out;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        z-index: 1; }
+        z-index: 1;
+        border: 1px solid #ccc; }
         header nav div ul li {
           border-radius: 1px; }
           header nav div ul li a {
-            padding: 6px;
+            padding: 5px 10px;
             text-decoration: none;
             display: block;
             color: #000; }
@@ -52,7 +55,19 @@ header {
           color: #fff; }
           header nav div ul li:hover a {
             color: #fff; }
+    header nav .my-self {
+      justify-content: space-between;
+      position: relative; }
+      header nav .my-self i {
+        color: #000;
+        font-size: 24px;
+        transition: all 0.2s ease-in-out;
+        margin-right: 2px; }
+      header nav .my-self li:last-child {
+        border-top: 2px solid #ccc; }
     header nav div:hover {
+      color: #4dabf7; }
+    header nav div:hover i {
       color: #4dabf7; }
     header nav div:hover > ul {
       opacity: 1;
@@ -68,7 +83,7 @@ header {
       transition: all 0.2s ease-in-out; }
       header nav #login-out button {
         padding: 0 8px;
-        height: 90%;
+        height: 70%;
         cursor: pointer;
         font-weight: 500;
         transition: all 0.3s ease-in-out;
@@ -86,6 +101,10 @@ header.scroll {
   box-shadow: none; }
   header.scroll .logo a {
     color: #fff; }
+  header.scroll .my-self i {
+    color: #fff; }
+  header.scroll .my-self:hover i {
+    color: #4dabf7; }
   header.scroll #login-out button {
     background-color: rgba(0, 0, 0, 0);
     color: #fff;
@@ -202,7 +221,7 @@ main {
       margin-top: 20px; }
       main .container .content-list-product .product-item {
         width: 290px;
-        height: 400px;
+        height: 404px;
         margin: 16px 0 32px;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         transition: all .2s ease-in-out; }
@@ -218,12 +237,14 @@ main {
               height: 100%;
               object-fit: cover; }
           main .container .content-list-product .product-item a .product-content {
-            margin-top: 10px;
+            margin-top: 4px;
             background: #fff;
             text-align: center;
             font-weight: 600; }
             main .container .content-list-product .product-item a .product-content .product-name {
-              padding: 4px 0; }
+              font-size: 16px;
+              padding: 4px 8px 0px;
+              height: 50px; }
             main .container .content-list-product .product-item a .product-content .product-price {
               opacity: .8; }
       main .container .content-list-product .product-item:hover {
@@ -244,7 +265,63 @@ main {
       color: #fff; }
 
 footer {
-  background-color: #ccc; }
+  width: 100%;
+  background-color: #f1f1f1; }
+  footer .content {
+    display: flex;
+    justify-content: space-between;
+    margin: 40px auto 0;
+    max-width: 1200px;
+    padding: 40px 0 20px 0; }
+  footer .content > div {
+    width: 33%; }
+  footer .footer-social-logo {
+    margin: 12px 0 90px; }
+    footer .footer-social-logo i {
+      font-size: 30px; }
+  footer .logo .lazapee {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #4dabf7;
+    text-decoration: none; }
+  footer .logo .copyright {
+    font-size: 16px; }
+  footer .footer-social-logo a + a {
+    margin: 20px; }
+  footer .contact > div + div {
+    margin: 20px 0; }
+  footer .footer-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0; }
+  footer .footer-body {
+    font-size: 16px;
+    margin: 4px 0;
+    opacity: .9; }
+  footer .email-submit {
+    display: flex;
+    margin-top: 20px;
+    height: 60px; }
+    footer .email-submit input {
+      width: 240px;
+      height: 100%;
+      padding: 20px;
+      font-size: 12px;
+      border: 1px solid #4dabf7;
+      border-radius: 30px 0 0 30px;
+      transition: all 0.4s ease; }
+    footer .email-submit button {
+      width: 120px;
+      border-radius: 0 30px 30px 0;
+      background-color: #4dabf7;
+      border: none;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer; }
+  footer .email-submit input:focus {
+    outline: none;
+    box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.1); }
 
 #product-store table {
   width: 100%; }

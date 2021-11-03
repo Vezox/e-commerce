@@ -1,5 +1,6 @@
 const express = require('express')
 const routers = require('./src/routers')
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
 
 const dataBase = require('./src/configs/dataBase')
@@ -9,6 +10,7 @@ const app = express()
 //middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cookieParser())
 
 //views
 app.set('view engine', 'ejs')

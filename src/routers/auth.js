@@ -11,5 +11,7 @@ Router.post('/register', AuthController.createAccount)
 
 Router.get('/register/success', AuthController.success)
 
+Router.get('/logout', AuthController.logout)
+
 
 module.exports =  Router

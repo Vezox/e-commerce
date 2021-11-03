@@ -1,5 +1,5 @@
-const { response } = require('express')
 const Product = require('../models/Product')
+const jwt = require('jsonwebtoken')
 
 class ProductController {
     getPost(req, res) {
@@ -7,7 +7,11 @@ class ProductController {
     }
 
     savePost(req, res) {
-        Product.create(req.body, err => {
+        let product = req.body
+        const token = req.cookies.token
+        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        product['userId'] = userId
+        Product.create(product, err => {
             if (err) res.status(500)
             res.redirect('/product/store')
         })
@@ -15,7 +19,9 @@ class ProductController {
 
     async getStore(req, res) {
         try {
-            let products = await Product.find({}, {
+            const token = req.cookies.token
+            const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+            let products = await Product.find({userId}, {
                 coverImg: 1,
                 productName: 1,
                 price: 1,
@@ -41,9 +47,11 @@ class ProductController {
     }
 
     updateProduct(req, res) {
-        Product.updateOne({ slug: req.body.slug }, req.body, error => {
+        const token = req.headers.token
+        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        Product.updateOne({ slug: req.body.slug, userId }, req.body, error => {
             if (error) res.status(error)
-            res.json({status: 200})
+            res.json({ status: 200 })
         })
     }
 

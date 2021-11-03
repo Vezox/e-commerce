@@ -7,7 +7,7 @@ header {
     align-items: center;
     height: 80px;
 
-    padding: 10px 40px;
+    padding: 10px 110px;
     transition: all 0.4s ease-in-out;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
     background-color: #fff;
@@ -25,6 +25,7 @@ header {
     nav {
         display: flex;
         justify-content: space-around;
+        height: 100%;
 
         div {
             padding: 8px 16px;
@@ -33,6 +34,8 @@ header {
             transition: all .2s ease-in-out;
             cursor: pointer;
             position: relative;
+            display: flex;
+            align-items: center;
 
             ul {
                 position: absolute;
@@ -41,21 +44,21 @@ header {
                 font-size: 1rem;
                 background-color: #fff;
                 color: #000;
-                width: 180px;
+                width: 170px;
                 border-radius: 1px;
                 list-style: none;
-                padding: 8px;
+                padding: 0;
                 opacity: 0;
                 pointer-events: none;
                 transition: all 0.3s ease-in-out;
-                border: 1px solid rgba(0, 0, 0, .2);
                 z-index: 1;
+                border: 1px solid #ccc;
 
                 li {
                     border-radius: 1px;
 
                     a {
-                        padding: 6px;
+                        padding: 5px 10px;
                         text-decoration: none;
                         display: block;
                         color: #000;
@@ -73,7 +76,29 @@ header {
             }
         }
 
+        .my-self {
+            justify-content: space-between;
+            position: relative;
+
+            i {
+                color: #000;
+                font-size: 24px;
+                transition: all 0.2s ease-in-out;
+                margin-right: 2px;
+            }
+
+            li:last-child {
+                border-top: 2px solid #ccc;
+            }
+
+
+        }
+
         div:hover {
+            color: $PrimaryColor;
+        }
+
+        div:hover i {
             color: $PrimaryColor;
         }
 
@@ -95,10 +120,10 @@ header {
             align-items: center;
             text-decoration: none;
             transition: all 0.2s ease-in-out;
-            
+
             button {
                 padding: 0 8px;
-                height: 90%;
+                height: 70%;
                 cursor: pointer;
                 font-weight: 500;
                 transition: all 0.3s ease-in-out;
@@ -126,6 +151,17 @@ header.scroll {
         a {
             color: #fff;
         }
+    }
+
+    .my-self {
+        i {
+            color: #fff;
+        }
+    }
+
+    .my-self:hover i{
+        color: $PrimaryColor;
+
     }
 
     #login-out {

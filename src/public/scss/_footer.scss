@@ -1,3 +1,94 @@
 footer {
-    background-color: #ccc;
+    width: 100%;
+    background-color: rgb(241, 241, 241);
+
+
+    .content {
+        display: flex;
+        justify-content: space-between;
+        margin: 40px auto 0;
+        max-width: 1200px;
+        padding: 40px 0 20px 0;
+    }
+    .content>div {
+        width: 33%;
+    }
+
+
+    .footer-social-logo {
+        margin: 12px 0 90px;
+
+        i {
+            font-size: 30px;
+        }
+    }
+
+
+    .logo {
+
+        .lazapee {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #4dabf7;
+            text-decoration: none;
+        }
+
+        .copyright {
+            font-size: 16px;
+        }
+    }
+
+    .footer-social-logo a+a {
+        margin: 20px;
+    }
+
+    .contact>div+div {
+        margin: 20px 0;
+    }
+
+    .footer-title {
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .footer-body {
+        font-size: 16px;
+        margin: 4px 0;
+        opacity: .9;
+    }
+
+    .email-submit {
+        display: flex;
+        margin-top: 20px;
+        height: 60px;
+
+        input {
+            width: 240px;
+            height: 100%;
+            padding: 20px;
+            font-size: 12px;
+            border: 1px solid #4dabf7;
+            border-radius: 30px 0 0 30px;
+            transition: all 0.4s ease;
+        }
+
+        button {
+            width: 120px;
+            border-radius: 0 30px 30px 0;
+            background-color: #4dabf7;
+            border: none;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+        }
+    }
+
+
+
+    .email-submit input:focus {
+        outline: none;
+        box-shadow: 1px 5px 15px rgba(0, 0, 0, .1);
+    }
 }
