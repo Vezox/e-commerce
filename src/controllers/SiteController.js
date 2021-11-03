@@ -11,24 +11,23 @@ class SiteController {
         }, (err, products) => {
             if (err) res.status(500).send(err)
             res.render('site/home', { products })
-        }).sort({createdAt: -1}).limit(4)
+        }).sort({createdAt: -1}).limit(8)
     }
 
     filterProducts(req, res) {
-        const LIMIT = 4
+        const LIMIT = 8
         let find = { status: 'pending' }
         if (req.body.options != 'all') find['type'] = req.body.options
 
         let sort = null
-        if (req.body.sort == 'old') {
+        if (req.body.sort == 'old')
             sort = { createdAt: 1 }
-        } else if (req.body.sort == 'new') {
+        else if (req.body.sort == 'new')
             sort = { createdAt: -1 }
-        } else if (req.body.sort == 'asc') {
+        else if (req.body.sort == 'asc')
             sort = { price: 1 }
-        } else {
+        else 
             sort = { price: -1 }
-        }
 
         const skip = req.body.pageIndex
 

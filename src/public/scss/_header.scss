@@ -6,12 +6,12 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 80px;
-
-    padding: 10px 110px;
+    padding: 10px 94px 10px 110px;
     transition: all 0.4s ease-in-out;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
     background-color: #fff;
     color: #000;
+    z-index: 1;
 
     .logo {
         a {
@@ -39,8 +39,8 @@ header {
 
             ul {
                 position: absolute;
-                transform: translateX(32px);
-                top: 40px;
+                transform: translateX(12px);
+                top: 44px;
                 font-size: 1rem;
                 background-color: #fff;
                 color: #000;
@@ -51,8 +51,8 @@ header {
                 opacity: 0;
                 pointer-events: none;
                 transition: all 0.3s ease-in-out;
-                z-index: 1;
                 border: 1px solid #ccc;
+                z-index: 1;
 
                 li {
                     border-radius: 1px;
@@ -108,10 +108,14 @@ header {
             transform: translateX(0);
         }
 
-        #cart {
-            i {
-                font-size: 1.4rem;
+        .cart {
+            a {
+                color: #000;
+                i {
+                    font-size: 1.4rem;
+                }
             }
+            
         }
 
         #login-out {
@@ -148,6 +152,12 @@ header.scroll {
     box-shadow: none;
 
     .logo {
+        a {
+            color: #fff;
+        }
+    }
+
+    .cart {
         a {
             color: #fff;
         }

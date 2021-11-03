@@ -1,0 +1,33 @@
+<%- include('../partials/head.ejs') %>
+
+  <script src="/js/jquery.js"></script>
+
+<%- include('../partials/nav.ejs') %>
+
+<div id="cart">
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Shopping Cart</h1>
+        </div>
+        <div class="cart-body">
+            <div class="cart-items">
+                <% cartProducts.forEach(product => { %>
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="<%= product.coverImg %>"  alt="<%= product.productName %>">
+                        </div>
+                        <div class="cart-item-name"><%= product.productName %></div>
+                        <div class="cart-item-price"><%= product.price * (100 - product.discount) / 100 %></div>
+                        <div class="cart-item-quantity"><%= product.quantity %></div>
+                        <div class="cart-item-total">333$</div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <a href="/checkout" class="btn btn-primary">Checkout</a>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer.ejs') %> 

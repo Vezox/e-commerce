@@ -14,14 +14,13 @@ main {
 
         .content-list-product{
             display: flex;
-            justify-content: space-between;
             flex-wrap: wrap;
             margin-top: 20px;
             
             .product-item {
                 width: 290px;
                 height: 404px;
-                margin: 16px 0 32px;
+                margin: 16px 17px 32px;
                 box-shadow:0 1px 5px rgba(0, 0, 0, .1);
                 transition: all .2s ease-in-out;
 
@@ -45,7 +44,6 @@ main {
                         background: #fff;
                         text-align: center;
                         font-weight: 600;
-                        
 
                         .product-name {
                             font-size: 16px;

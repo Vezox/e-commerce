@@ -24,7 +24,7 @@ module.exports = {
                 _id: id,
                 role: 1
             }, (err, acc) => {
-                if (err) res.status(500)
+                if (err) return res.status(500)
                 if (acc) return next()
             })
         } else {

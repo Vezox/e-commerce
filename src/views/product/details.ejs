@@ -48,7 +48,7 @@
                         <%= product.productName %>
                     </h5>
                     <p class="price" data-product-price="<%= product.price %>"></p>
-                    <button class="btn-add-cart">Thêm vào giỏ hàng</button>
+                    <button class="btn-add-cart" data-id="<%= product._id %>">Thêm vào giỏ hàng</button>
                     <p>Danh mục: <%= product.type %>
                     </p>
                     <p class="description">
@@ -62,4 +62,19 @@
             <script>
                 const price = document.querySelector('.price')
                 price.innerText = (price.getAttribute('data-product-price') - 0).toLocaleString() + ' đ'
+
+                const btnAddCart = document.querySelector('.btn-add-cart')
+                btnAddCart.onclick = () => {
+                    const productId = btnAddCart.getAttribute('data-id')
+                    $.ajax({
+                        url: '/my/cart/add',
+                        method: 'POST',
+                        data: { productId },
+                        success: (res) => {
+                            if (res == 'OK') {
+                                alert('Thêm vào giỏ hàng thành công')
+                            }
+                        }
+                    })
+                }
             </script>

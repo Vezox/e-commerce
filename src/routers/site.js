@@ -10,4 +10,5 @@ Router.post('/search-products', SiteController.searchProducts)
 
 Router.get('/product/details/:slug', ProductController.getDetailsProduct)
 
+
 module.exports = Router

@@ -5,8 +5,8 @@
 <%- include('../partials/nav.ejs') %>
 
     <div id="product-post" style="margin: 10px auto;width: 1000px;">
-        <h3 style="text-align: center">Sử thông tin sản phẩm</h3>
-        <form>
+        <h3 style="text-align: center">Sửa thông tin sản phẩm</h3>
+        <form enctype="multipart/form-data" method="post" action="/my/store/product/edit/<%= product.slug %>">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="productName">Tên sản phẩm</span>
                 <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required value="<%= product.productName %>">
@@ -41,21 +41,21 @@
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="coverImg">Ảnh bìa</span>
-                <input type="text" class="form-control" placeholder="" name="coverImg" required  value="<%= product.coverImg %>">
+                <input type="file" class="form-control" placeholder="" name="coverImg"  value="<%= product.coverImg %>" accept="image/png, image/jpg, image/jpeg">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="quantity">Ảnh chi tiết 1</span>
-                <input type="text" class="form-control" placeholder="" name="img1" required value="<%= product.img1 %>">
+                <input type="file" class="form-control" placeholder="" name="img1" value="<%= product.img1 %>" accept="image/png, image/jpg, image/jpeg">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="quantity">Ảnh chi tiết 2</span>
-                <input type="text" class="form-control" placeholder="" name="img2" required value="<%= product.img2 %>">
+                <input type="file" class="form-control" placeholder="" name="img2" value="<%= product.img2 %>" accept="image/png, image/jpg, image/jpeg">
             </div>
             <div class="input-group">
                 <span class="input-group-text">Mô tả sản phẩm</span>
                 <textarea class="form-control" name="description" placeholder ><%= product.description %></textarea>
               </div>
-            <button type="button" id="btn-update" class="btn btn-primary mt-3" style="width:100%">Cập nhật</button>
+            <button type="submit" id="btn-update" class="btn btn-primary mt-3" style="width:100%">Cập nhật</button>
         </form>
     </div>
 
@@ -64,22 +64,4 @@
     <script>
         const value = document.getElementById('type').getAttribute('data-type')
         document.getElementById('type').value = value
-        $('#btn-update').click( e => {
-            let data = $('form').serializeArray().reduce((obj, item) => {
-                obj[item.name] = item.value
-                return obj
-            }, {})
-            $.ajax({
-                data: data,
-                url: '/my/store/product/edit',
-                type: 'PATCH',
-                success: () => {
-                    window.location.href = '/my/store/product'
-                },
-                error: (err) => {
-                    alert(err)
-                }
-            })
-        })
-
     </script>

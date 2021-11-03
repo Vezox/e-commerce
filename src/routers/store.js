@@ -9,7 +9,7 @@ Router.get('/product', ProductController.getStore)
 
 Router.get('/product/edit/:slug', ProductController.getEditProduct)
 
-Router.patch('/product/edit', ProductController.updateProduct)
+Router.post('/product/edit/:slug', ProductController.updateProduct)
 
 
 

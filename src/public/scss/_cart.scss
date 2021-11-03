@@ -1,0 +1,38 @@
+#cart {
+    margin: 40px auto;
+    max-width: 1300px;
+
+    .cart-header {}
+
+    .cart-body {
+        .cart-items {
+
+            .cart-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .cart-item-image {
+                    width: 100px;
+                    height: 120px;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                .cart-item-name {}
+
+                .cart-item-price {}
+
+                .cart-item-quantity {}
+
+                .cart-item-total {}
+            }
+        }
+    }
+
+    .cart-footer {}
+}

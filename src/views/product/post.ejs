@@ -4,7 +4,7 @@
 
     <div id="product-post" style="margin: 10px auto;width: 1000px;">
         <h3 style="text-align: center">Đăng sản phẩm</h3>
-        <form action="/my/store/product/post" method="post">
+        <form action="/my/store/product/post" method="post" enctype="multipart/form-data">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="productName">Tên sản phẩm</span>
                 <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required>
@@ -39,19 +39,19 @@
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="coverImg">Ảnh bìa</span>
-                <input type="text" class="form-control" placeholder="" name="coverImg" required>
+                <input type="file" class="form-control" placeholder="File có đuôi png, jpg hoặc jpeg" name="coverImg" required accept="image/png, image/jpg, image/jpeg">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="quantity">Ảnh chi tiết 1</span>
-                <input type="text" class="form-control" placeholder="" name="img1" required>
+                <input type="file" class="form-control" placeholder="File có đuôi png, jpg hoặc jpeg" name="img1" required  accept="image/png, image/jpg, image/jpeg">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="quantity">Ảnh chi tiết 2</span>
-                <input type="text" class="form-control" placeholder="" name="img2" required>
+                <input type="file" class="form-control" placeholder="File có đuôi png, jpg hoặc jpeg" name="img2" required  accept="image/png, image/jpg, image/jpeg">
             </div>
             <div class="input-group">
                 <span class="input-group-text">Mô tả sản phẩm</span>
-                <textarea class="form-control" name="description" placeholder></textarea>
+                <textarea class="form-control" name="description" placeholder required></textarea>
               </div>
             <button type="submit" class="btn btn-primary mt-3" style="width:100%">Thêm sản phẩm</button>
         </form>
