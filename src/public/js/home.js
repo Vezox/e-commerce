@@ -34,9 +34,8 @@ input.onkeyup = () => {
     let text = input.value
     if (text != '') {
         $.ajax({
-            url: '/search-products',
-            type: 'POST',
-            data: { text },
+            url: '/search-products/?search=' + text,
+            type: 'GET',
             success: (data) => {
                 let products = data.products
                 if (products.length > 0) {

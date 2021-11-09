@@ -52,7 +52,7 @@ class SiteController {
 
 
     searchProducts(req, res) {
-        const text = new RegExp(req.body.text, "gi")
+        const text = new RegExp(req.query.search, "gi")
         Product.find({
             productName: text,
             status: 'pending'

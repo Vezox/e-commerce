@@ -20,7 +20,7 @@ header {
     justify-content: space-around;
     height: 100%; }
     header nav div {
-      padding: 8px 16px;
+      margin: 8px 16px;
       font-size: 1.2rem;
       font-weight: 600;
       cursor: pointer;
@@ -30,7 +30,7 @@ header {
       header nav div ul {
         position: absolute;
         transform: translateX(12px);
-        top: 44px;
+        top: 40px;
         font-size: 1rem;
         background-color: #fff;
         color: #000;
@@ -119,7 +119,7 @@ header.scroll {
     border: 1.6px solid #4dabf7; }
 
 #banner {
-  padding-top: 16vh;
+  padding-top: 20vh;
   text-align: center;
   background-image: url(../img/banner.jpg);
   background-size: cover;
@@ -347,7 +347,7 @@ footer {
 
 #details {
   max-width: 1100px;
-  margin: 24px auto;
+  margin: 24px auto 0;
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.2); }
   #details .product {
     display: flex;
@@ -355,10 +355,10 @@ footer {
     #details .product .slide {
       width: 54%;
       overflow: hidden;
-      height: 620px; }
+      height: 650px; }
       #details .product .slide img {
         position: relative;
-        top: -40px; }
+        top: -36px; }
     #details .product .button-product {
       width: 40%;
       margin: 60px; }
@@ -429,7 +429,7 @@ footer {
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2); }
 
 #cart {
-  margin: 40px auto;
+  margin: 40px auto 180px;
   max-width: 1100px;
   min-height: 80vh; }
   #cart .cart-header {
@@ -501,6 +501,26 @@ footer {
         background-color: #fff; }
     #cart .cart-body .cart-items .cart-item .cart-item-price-total {
       width: 160px; }
+  #cart .cart-footer {
+    position: absolute;
+    z-index: 1;
+    height: 140px;
+    width: 1100px;
+    border: 1px solid #ebebeb;
+    background-color: #fff;
+    padding: 20px 40px;
+    box-shadow: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    #cart .cart-footer .priceTotalItems {
+      width: 160px; }
+    #cart .cart-footer .discount {
+      width: 400px; }
+  #cart .cart-footer.cart-fixed {
+    position: fixed;
+    bottom: 0;
+    box-shadow: 0 -10px 15px -10px #ccc; }
 
 * {
   box-sizing: border-box;

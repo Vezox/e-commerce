@@ -8,7 +8,7 @@
     <div class="cart-container">
         <div class="cart-header">
             <div class="all-check">
-                <input class="form-check-input" type="checkbox">
+                <input class="form-check-input btn-all-check" type="checkbox">
                 <span>Chọn tất cả</span>
             </div>
             <span class="header-price">Đơn giá</span>
@@ -20,7 +20,7 @@
                 <% cartProducts.forEach(product => { %>
                     <div class="cart-item" id="<%= product.id %>">
                         <div class="cart-item-group">
-                            <input class="form-check-input" type="checkbox">
+                            <input class="form-check-input checkbox-item" type="checkbox" data-id="<%= product.id %>">
                             <div class="cart-item-image">
                                 <a href="/product/details/<%= product.slug %>">
                                     <img src="<%= product.coverImg %>"  alt="<%= product.productName %>">
@@ -30,17 +30,24 @@
                         </div>
                         <div class="cart-item-price price" data-price="<%= product.price * (100 - product.discount) / 100 %>"></div>
                         <div class="cart-item-quantity">
-                            <button class="minus button" data-id="<%= product.id %>">-</button>
+                            <button class="minus btn-quantity" data-id="<%= product.id %>">-</button>
                             <input class="input-quantity" type="text" value="<%= product.quantity %>" id="input-<%= product.id %>">
-                            <button class="plus button" data-id="<%= product.id %>">+</button>
+                            <button class="plus btn-quantity" data-id="<%= product.id %>">+</button>
                         </div>
                         <div class="cart-item-price-total price" data-price="<%= product.price * product.quantity %>"></div>
                     </div>
                 <% }) %>
             </div>
         </div>
-        <div class="cart-footer">
-            <a href="/checkout" class="btn btn-primary">Checkout</a>
+        <div class="cart-footer cart-fixed">
+            <div class="priceTotalItems">0 đ</div>
+            <div class="discount">
+                <span>Mã giảm giá: </span>
+                <input type="text" placeholder="Nhập mã giảm giá" id="discount-code">
+                <label for="discount-code"></label>
+                <button>Áp dụng</button>
+            </div>
+            <button>Mua hàng</button>
         </div>
     </div>
 </div>
@@ -48,23 +55,69 @@
 <%- include('../partials/footer.ejs') %> 
 
 <script>
+    // convert price to number
     const prices = document.querySelectorAll('.price')
     prices.forEach(price => {
         price.innerText = (price.getAttribute('data-price') - 0).toLocaleString() + ' đ'
     })
 
-    document.querySelectorAll('.minus').forEach(btn => {
+    
+    // add event listener to check-all && uncheck-all && check total price items
+    
+    const btnAllCheck = document.querySelector('.btn-all-check')
+    const isAllChecked = btnAllCheck.checked
+    const checkboxItems = document.querySelectorAll('.checkbox-item')
+    let priceTotalItemsChecked = 0
+
+    btnAllCheck.onclick = e => {
+        const isAllChecked = e.target.checked
+        priceTotalItemsChecked = 0
+        checkboxItems.forEach(checkboxItem => {
+            // check all
+            checkboxItem.checked = isAllChecked
+            //check total price items
+            if(isAllChecked) {
+                checkTotalPriceItems(checkboxItem)
+            }
+        })
+        document.querySelector('.priceTotalItems').innerText = priceTotalItemsChecked.toLocaleString() + ' đ'
+    }
+    checkboxItems.forEach(checkboxItem => {
+        checkboxItem.onclick = e => {
+            //check btn-all-check
+            const isAllChecked = [...checkboxItems].every(checkboxItem => checkboxItem.checked)
+            btnAllCheck.checked = isAllChecked
+
+            //check total price items
+            checkTotalPriceItems(e.target)
+            document.querySelector('.priceTotalItems').innerText = priceTotalItemsChecked.toLocaleString() + ' đ'
+        }
+    })
+
+    function checkTotalPriceItems(element) {
+        const id = element.getAttribute('data-id')
+        const priceTotal = parseInt(document.getElementById(id).querySelector('.cart-item-price-total').getAttribute('data-price'))
+        if (element.checked) {
+            priceTotalItemsChecked += priceTotal
+        } else {
+            priceTotalItemsChecked -= priceTotal
+        }
+    }
+
+
+    // add event listener to plus and minus button
+    document.querySelectorAll('.btn-quantity').forEach(btn => {
         btn.onclick = e => {
             const id = e.target.getAttribute('data-id')
-            let quantity = $(`#input-${id}`).val() - 1
-            quantity = quantity > 0 ? quantity : 0
+            let quantity = $(`#input-${id}`).val() - 0
+            if(e.target.classList.contains('plus')) {
+                quantity += 1
+            } else {
+                quantity -= 1
+            }
             $.ajax({
-                url: '/cart/change',
-                type: 'POST',
-                data: {
-                    id,
-                    quantity: quantity
-                },
+                url: '/cart/change/?id=' + id + '&quantity=' + quantity,
+                type: 'GET',
                 success: data => {
                     if(data == 'OK') {
                         if (quantity > 0) {
@@ -73,6 +126,14 @@
                             const price = parseInt(parent.querySelector('.price').getAttribute('data-price'))
                             const priceTotal = parent.querySelector('.cart-item-price-total ')
                             priceTotal.innerText = (price * quantity).toLocaleString() + ' đ'
+                            if(parent.querySelector('.checkbox-item').checked) {
+                                if(e.target.classList.contains('plus')) {
+                                    priceTotalItemsChecked += price
+                                } else {
+                                    priceTotalItemsChecked -= price
+                                }
+                                document.querySelector('.priceTotalItems').innerText = priceTotalItemsChecked.toLocaleString() + ' đ'
+                            }
                         } else {
                             $(`#${id}`).remove()
                         }
@@ -86,31 +147,17 @@
         }
     })
 
-    document.querySelectorAll('.plus').forEach(btn => {
-        btn.onclick = e => {
-            const id = e.target.getAttribute('data-id')
-            let quantity = $(`#input-${id}`).val() - 0 + 1
-            quantity = quantity > 0 ? quantity : 1
-            $.ajax({
-                url: '/cart/change',
-                type: 'POST',
-                data: {
-                    id,
-                    quantity: quantity
-                },
-                success: data => {
-                    if(data == 'OK') {
-                        $(`#input-${id}`).val(quantity)
-                        const parent = document.getElementById(id)
-                        const price = parseInt(parent.querySelector('.price').getAttribute('data-price'))
-                        const priceTotal = parent.querySelector('.cart-item-price-total ')
-                        priceTotal.innerText = (price * quantity).toLocaleString() + ' đ'
-                    }
-                },
-                error: err => {
-                    console.log(err)
-                }
-            })
+
+    // scroll
+    window.addEventListener('scroll', e => {
+        const height = document.body.clientHeight
+        const scrollTop = window.scrollY + window.screen.height
+        const cartFooter = document.querySelector('.cart-footer')
+        if(scrollTop > height - 240) {
+            cartFooter.classList.remove('cart-fixed')
+        } else {
+            cartFooter.classList.add('cart-fixed')
         }
     })
+
 </script>

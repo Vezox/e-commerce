@@ -28,7 +28,7 @@ header {
         height: 100%;
 
         div {
-            padding: 8px 16px;
+            margin: 8px 16px;
             font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
@@ -39,7 +39,7 @@ header {
             ul {
                 position: absolute;
                 transform: translateX(12px);
-                top: 44px;
+                top: 40px;
                 font-size: 1rem;
                 background-color: #fff;
                 color: #000;

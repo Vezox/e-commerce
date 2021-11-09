@@ -6,7 +6,7 @@ Router.get('/', SiteController.home)
 
 Router.post('/filter-products', SiteController.filterProducts)
 
-Router.post('/search-products', SiteController.searchProducts)
+Router.get('/search-products', SiteController.searchProducts)
 
 Router.get('/product/details/:slug', ProductController.getDetailsProduct)
 

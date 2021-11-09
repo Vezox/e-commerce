@@ -34,7 +34,7 @@ class CartController {
     async addToCart(req, res) {
         const token = req.cookies.token
         const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-        const productId = req.body.productId
+        const productId = req.query.productId
         try {
             const cart = await Cart.findOne({ userId, productId })
             const product = {
@@ -50,14 +50,15 @@ class CartController {
     }
 
     changeItemQuantity(req, res) {
-        const quantity = req.body.quantity
+        const id = req.query.id
+        const quantity = req.query.quantity
         if (quantity > 0) {
-            Cart.updateOne({ _id: req.body.id }, { quantity: quantity }, err => {
+            Cart.updateOne({ _id: id }, { quantity }, err => {
                 if (err) return res.sendStatus(500)
                 return res.sendStatus(200)
             })
         } else {
-            Cart.deleteOne({ _id: req.body.id }, { quantity: quantity }, err => {
+            Cart.deleteOne({ _id: id }, { quantity: quantity }, err => {
                 if (err) return res.sendStatus(500)
                 return res.sendStatus(200)
             })

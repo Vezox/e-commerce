@@ -1,6 +1,6 @@
 #details {
     max-width: 1100px;
-    margin: 24px auto;
+    margin: 24px auto 0;
     box-shadow: 0 20px 20px rgba(0,0,0,0.2);
 
     .product {
@@ -10,11 +10,11 @@
         .slide {
             width: 54%;
             overflow: hidden;
-            height: 620px;
+            height: 650px;
 
             img {
                 position: relative;
-                top: -40px;
+                top: -36px;
             }
         }
 
