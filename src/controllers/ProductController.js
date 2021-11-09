@@ -29,7 +29,7 @@ class ProductController {
             product['img2'] = results[2].url
             Product.create(product, error => {
                 if (error) res.status(error)
-                res.redirect('/my/store/product')
+                res.redirect('/store/product')
             })
         }).catch(err => {
             res.send(err)
@@ -81,7 +81,7 @@ class ProductController {
             img2 ? (product['img2'] = results[2].url) : null
             Product.updateOne({ slug, userId }, product, error => {
                 if (error) res.status(error)
-                res.redirect('/my/store/product')
+                res.redirect('/store/product')
             })
         }).catch(err => {
             res.send(err)

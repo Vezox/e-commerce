@@ -11,7 +11,7 @@ module.exports = app => {
 
     app.use('/auth', authRouter)
 
-    app.use('/my/store',checkAuth.checkUser, storeRouter)
+    app.use('/store',checkAuth.checkUser, storeRouter)
 
-    app.use('/my/cart',checkAuth.checkUser, cartRouter)
+    app.use('/cart',checkAuth.checkUser, cartRouter)
 }

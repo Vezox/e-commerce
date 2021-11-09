@@ -67,13 +67,18 @@
                 btnAddCart.onclick = () => {
                     const productId = btnAddCart.getAttribute('data-id')
                     $.ajax({
-                        url: '/my/cart/add',
+                        url: '/cart/add',
                         method: 'POST',
                         data: { productId },
                         success: (res) => {
                             if (res == 'OK') {
                                 alert('Thêm vào giỏ hàng thành công')
+                            } else {
+                                window.location.href = '/auth/login'
                             }
+                        },
+                        error: (err) => {
+                            console.log(err)
                         }
                     })
                 }

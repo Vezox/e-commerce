@@ -2,7 +2,6 @@ footer {
     width: 100%;
     background-color: rgb(241, 241, 241);
 
-
     .content {
         display: flex;
         justify-content: space-between;
@@ -10,6 +9,7 @@ footer {
         max-width: 1200px;
         padding: 40px 0 20px 0;
     }
+
     .content>div {
         width: 33%;
     }

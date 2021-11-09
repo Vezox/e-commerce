@@ -6,7 +6,7 @@
 
     <div id="product-post" style="margin: 10px auto;width: 1000px;">
         <h3 style="text-align: center">Sửa thông tin sản phẩm</h3>
-        <form enctype="multipart/form-data" method="post" action="/my/store/product/edit/<%= product.slug %>">
+        <form enctype="multipart/form-data" method="post" action="/store/product/edit/<%= product.slug %>">
             <div class="input-group mb-3">
                 <span class="input-group-text" id="productName">Tên sản phẩm</span>
                 <input type="text" class="form-control" placeholder="VD: Nike air force 1" name="productName" required value="<%= product.productName %>">

@@ -7,19 +7,34 @@
 <div id="cart">
     <div class="cart-container">
         <div class="cart-header">
-            <h1>Shopping Cart</h1>
+            <div class="all-check">
+                <input class="form-check-input" type="checkbox">
+                <span>Chọn tất cả</span>
+            </div>
+            <span class="header-price">Đơn giá</span>
+            <span class="header-quantity">Số lượng</span>
+            <span class="header-price-total">Số tiền</span>
         </div>
         <div class="cart-body">
             <div class="cart-items">
                 <% cartProducts.forEach(product => { %>
-                    <div class="cart-item">
-                        <div class="cart-item-image">
-                            <img src="<%= product.coverImg %>"  alt="<%= product.productName %>">
+                    <div class="cart-item" id="<%= product.id %>">
+                        <div class="cart-item-group">
+                            <input class="form-check-input" type="checkbox">
+                            <div class="cart-item-image">
+                                <a href="/product/details/<%= product.slug %>">
+                                    <img src="<%= product.coverImg %>"  alt="<%= product.productName %>">
+                                </a>
+                            </div>
+                            <div class="cart-item-name"><%= product.productName %></div>
                         </div>
-                        <div class="cart-item-name"><%= product.productName %></div>
-                        <div class="cart-item-price"><%= product.price * (100 - product.discount) / 100 %></div>
-                        <div class="cart-item-quantity"><%= product.quantity %></div>
-                        <div class="cart-item-total">333$</div>
+                        <div class="cart-item-price price" data-price="<%= product.price * (100 - product.discount) / 100 %>"></div>
+                        <div class="cart-item-quantity">
+                            <button class="minus button" data-id="<%= product.id %>">-</button>
+                            <input class="input-quantity" type="text" value="<%= product.quantity %>" id="input-<%= product.id %>">
+                            <button class="plus button" data-id="<%= product.id %>">+</button>
+                        </div>
+                        <div class="cart-item-price-total price" data-price="<%= product.price * product.quantity %>"></div>
                     </div>
                 <% }) %>
             </div>
@@ -31,3 +46,71 @@
 </div>
 
 <%- include('../partials/footer.ejs') %> 
+
+<script>
+    const prices = document.querySelectorAll('.price')
+    prices.forEach(price => {
+        price.innerText = (price.getAttribute('data-price') - 0).toLocaleString() + ' đ'
+    })
+
+    document.querySelectorAll('.minus').forEach(btn => {
+        btn.onclick = e => {
+            const id = e.target.getAttribute('data-id')
+            let quantity = $(`#input-${id}`).val() - 1
+            quantity = quantity > 0 ? quantity : 0
+            $.ajax({
+                url: '/cart/change',
+                type: 'POST',
+                data: {
+                    id,
+                    quantity: quantity
+                },
+                success: data => {
+                    if(data == 'OK') {
+                        if (quantity > 0) {
+                            $(`#input-${id}`).val(quantity)
+                            const parent = document.getElementById(id)
+                            const price = parseInt(parent.querySelector('.price').getAttribute('data-price'))
+                            const priceTotal = parent.querySelector('.cart-item-price-total ')
+                            priceTotal.innerText = (price * quantity).toLocaleString() + ' đ'
+                        } else {
+                            $(`#${id}`).remove()
+                        }
+                    }
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+            
+        }
+    })
+
+    document.querySelectorAll('.plus').forEach(btn => {
+        btn.onclick = e => {
+            const id = e.target.getAttribute('data-id')
+            let quantity = $(`#input-${id}`).val() - 0 + 1
+            quantity = quantity > 0 ? quantity : 1
+            $.ajax({
+                url: '/cart/change',
+                type: 'POST',
+                data: {
+                    id,
+                    quantity: quantity
+                },
+                success: data => {
+                    if(data == 'OK') {
+                        $(`#input-${id}`).val(quantity)
+                        const parent = document.getElementById(id)
+                        const price = parseInt(parent.querySelector('.price').getAttribute('data-price'))
+                        const priceTotal = parent.querySelector('.cart-item-price-total ')
+                        priceTotal.innerText = (price * quantity).toLocaleString() + ' đ'
+                    }
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+        }
+    })
+</script>

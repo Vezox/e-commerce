@@ -5,7 +5,7 @@ header {
   align-items: center;
   height: 80px;
   padding: 10px 94px 10px 110px;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   color: #000;
@@ -23,7 +23,6 @@ header {
       padding: 8px 16px;
       font-size: 1.2rem;
       font-weight: 600;
-      transition: all .2s ease-in-out;
       cursor: pointer;
       position: relative;
       display: flex;
@@ -62,8 +61,8 @@ header {
       header nav .my-self i {
         color: #000;
         font-size: 24px;
-        transition: all 0.2s ease-in-out;
-        margin-right: 2px; }
+        margin-right: 2px;
+        transition: all 0.2s ease-in-out; }
       header nav .my-self li:last-child {
         border-top: 2px solid #ccc; }
     header nav div:hover {
@@ -75,7 +74,8 @@ header {
       pointer-events: all;
       transform: translateX(0); }
     header nav .cart a {
-      color: #000; }
+      color: #000;
+      transition: all 0.2s ease-in-out; }
       header nav .cart a i {
         font-size: 1.4rem; }
     header nav #login-out {
@@ -342,7 +342,7 @@ footer {
     #product-store table td button {
       width: 100%;
       margin-bottom: 10px;
-      border-radius: 16px;
+      border-radius: 4px;
       transition: all 0.2s ease-in-out; }
 
 #details {
@@ -430,18 +430,77 @@ footer {
 
 #cart {
   margin: 40px auto;
-  max-width: 1300px; }
+  max-width: 1100px;
+  min-height: 80vh; }
+  #cart .cart-header {
+    background-color: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    margin-bottom: 20px; }
+    #cart .cart-header .all-check {
+      width: 360px;
+      margin: 10px; }
+      #cart .cart-header .all-check input {
+        width: 20px;
+        height: 20px; }
+      #cart .cart-header .all-check span {
+        margin-left: 16px; }
+    #cart .cart-header .header-price {
+      width: 100px; }
+    #cart .cart-header .header-quantity {
+      width: 150px; }
+    #cart .cart-header .header-price-total {
+      width: 160px; }
   #cart .cart-body .cart-items .cart-item {
     display: flex;
     align-items: center;
-    justify-content: space-between; }
-    #cart .cart-body .cart-items .cart-item .cart-item-image {
-      width: 100px;
-      height: 120px; }
-      #cart .cart-body .cart-items .cart-item .cart-item-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; }
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border: 1px solid #ebebeb;
+    border-radius: 1px; }
+    #cart .cart-body .cart-items .cart-item .cart-item-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 360px; }
+      #cart .cart-body .cart-items .cart-item .cart-item-group input {
+        width: 20px;
+        height: 20px;
+        margin: 10px; }
+      #cart .cart-body .cart-items .cart-item .cart-item-group .cart-item-image {
+        width: 120px;
+        height: 140px;
+        padding: 8px; }
+        #cart .cart-body .cart-items .cart-item .cart-item-group .cart-item-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover; }
+      #cart .cart-body .cart-items .cart-item .cart-item-group .cart-item-name {
+        width: 200px; }
+    #cart .cart-body .cart-items .cart-item .cart-item-price {
+      width: 100px; }
+    #cart .cart-body .cart-items .cart-item .cart-item-quantity {
+      width: 150px;
+      display: flex;
+      font-size: 1.1rem; }
+      #cart .cart-body .cart-items .cart-item .cart-item-quantity input {
+        width: 86px;
+        height: 32px;
+        border-top: 1px solid #ccc;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+        text-align: center;
+        color: #000; }
+      #cart .cart-body .cart-items .cart-item .cart-item-quantity button {
+        width: 32px;
+        height: 32px;
+        border: 1px solid #ccc;
+        background-color: #fff; }
+    #cart .cart-body .cart-items .cart-item .cart-item-price-total {
+      width: 160px; }
 
 * {
   box-sizing: border-box;

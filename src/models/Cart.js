@@ -5,7 +5,10 @@ const Cart = new Schema({
     userId: { type: String, required: true },
     productId: { type: String, required: true },
     quantity: { type: Number, default: 1 },
-}, {versionKey: false})
+}, {
+    versionKey: false,
+    timestamps: true,
+})
 
 module.exports = mongoose.model('Cart', Cart, 'Cart')
 

@@ -28,7 +28,7 @@ module.exports = {
                 if (acc) return next()
             })
         } else {
-            res.redirect('/auth/login')
+            res.status(400).redirect('/auth/login')
         }
 
     }

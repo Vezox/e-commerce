@@ -3,31 +3,31 @@ const Product = require('../models/Product')
 const jwt = require('jsonwebtoken')
 
 class CartController {
-    getCart(req, res) {
+
+    async getCart(req, res) {
         const token = req.cookies.token
         const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-        Cart.find({ userId }, (err, cartProducts) => {
-            if (err) res.status(500).send(err)
+        try {
+            const cartProducts = await Cart.find({ userId }).sort({ updatedAt: -1 })
             const productIds = cartProducts.map(product => product.productId)
-            Product.find({ _id: { $in: productIds } },
-                {
-                    productName: 1,
-                    price: 1,
-                    coverImg: 1,
-                    discount: 1,
-                    slug: 1,
-                },
-                (err, products) => {
-                    if (err) res.status(500).send(err)
-                    const newCartProducts = cartProducts.map(cartProduct => {
-                        let product = products.find(product => product._id == cartProduct.productId)
-                        product['quantity'] = cartProduct.quantity
-                        return product
-                    })
-                    res.render('cart/cart', { cartProducts: newCartProducts })
-                }
-            )
-        })
+            const products = await Product.find({ _id: { $in: productIds } }, {
+                productName: 1,
+                price: 1,
+                coverImg: 1,
+                discount: 1,
+                slug: 1,
+            })
+            const newCartProducts = cartProducts.map(cartProduct => {
+                let product = products.find(product => product._id == cartProduct.productId)
+                product['quantity'] = cartProduct.quantity
+                product._id = cartProduct._id
+                return product
+            })
+            res.render('cart/cart', { cartProducts: newCartProducts })
+        }
+        catch (err) {
+            res.status(500).send(err)
+        }
     }
 
 
@@ -42,12 +42,25 @@ class CartController {
                 productId,
                 quantity: cart ? cart.quantity + 1 : 1
             }
-            Cart.updateOne({ userId, productId }, product, { upsert: 1 }, err => {
-                if (err) res.status(500)
-                res.sendStatus(200)
-            })
+            await Cart.updateOne({ userId, productId }, product, { upsert: 1 })
+            res.sendStatus(200)
         } catch (err) {
             res.status(500).send(err)
+        }
+    }
+
+    changeItemQuantity(req, res) {
+        const quantity = req.body.quantity
+        if (quantity > 0) {
+            Cart.updateOne({ _id: req.body.id }, { quantity: quantity }, err => {
+                if (err) return res.sendStatus(500)
+                return res.sendStatus(200)
+            })
+        } else {
+            Cart.deleteOne({ _id: req.body.id }, { quantity: quantity }, err => {
+                if (err) return res.sendStatus(500)
+                return res.sendStatus(200)
+            })
         }
     }
 }
