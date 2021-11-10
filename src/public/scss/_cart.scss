@@ -116,7 +116,7 @@
     .cart-footer {
         position: absolute;
         z-index: 1;
-        height:140px;
+        height: 140px;
         width: 1100px;
         border: 1px solid #ebebeb;
         background-color: #fff;
@@ -125,15 +125,49 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        
+
+
         .priceTotalItems {
             width: 160px;
         }
-        
+
         .discount {
-            width: 400px;
+            width: 420px;
+
+            input {
+                height: 40px;
+                width: 200px;
+                padding: 0 12px;
+                outline: none;
+                border: 2px solid #4dabf7;
+            }
+
+            button {
+                height: 40px;
+                width: 100px;
+                color: #fff;
+                border: none;
+                border-radius: 1px;
+                background-color: #4dabf7;
+            }
+        }
+
+        .order {
+            color: #fff;
+            background-color: #4dabf7;
+            border: none;
+            border-radius: 1px;
+            width: 140px;
+            font-size: 1.2rem;
+            height: 46px;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #76bcf5;
         }
     }
+
     .cart-footer.cart-fixed {
         position: fixed;
         bottom: 0;

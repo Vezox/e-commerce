@@ -57,28 +57,82 @@
                 </div>
             </div>
         </div>
+        <div id="toast"></div>
 
         <%- include('../partials/footer.ejs') %>
-            <script>
-                const price = document.querySelector('.price')
-                price.innerText = (price.getAttribute('data-product-price') - 0).toLocaleString() + ' đ'
+<script>
+    const price = document.querySelector('.price')
+    price.innerText = (price.getAttribute('data-product-price') - 0).toLocaleString() + ' đ'
 
-                const btnAddCart = document.querySelector('.btn-add-cart')
-                btnAddCart.onclick = () => {
-                    const productId = btnAddCart.getAttribute('data-id')
-                    $.ajax({
-                        url: '/cart/add/?productId=' + productId,
-                        method: 'GET',
-                        success: (res) => {
-                            if (res == 'OK') {
-                                alert('Thêm vào giỏ hàng thành công')
-                            } else {
-                                window.location.href = '/auth/login'
-                            }
-                        },
-                        error: (err) => {
-                            console.log(err)
-                        }
-                    })
+    const btnAddCart = document.querySelector('.btn-add-cart')
+    btnAddCart.onclick = () => {
+        const productId = btnAddCart.getAttribute('data-id')
+        $.ajax({
+            url: '/cart/add/?productId=' + productId,
+            method: 'GET',
+            success: (res) => {
+                if (res == 'OK') {
+                    showSuccess()
+                } else {
+                    window.location.href = '/auth/login'
                 }
-            </script>
+            },
+            error: (err) => {
+                showWarning()
+                console.log(err)
+            }
+        })
+    }
+
+
+    function toast({ title = '', message = '', type = '', duration = 3000 }) {
+        const main = document.querySelector('#toast')
+        if (main) {
+            const icons = {
+                success: 'bx bxs-check-circle',
+                info: 'bx bxs-info-circle',
+                warning: 'bx bxs-error-circle'
+            }
+            const toast = document.createElement('div')
+            toast.style.animation = `slideOut ease .4s, slideIn ease 1s ${duration / 1000}s forwards`
+            toast.classList.add('toast', `toast--${type}`)
+            toast.innerHTML = `
+                            <i class='toast_icon ${icons[type]}'></i>
+                            <div class="toast_body">
+                            <p class="toast_title">${title}</p>
+                            <p class="toast_message">${message}</p>
+                            </div>
+                            <i class='toast_close bx bx-x'></i>`
+            main.appendChild(toast)
+
+            let removeId = setTimeout(() => {
+                main.removeChild(toast)
+            }, duration + 900);
+
+            toast.onclick = (e) => {
+                if (e.target.closest('.toast_close')) {
+                    main.removeChild(toast)
+                    clearTimeout(removeId)
+                }
+            }
+        }
+    }
+
+    function showSuccess() {
+        toast({
+            title: 'Thành công',
+            message: 'Đã thêm vào giỏ hàng',
+            type: 'success',
+            duration: 1500
+        })
+    }
+
+    function showWarning() {
+        toast({
+            title: 'Thất bại',
+            message: 'Thêm vào giỏ hàng thất bại',
+            type: 'warning',
+            duration: 3000
+        })
+    }
+</script>

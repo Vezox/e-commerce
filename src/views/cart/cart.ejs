@@ -40,14 +40,14 @@
             </div>
         </div>
         <div class="cart-footer cart-fixed">
-            <div class="priceTotalItems">0 đ</div>
+            <div class="priceTotalItems">Tổng: 0 đ</div>
             <div class="discount">
                 <span>Mã giảm giá: </span>
                 <input type="text" placeholder="Nhập mã giảm giá" id="discount-code">
                 <label for="discount-code"></label>
                 <button>Áp dụng</button>
             </div>
-            <button>Mua hàng</button>
+            <button class="order">Mua hàng</button>
         </div>
     </div>
 </div>
@@ -80,7 +80,7 @@
                 checkTotalPriceItems(checkboxItem)
             }
         })
-        document.querySelector('.priceTotalItems').innerText = priceTotalItemsChecked.toLocaleString() + ' đ'
+        document.querySelector('.priceTotalItems').innerText = 'Tổng: ' + priceTotalItemsChecked.toLocaleString() + ' đ'
     }
     checkboxItems.forEach(checkboxItem => {
         checkboxItem.onclick = e => {
@@ -90,7 +90,7 @@
 
             //check total price items
             checkTotalPriceItems(e.target)
-            document.querySelector('.priceTotalItems').innerText = priceTotalItemsChecked.toLocaleString() + ' đ'
+            document.querySelector('.priceTotalItems').innerText = 'Tổng: ' + priceTotalItemsChecked.toLocaleString() + ' đ'
         }
     })
 
@@ -132,7 +132,7 @@
                                 } else {
                                     priceTotalItemsChecked -= price
                                 }
-                                document.querySelector('.priceTotalItems').innerText = priceTotalItemsChecked.toLocaleString() + ' đ'
+                                document.querySelector('.priceTotalItems').innerText = 'Tổng: ' + priceTotalItemsChecked.toLocaleString() + ' đ'
                             }
                         } else {
                             $(`#${id}`).remove()

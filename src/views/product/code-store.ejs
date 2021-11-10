@@ -1,0 +1,52 @@
+<%- include('../partials/head.ejs') %>
+<script src="/js/jquery.js"></script>
+<%- include('../partials/nav.ejs') %>
+
+<table class="table container" style="min-height: 80vh; width: 1000px;">
+    <div class="d-flex justify-content-center mt-2"><h3>Mã giảm giá đã tạo</h3></div>
+    <div class="ms-5 ">
+      <a href="/store/code/post" class="ms-5" style="text-decoration: none;"><i class='bx bx-list-ul fs-3' ></i>Tạo thêm mã giảm giá</a>
+    </div>
+      <thead>
+        <tr>
+          <th scope="col">Mã giảm giá</th>
+          <th scope="col">Phần trăm giảm</th>
+          <th scope="col">Số lượng</th>
+          <th scope="col">Thời gian tạo</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+       <% code.forEach((item, index) => {%>
+        <tr id="<%= item._id %>">
+          <td><%= item.code %></td>
+          <td><%= item.discount %>%</td>
+          <td><%= item.quantity %></td>
+          <td><%= item.createdAt %></td>
+          <td><button type="button" class="btn btn-danger delete-btn" data-code-id="<%= item._id %>">Xóa</button></td>
+        </tr>
+        <% }) %> 
+    </tbody>
+</table>
+
+<%- include('../partials/footer.ejs') %>
+
+
+<script>
+    const deleteBtn = document.querySelectorAll('.delete-btn')
+    deleteBtn.forEach(btn => {
+        btn.onclick = e => {
+            const id = e.target.getAttribute('data-code-id')
+            $.ajax({
+                url: '/store/code/delete/?id=' + id,
+                type: 'DELETE',
+                success: data => {
+                    if(data == 'OK')
+                        $(`#${id}`).remove()
+                }, error: err => {
+                    console.log(err)
+                }
+            })
+        }
+    })
+</script>

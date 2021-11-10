@@ -1,0 +1,25 @@
+<%- include('../partials/head.ejs') %>
+    
+<%- include('../partials/nav.ejs') %>
+
+<div class="d-flex align-items-center flex-column mt-5">
+    <H3>Tạo mã giảm giá</H3>
+    <form  style="width: 600px; height: 74vh;" method="post" action="/store/code/save">
+        <div class="mb-3">
+            <label for="code" class="form-label">Mã giảm giá</label>
+            <input type="text" class="form-control"  name="code" placeholder="VD: ABC20" maxlength="10" required>
+        </div>
+        <label for="discount" class="form-label">Phần trăm giảm</label>
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" name="discount" placeholder="VD: 20">
+            <span class="input-group-text">%</span>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Số lượng</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="VD: 100" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 600px">Tạo mã</button>
+    </form>
+</div>
+
+    <%- include('../partials/footer.ejs') %>
