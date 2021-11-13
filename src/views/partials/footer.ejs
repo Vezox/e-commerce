@@ -63,33 +63,24 @@
     const head = document.querySelector('header')
     const role = getCookie('role')
     const nav = document.createElement('nav')
-    if (role == 1) {
-        const firstName = localStorage.getItem('firstName')
-        nav.innerHTML = `
-                <div class="products">
-                    Danh mục
-                    <ul>
-                        <li><a href="">Giày</a></li>
-                        <li><a href="">Quần áo</a></li>
-                        <li><a href="">Phụ kiện</a></li>
-                        <li><a href="">Khác</a></li>
-                    </ul>
-                </div>
+    const pathName = window.location.pathname
+        if (pathName != '/auth/login') {
+            if (role == 1) {
+                const firstName = localStorage.getItem('firstName')
+                nav.innerHTML = `
                 <div class="my-shop">
                     Cửa hàng
                     <ul>
                         <li><a href="">Đơn đặt hàng</a></li>
                         <li><a href="/store/product">Kho</a></li>
-                        <li><a href="/store/code">Mã giảm giá</a></li>
                         <li><a href="/store/product/post">Đăng sản phẩm</a></li>
                     </ul>
-                </div>
-                
+                </div>        
                 <div class="cart">
-                    <a href="/cart"><i class="fa-solid fa-cart-arrow-down"></i></a>
+                    <a href="/cart"><i class="fa-solid fa-cart-shopping"></i></a>
                 </div>
                 <div class="my-self">
-                    <i class='bx bx-face'></i>
+                    <i class="fa-solid fa-user-large"></i>
                     <span>${firstName}</span>
                     <ul>
                         <li><a href="">Đơn hàng đã đặt</a></li>
@@ -99,13 +90,34 @@
                     </ul>
                 </div>
         `
-    } else {
-        nav.innerHTML = `
+            } else if (role == 2) {
+                const firstName = localStorage.getItem('firstName')
+                nav.innerHTML = `
+                <div class="admin">
+                    Quản lý
+                    <ul>
+                        <li><a href="/admin/product/pending">Duyệt sản phẩm</a></li>
+                        <li><a href="/admin/product">Tất cả sản phẩm</a></li>
+                        <li><a href="/admin/code">Mã giảm giá</a></li>
+                        <li><a href="/admin/account">Quản lý người dùng</a></li>
+                    </ul>
+                </div>
+                <div class="my-self">
+                    <i class="fa-solid fa-user-large"></i>
+                    <span>${firstName}</span>
+                    <ul>
+                        <li><a href="">Đổi mật khẩu</a></li>
+                        <li><a href="/auth/logout">Đăng xuất</a></li>
+                    </ul>
+                </div>`
+            } else {
+                nav.innerHTML = `
         <a href="/auth/login" id="login-out">
             <button>Đăng nhập</button>
         </a>`
-    }
-    head.appendChild(nav)
+            }
+            head.appendChild(nav)
+        }
 
 </script>
 

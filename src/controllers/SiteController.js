@@ -2,7 +2,7 @@ const Product = require('../models/Product')
 
 class SiteController {
     home(req, res) {
-        Product.find({ status: 'pending' }, {
+        Product.find({ status: 'accept' }, {
             productName: 1,
             coverImg: 1,
             price: 1,
@@ -16,7 +16,7 @@ class SiteController {
 
     filterProducts(req, res) {
         const LIMIT = 8
-        let find = { status: 'pending' }
+        let find = { status: 'accept' }
         if (req.body.options != 'all') find['type'] = req.body.options
 
         let sort = null
@@ -55,7 +55,7 @@ class SiteController {
         const text = new RegExp(req.query.search, "gi")
         Product.find({
             productName: text,
-            status: 'pending'
+            status: 'accept'
         }, {
             productName: 1,
             coverImg: 1,

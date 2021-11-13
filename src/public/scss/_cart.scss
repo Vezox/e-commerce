@@ -126,20 +126,42 @@
         justify-content: space-between;
         align-items: center;
 
+        .check>div {
+            font-size: 1.1rem;
+            font-weight: 600;
+            
+            i {
+                font-size: 1.8rem;
+                color: #07cc21;
+            }
+        }
+
+
 
         .priceTotalItems {
             width: 160px;
         }
 
         .discount {
-            width: 420px;
+            min-width: 440px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
             input {
                 height: 40px;
-                width: 200px;
+                width: 230px;
                 padding: 0 12px;
                 outline: none;
                 border: 2px solid #4dabf7;
+            }
+
+            label {
+                font-size: 15px;
+                position: absolute;
+                left: 104px;
+                top: 40px;
             }
 
             button {

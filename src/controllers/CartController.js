@@ -32,6 +32,7 @@ class CartController {
 
 
     async addToCart(req, res) {
+        console.log("hi")
         const token = req.cookies.token
         const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
         const productId = req.query.productId

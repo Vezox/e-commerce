@@ -80,6 +80,14 @@
         color: rgb(15, 171, 51);
     }
 
+    .toast--error {
+        border-color: red;
+    }
+
+    .toast--error .toast_icon {
+        color: red;
+    }
+
     .toast--warning {
         border-color: rgb(243, 174, 45);
     }

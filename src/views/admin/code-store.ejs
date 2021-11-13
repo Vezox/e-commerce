@@ -5,7 +5,7 @@
 <table class="table container" style="min-height: 80vh; width: 1000px;">
     <div class="d-flex justify-content-center mt-2"><h3>Mã giảm giá đã tạo</h3></div>
     <div class="ms-5 ">
-      <a href="/store/code/post" class="ms-5" style="text-decoration: none;"><i class='bx bx-list-ul fs-3' ></i>Tạo thêm mã giảm giá</a>
+      <a href="/admin/code/post" class="ms-5" style="text-decoration: none;"><i class='bx bx-list-ul fs-3' ></i>Tạo thêm mã giảm giá</a>
     </div>
       <thead>
         <tr>
@@ -38,7 +38,7 @@
         btn.onclick = e => {
             const id = e.target.getAttribute('data-code-id')
             $.ajax({
-                url: '/store/code/delete/?id=' + id,
+                url: '/admin/code/delete/' + id,
                 type: 'DELETE',
                 success: data => {
                     if(data == 'OK')

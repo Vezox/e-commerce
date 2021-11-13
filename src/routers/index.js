@@ -2,7 +2,9 @@ const siteRouter = require('./site')
 const storeRouter = require('./store')
 const authRouter = require('./auth')
 const cartRouter = require('./cart')
+const checkOutRouter = require('./checkout')
 const checkAuth = require('../middleware/checkAuth')
+const adminRouter = require('./admin')
 
 
 module.exports = app => {
@@ -14,4 +16,8 @@ module.exports = app => {
     app.use('/store',checkAuth.checkUser, storeRouter)
 
     app.use('/cart',checkAuth.checkUser, cartRouter)
+
+    app.use('/checkout',checkAuth.checkUser, checkOutRouter)
+
+    app.use('/admin', checkAuth.checkAdmin, adminRouter)
 }

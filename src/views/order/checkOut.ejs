@@ -1,0 +1,118 @@
+<%- include('../partials/head.ejs') %>
+
+	<script src="/js/jquery.js"></script>
+
+<%- include('../partials/nav.ejs') %>
+
+	<div id="cart" style="margin-bottom: 240px">
+		<div class="cart-container">
+			<div class="cart-header">
+				<div class="all-check">
+					<span>Sản phẩm</span>
+				</div>
+				<span class="header-price">Đơn giá</span>
+				<span class="header-quantity">Số lượng</span>
+				<span class="header-price-total">Số tiền</span>
+			</div>
+			<div class="cart-body">
+				<div class="cart-items">
+					<% checkOutProducts.forEach(product=> { %>
+						<div class="cart-item" id="<%= product.id %>">
+							<div class="cart-item-group">
+								<div class="cart-item-image">
+									<a href="/product/details/<%= product.slug %>">
+										<img src="<%= product.coverImg %>" alt="<%= product.productName %>">
+									</a>
+								</div>
+								<div class="cart-item-name">
+									<%= product.productName %>
+								</div>
+							</div>
+							<div class="cart-item-price price" data-price="<%= product.price * (100 - product.discount) / 100 %>">
+							</div>
+							<div class="cart-item-quantity">
+								<input class="input-quantity" type="text" value="<%= product.quantity %>"
+									id="input-<%= product.id %>" disabled>
+							</div>
+							<div class="cart-item-price-total price" data-price="<%= product.price * product.quantity %>">
+							</div>
+						</div>
+						<% }) %>
+				</div>
+			</div>
+			<div class="cart-footer" style="height: 200px;">
+				<div class="check">
+					<div>
+						<i class="fa-solid fa-check-double"></i>
+						Miễn phí vận chuyển với đơn hàng trên 500.000đ
+					</div>
+					<div>
+						<i class="fa-solid fa-check-double"></i>
+						Giao hàng 24/7
+					</div>
+					<div>
+						<i class="fa-solid fa-check-double"></i>
+						Cam kết giao hàng trong vòng 3 ngày
+					</div>
+					<div>
+						<i class="fa-solid fa-check-double"></i>
+						Thanh toán khi nhận hàng
+					</div>
+					<div>
+						<i class="fa-solid fa-check-double"></i>
+						Hoàn 300% nếu hàng nhái, kém chất lượng
+					</div>
+				</div>
+				<table style="width: 300px">
+					<tr>
+						<td style="width: 150px">Tổng: </td>
+						<td style="display: flex; justify-content: flex-end;opacity: .8;" class="priceTotalItems"></td>
+					</tr>
+					<tr>
+						<td>Mã giảm giá: </td>
+						<td style="display: flex; justify-content: flex-end; color: green;"><div><%= code?.code %></div></td>
+					</tr>
+					<tr>
+						<td>Giảm: </td>
+						<td style="display: flex; justify-content: flex-end; color: green;" data-discount=<%= code?.discount %>></td>
+					</tr>
+					<tr>
+						<td>Thanh toán: </td>
+						<td style="display: flex; justify-content: flex-end;" id="total-price-after-discount"></td>
+					</tr>
+					<tr >
+						<td colspan="2">
+							<button class="order" id="btn-checkout" style="width: 100%;margin-top: 10px">Đặt hàng</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+    
+<%- include('../partials/footer.ejs') %>
+
+<script>
+	// convert price to number
+	const prices = document.querySelectorAll('.price')
+	prices.forEach(price => {
+		price.innerText = (price.getAttribute('data-price') - 0).toLocaleString() + ' đ'
+	})
+
+	// calculate total price
+	const totalPriceItems = document.querySelectorAll('.cart-item-price-total')
+	let totalPrice = 0
+	totalPriceItems.forEach(totalPriceItem => {
+		totalPrice += totalPriceItem.getAttribute('data-price') - 0
+	})
+	document.querySelector('.priceTotalItems').innerText = totalPrice.toLocaleString() + ' đ'
+	// calculate discount
+	const discount = document.querySelector('[data-discount]')
+	const discountValue = discount.getAttribute('data-discount') - 0
+	if(discountValue) 
+		discount.innerText = (discount.getAttribute('data-discount') - 0) + ' %'
+
+	// calculate total price after discount
+	const totalPriceAfterDiscount = document.querySelector('#total-price-after-discount')
+	totalPriceAfterDiscount.innerText = (totalPrice - (totalPrice * discountValue / 100)).toLocaleString() + ' đ'
+</script>

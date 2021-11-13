@@ -1,0 +1,86 @@
+<%- include('../partials/head.ejs') %>
+
+<%- include('../partials/nav.ejs') %>
+
+    <div id="product-store" style="margin: 10px auto;max-width: 1100px; min-height: 80vh;">
+        <h3 style="text-align: center">Duyệt sản phẩm</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Ảnh bìa</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Giá bán</th>
+                    <th scope="col">Tùy chọn</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach(product => { %>
+                    <tr id="<%= product.slug %>">
+                        <td><img src="<%= product.coverImg %>" alt=""></td>
+                        <td><%= product.productName %></td>
+                        <td><%= product.price * ( 100 - product.discount) / 100  %></td>
+                        <td>
+                            <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-outline-primary">Xem lại</button></a>
+                            <button type="button" class="btn btn-outline-warning admin-product accept" data-slug="<%= product.slug %>">Chấp nhận</button>
+                            <button type="button" class="btn btn-outline-danger admin-product block" data-slug="<%= product.slug %>">Khóa sản phẩm</button>
+                        </td>
+                    </tr>
+                    <% }) %>  
+                </tbody>
+            </table>
+        </div>
+        <div id="toast"></div>
+        
+        <%- include('../partials/footer.ejs') %>
+        <script src="/js/toast.js"></script>
+        <script src="/js/jquery.js"></script>
+        <script>
+            const btnAdmin = document.querySelectorAll('.admin-product')
+            btnAdmin.forEach(btn => {
+                btn.addEventListener('click', e => {
+                    const slug = e.target.dataset.slug
+                    let url = '/admin/product/'
+                    if(e.target.classList.contains('accept')){
+                        url += 'accept'
+                    }else if(e.target.classList.contains('block')){
+                        url += 'block'
+                    }
+                    url += '/' + slug
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: res => {
+                        if (res == 'OK') {
+                            let toastMessage = {
+                                title: 'Thành công',
+                                message: 'Đã chấp nhận sản phẩm',
+                                type: 'success',
+                                duration: 1000
+                            }
+                            if(e.target.classList.contains('block')){
+                                toastMessage.message = 'Đã khóa sản phẩm'
+                                toastMessage.type = 'warning'
+                            }
+                            toast(toastMessage)
+                            $(`#${slug}`).remove()
+                        } else {
+                            toast({
+                                title: 'Thất bại',
+                                message: 'Đã xãy ra lỗi',
+                                type: 'warrning',
+                                duration: 1500
+                            })
+                        }
+                    },
+                    error: err => {
+                        toast({
+                            title: 'Thất bại',
+                            message: err,
+                            type: 'error',
+                            duration: 1500
+                        })
+                    }
+                })
+            })
+        })
+    </script>

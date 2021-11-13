@@ -6,7 +6,7 @@ header {
     justify-content: space-between;
     align-items: center;
     height: 80px;
-    padding: 10px 94px 10px 110px;
+    padding: 10px 120px;
     transition: all 0.3s ease-in-out;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
     background-color: #fff;
@@ -38,7 +38,7 @@ header {
 
             ul {
                 position: absolute;
-                transform: translateX(12px);
+                transform: translateX(8px);
                 top: 40px;
                 font-size: 1rem;
                 background-color: #fff;

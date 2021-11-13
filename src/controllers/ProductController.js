@@ -28,7 +28,7 @@ class ProductController {
             product['img1'] = results[1].url
             product['img2'] = results[2].url
             Product.create(product, error => {
-                if (error) res.status(error)
+                if (error) return res.sendStatus(error)
                 res.redirect('/store/product')
             })
         }).catch(err => {
@@ -40,7 +40,9 @@ class ProductController {
         try {
             const token = req.cookies.token
             const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-            let products = await Product.find({ userId }, {
+            let find = {}
+            if (req.role == 1) find = { userId }
+            let products = await Product.find(find, {
                 coverImg: 1,
                 productName: 1,
                 price: 1,
@@ -48,8 +50,10 @@ class ProductController {
                 quantity: 1,
                 sold: 1,
                 slug: 1,
+                status: 1,
             })
             products.reverse()
+            if(req.role == 2) return res.render('admin/product', { products })
             res.render('product/store', { products })
         } catch (error) {
             res.status(500)
@@ -80,7 +84,7 @@ class ProductController {
             img1 ? (product['img1'] = results[1].url) : null
             img2 ? (product['img2'] = results[2].url) : null
             Product.updateOne({ slug, userId }, product, error => {
-                if (error) res.status(error)
+                if (error) return res.sendStatus(error)
                 res.redirect('/store/product')
             })
         }).catch(err => {
@@ -97,6 +101,29 @@ class ProductController {
         }
     }
 
+    getPendingProduct(req, res) {
+        Product.find({ status: 'pending' }, (error, products) => {
+            if (error) return res.sendStatus(error)
+            res.render('admin/product-pending', { products })
+        })
+    }
+
+
+    acceptProduct(req, res) {
+        const slug = req.params.slug
+        Product.updateOne({ slug }, { status: 'accept' }, error => {
+            if (error) return res.sendStatus(error)
+            return res.sendStatus(200)
+        })
+    }
+
+    blockProduct(req, res) {
+        const slug = req.params.slug
+        Product.updateOne({ slug }, { status: 'block' }, error => {
+            if (error) return res.sendStatus(error)
+            return res.sendStatus(200)
+        })
+    }
 }
 
 module.exports = new ProductController

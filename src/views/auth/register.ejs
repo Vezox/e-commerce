@@ -4,9 +4,7 @@
 
 <%- include('../partials/nav.ejs') %>
 
-<div class="login-register">
-
-
+<div class="login-register" style="margin-top: 20px;">
     <div class="login-register-form">
         <p>Họ</p>
         <input class="input-register" type="text" name="lastName" id="lastName" placeholder="VD: Trương">
@@ -20,6 +18,9 @@
         <p>Mật khẩu</p>
         <input class="input-register" type="password" name="password" id="password" placeholder="VD: tD9@$5">
         <label for="password"></label>
+        <p>Nhập lại mật khẩu</p>
+        <input class="input-register" type="password" name="passwordConfirm" id="passwordConfirm">
+        <label for="passwordConfirm"></label>
         <div><button id="btn-register">Đăng kí</button></div>
     </div>
 
@@ -35,6 +36,7 @@
     const lastName = document.getElementById('lastName')
     const username = document.getElementById('username')
     const password = document.getElementById('password')
+    const passwordConfirm = document.getElementById('passwordConfirm')
     btn.onclick = () => {
         let isValidated = false
         const usernameRegex = /^[a-zA-Z0-9]+$/
@@ -43,7 +45,6 @@
         inputs.forEach(input => {
             if(input.value.length == 0) {
                 input.classList.add('err')
-                console.log(input.value)
                 document.querySelector(`[for="${input.id}"]`).innerText = 'Vui lòng nhập trường này'
             } else {
                 // check username
@@ -66,6 +67,10 @@
                 } else if(!password.value.match(passwordRegex)) {
                     password.classList.add('err')
                     document.querySelector(`[for="password"]`).innerText = 'Mật khẩu phải bao gồm chữ hoa, chữ thường, số và kí tự đặc biệt'
+                    isValidated = false
+                } else if(password.value != passwordConfirm.value) {
+                    passwordConfirm.classList.add('err')
+                    document.querySelector(`[for="passwordConfirm"]`).innerText = 'Mật khẩu không khớp'
                     isValidated = false
                 } else {
                     isValidated = true

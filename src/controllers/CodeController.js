@@ -4,16 +4,14 @@ const jwt = require('jsonwebtoken')
 class CodeController {
 
     storeCode(req, res) {
-        const token = req.cookies.token
-        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-        Code.find({userId}, (err, code) => {
+        Code.find({}, (err, code) => {
             if(err) return res.sendStatus(500)
-            res.render('product/code-store', {code})
+            res.render('admin/code-store', {code})
         })
     }
 
     getCodePost(req, res) {
-        res.render('product/code-post')
+        res.render('admin/code-post')
     }
 
     saveCode(req, res) {
@@ -23,16 +21,26 @@ class CodeController {
         code['userId'] = userId
         Code.create(code, err => {
             if (err) res.sendStatus(500)
-            res.redirect('/store/code')
+            res.redirect('/admin/code')
         })
     }
 
     deleteCode(req, res) {
-        const token = req.cookies.token
-        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-        Code.deleteOne({_id: req.query.id, userId}, err => {
-            if(err) res.status(500)
+        Code.deleteOne({_id: req.params.id}, err => {
+            if(err) return res.status(500)
             res.sendStatus(200)
+        })
+    }
+
+    applyCode(req, res) {
+        const code = req.query.code
+        Code.findOne({code}, (err, code) => {
+            if(err) return res.sendStatus(500)
+            if(code) return res.json({
+                discount: code.discount,
+                quantity: code.quantity
+            })
+            res.sendStatus(404)
         })
     }
 }

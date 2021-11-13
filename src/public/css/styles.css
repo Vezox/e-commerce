@@ -4,7 +4,7 @@ header {
   justify-content: space-between;
   align-items: center;
   height: 80px;
-  padding: 10px 94px 10px 110px;
+  padding: 10px 120px;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -29,7 +29,7 @@ header {
       align-items: center; }
       header nav div ul {
         position: absolute;
-        transform: translateX(12px);
+        transform: translateX(8px);
         top: 40px;
         font-size: 1rem;
         background-color: #fff;
@@ -571,16 +571,31 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center; }
+    #cart .cart-footer .check > div {
+      font-size: 1.1rem;
+      font-weight: 600; }
+      #cart .cart-footer .check > div i {
+        font-size: 1.8rem;
+        color: #07cc21; }
     #cart .cart-footer .priceTotalItems {
       width: 160px; }
     #cart .cart-footer .discount {
-      width: 420px; }
+      min-width: 440px;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
       #cart .cart-footer .discount input {
         height: 40px;
-        width: 200px;
+        width: 230px;
         padding: 0 12px;
         outline: none;
         border: 2px solid #4dabf7; }
+      #cart .cart-footer .discount label {
+        font-size: 15px;
+        position: absolute;
+        left: 104px;
+        top: 40px; }
       #cart .cart-footer .discount button {
         height: 40px;
         width: 100px;
