@@ -1,24 +1,35 @@
 $PrimaryColor : #4dabf7;
 
 #product-store {
+
+    a {
+        font-weight: 600;
+        margin: 20px 20px 20px 5px;
+    }
+    
     table {
         width: 100%;
 
+        
         td {
-            height: 160px;
-            width: 40px;
+            height: 100px;
+            max-width: 200px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: wrap;
 
+            a {
+                margin: 0;
+            }
+
             img {
                 height: 100%;
-                width: 100%;
+                width: 80%;
                 object-fit: cover;
             }
 
             button {
-                width: 100%;
+                min-width: 60px;
                 margin-bottom: 10px;
                 border-radius: 4px; 
                 transition: all 0.2s ease-in-out;

@@ -62,7 +62,8 @@ header {
         color: #000;
         font-size: 24px;
         margin-right: 2px;
-        transition: all 0.2s ease-in-out; }
+        transition: all 0.2s ease-in-out;
+        margin-right: 4px; }
       header nav .my-self li:last-child {
         border-top: 2px solid #ccc; }
     header nav div:hover {
@@ -225,9 +226,10 @@ main {
       margin-top: 20px; }
       main .container .content-list-product .product-item {
         width: 290px;
-        height: 404px;
+        height: 410px;
         margin: 16px 17px 32px;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
         transition: all .2s ease-in-out; }
         main .container .content-list-product .product-item a {
           text-decoration: none;
@@ -327,20 +329,26 @@ footer {
     outline: none;
     box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.1); }
 
+#product-store a {
+  font-weight: 600;
+  margin: 20px 20px 20px 5px; }
+
 #product-store table {
   width: 100%; }
   #product-store table td {
-    height: 160px;
-    width: 40px;
+    height: 100px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: wrap; }
+    #product-store table td a {
+      margin: 0; }
     #product-store table td img {
       height: 100%;
-      width: 100%;
+      width: 80%;
       object-fit: cover; }
     #product-store table td button {
-      width: 100%;
+      min-width: 60px;
       margin-bottom: 10px;
       border-radius: 4px;
       transition: all 0.2s ease-in-out; }
@@ -401,6 +409,10 @@ footer {
     border-color: #0fab33; }
   #toast .toast--success .toast_icon {
     color: #0fab33; }
+  #toast .toast--error {
+    border-color: red; }
+  #toast .toast--error .toast_icon {
+    color: red; }
   #toast .toast--warning {
     border-color: #f3ae2d; }
   #toast .toast--warning .toast_icon {
@@ -443,9 +455,14 @@ footer {
   margin: 40px auto; }
   .login-register .login-register-form {
     width: 100%;
-    padding: 40px;
+    padding: 20px 40px 40px;
     border-radius: 16px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2); }
+    .login-register .login-register-form .title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 20px; }
     .login-register .login-register-form p {
       margin-bottom: 4px;
       font-size: 18px; }
@@ -618,6 +635,50 @@ footer {
     position: fixed;
     bottom: 0;
     box-shadow: 0 -10px 15px -10px #ccc; }
+
+#address {
+  min-height: 44vh;
+  width: 1000px;
+  padding: 30px;
+  margin: 20px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+  #address button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4dabf7;
+    color: #fff;
+    border-radius: 4px; }
+  #address .address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    font-weight: 600; }
+    #address .address-header span {
+      font-size: 20px; }
+    #address .address-header button {
+      font-weight: 600; }
+  #address .address-list .address-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    padding: 30px 160px;
+    flex: 5; }
+    #address .address-list .address-item .address-item-content {
+      display: flex;
+      flex: 4; }
+      #address .address-list .address-item .address-item-content .left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-right: 20px; }
+    #address .address-list .address-item .address-item-control {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end; }
+      #address .address-list .address-item .address-item-control button {
+        margin-bottom: 10px; }
 
 * {
   box-sizing: border-box;

@@ -10,19 +10,22 @@ class CartController {
         try {
             const cartProducts = await Cart.find({ userId }).sort({ updatedAt: -1 })
             const productIds = cartProducts.map(product => product.productId)
-            const products = await Product.find({ _id: { $in: productIds } }, {
+            const products = await Product.find({ _id: { $in: productIds }, status: 'accept'}, {
                 productName: 1,
                 price: 1,
                 coverImg: 1,
                 discount: 1,
                 slug: 1,
             })
-            const newCartProducts = cartProducts.map(cartProduct => {
-                let product = products.find(product => product._id == cartProduct.productId)
-                product['quantity'] = cartProduct.quantity
-                product._id = cartProduct._id
-                return product
-            })
+            let newCartProducts = []
+            for(let i = 0; i < cartProducts.length; i++) {
+                let product = products.find(product => product._id == cartProducts[i].productId)
+                if(product) {
+                    product['quantity'] = cartProducts[i].quantity
+                    product._id = cartProducts[i]._id
+                    newCartProducts.push(product)
+                }
+            }
             res.render('cart/cart', { cartProducts: newCartProducts })
         }
         catch (err) {
@@ -32,21 +35,25 @@ class CartController {
 
 
     async addToCart(req, res) {
-        console.log("hi")
         const token = req.cookies.token
         const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
         const productId = req.query.productId
         try {
-            const cart = await Cart.findOne({ userId, productId })
-            const product = {
-                userId,
-                productId,
-                quantity: cart ? cart.quantity + 1 : 1
+            const isProduct = await Product.findById(productId, {status: 1})
+                if (isProduct.status == 'accept') {
+                const cart = await Cart.findOne({ userId, productId })
+                const product = {
+                    userId,
+                    productId,
+                    quantity: cart ? cart.quantity + 1 : 1
+                }
+                await Cart.updateOne({ userId, productId }, product, { upsert: 1 })
+                return res.sendStatus(200)
+            } else {
+                return res.sendStatus(400)
             }
-            await Cart.updateOne({ userId, productId }, product, { upsert: 1 })
-            res.sendStatus(200)
         } catch (err) {
-            res.status(500).send(err)
+            return res.status(500).send(err)
         }
     }
 

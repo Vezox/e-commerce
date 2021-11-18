@@ -17,19 +17,18 @@ class SiteController {
     filterProducts(req, res) {
         const LIMIT = 8
         let find = { status: 'accept' }
-        if (req.body.options != 'all') find['type'] = req.body.options
+        if (req.query.options != 'all')
+            find['type'] = req.query.options
 
-        let sort = null
-        if (req.body.sort == 'old')
-            sort = { createdAt: 1 }
-        else if (req.body.sort == 'new')
-            sort = { createdAt: -1 }
-        else if (req.body.sort == 'asc')
-            sort = { price: 1 }
+        if (req.query.sort == 'old')
+           var sort = { createdAt: 1 }
+        else if (req.query.sort == 'new')
+           var sort = { createdAt: -1 }
+        else if (req.query.sort == 'asc')
+           var sort = { price: 1 }
         else 
-            sort = { price: -1 }
-
-        const skip = req.body.pageIndex
+           var sort = { price: -1 }
+        const skip = req.query.pageIndex
 
         Promise.all([
             Product.find(find, {

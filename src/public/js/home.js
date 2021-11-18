@@ -83,13 +83,8 @@ selects.forEach(select => {
     select.onchange = async (e) => {
         let products = null
         await $.ajax({
-            url: '/filter-products',
-            type: 'POST',
-            data: {
-                options: options.value,
-                sort: sort.value,
-                pageIndex: 0
-            },
+            url: '/filter-products/?options=' + options.value + '&sort=' + sort.value + '&pageIndex=0',
+            type: 'GET',
             success: (data) => {
                 products = data.products
                 pageTotal = data.pageTotal
@@ -136,13 +131,8 @@ btnLoadPage.onclick = async () => {
     if (pageTotal > pageIndex) {
         let loadProducts = null
         await $.ajax({
-            url: '/filter-products',
-            type: 'POST',
-            data: {
-                options: options.value,
-                sort: sort.value,
-                pageIndex
-            },
+            url: '/filter-products/?options=' + options.value + '&sort=' + sort.value + '&pageIndex=' + pageIndex,
+            type: 'GET',
             success: (data) => {
                 loadProducts = data.products
                 pageTotal = data.pageTotal

@@ -26,9 +26,9 @@
                     <td><%= product.quantity%></td>
                     <td id="status-<%= product.slug %>"><%= product.status%></td>
                     <td>
-                        <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-outline-primary">Xem lại</button></a>
-                        <button type="button" class="btn btn-outline-warning admin-product block" data-slug="<%= product.slug %>">Khóa sản phẩm</button>
-                        <button type="button" class="btn btn-outline-success admin-product accept" data-slug="<%= product.slug %>">Mở khóa</button>
+                        <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-primary">Xem</button></a>
+                        <button type="button" class="btn btn-warning admin-product block" data-slug="<%= product.slug %>">Khóa</button>
+                        <button type="button" class="btn btn-success admin-product accept" data-slug="<%= product.slug %>">Mở</button>
                     </td>
                 </tr>
                 <% }) %>  

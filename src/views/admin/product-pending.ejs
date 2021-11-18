@@ -10,6 +10,7 @@
                     <th scope="col">Ảnh bìa</th>
                     <th scope="col">Tên sản phẩm</th>
                     <th scope="col">Giá bán</th>
+                    <th scope="col">Mô tả</th>
                     <th scope="col">Tùy chọn</th>
                 </tr>
             </thead>
@@ -19,10 +20,11 @@
                         <td><img src="<%= product.coverImg %>" alt=""></td>
                         <td><%= product.productName %></td>
                         <td><%= product.price * ( 100 - product.discount) / 100  %></td>
+                        <td><%= product.description %></td>
                         <td>
-                            <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-outline-primary">Xem lại</button></a>
-                            <button type="button" class="btn btn-outline-warning admin-product accept" data-slug="<%= product.slug %>">Chấp nhận</button>
-                            <button type="button" class="btn btn-outline-danger admin-product block" data-slug="<%= product.slug %>">Khóa sản phẩm</button>
+                            <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-primary">Xem</button></a>
+                            <button type="button" class="btn btn-success admin-product accept" data-slug="<%= product.slug %>">Chấp nhận</button>
+                            <button type="button" class="btn btn-danger admin-product block" data-slug="<%= product.slug %>">Khóa</button>
                         </td>
                     </tr>
                     <% }) %>  

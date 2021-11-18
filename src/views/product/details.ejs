@@ -75,10 +75,12 @@
                 if (res == 'OK') {
                     showSuccess()
                 } else {
+                    console.log(res)
                     window.location.href = '/auth/login'
                 }
             },
             error: (err) => {
+                console.log(err)
                 showWarning()
             }
         })

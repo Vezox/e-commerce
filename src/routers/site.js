@@ -4,7 +4,7 @@ const ProductController = require('../controllers/ProductController')
 
 Router.get('/', SiteController.home)
 
-Router.post('/filter-products', SiteController.filterProducts)
+Router.get('/filter-products', SiteController.filterProducts)
 
 Router.get('/search-products', SiteController.searchProducts)
 

@@ -30,15 +30,15 @@
 									<%= product.productName %>
 								</div>
 							</div>
-							<div class="cart-item-price price" data-price="<%= product.price * (100 - product.discount) / 100 %>">
+							<div class="cart-item-price price" data-price="<%= product.price * (100 - product.discount) / 100 %>" data-discount="<%= product.discount %>">
 							</div>
 							<div class="cart-item-quantity">
 								<button class="minus btn-quantity" data-id="<%= product.id %>">-</button>
 								<input class="input-quantity" type="text" value="<%= product.quantity %>"
-									id="input-<%= product.id %>">
+									id="input-<%= product.id %>" disabled>
 								<button class="plus btn-quantity" data-id="<%= product.id %>">+</button>
 							</div>
-							<div class="cart-item-price-total price" data-price="<%= product.price * product.quantity %>">
+							<div class="cart-item-price-total price" data-price="<%= (product.price * (100 - product.discount) / 100) * product.quantity %>" >
 							</div>
 						</div>
 						<% }) %>
@@ -69,8 +69,8 @@
 	// add event listener to check-all && uncheck-all && check total price items
 
 	const btnAllCheck = document.querySelector('.btn-all-check')
-	const isAllChecked = btnAllCheck.checked
-	const checkboxItems = document.querySelectorAll('.checkbox-item')
+	let isAllChecked = btnAllCheck.checked
+	let checkboxItems = document.querySelectorAll('.checkbox-item')
 	let priceTotalItemsChecked = 0
 
 	btnAllCheck.onclick = e => {
@@ -91,7 +91,6 @@
 			//check btn-all-check
 			const isAllChecked = [...checkboxItems].every(checkboxItem => checkboxItem.checked)
 			btnAllCheck.checked = isAllChecked
-
 			//check total price items
 			checkTotalPriceItems(e.target)
 			document.querySelector('.priceTotalItems').innerText = 'Tổng: ' + priceTotalItemsChecked.toLocaleString() + ' đ'
@@ -100,7 +99,11 @@
 
 	function checkTotalPriceItems(element) {
 		const id = element.getAttribute('data-id')
-		const priceTotal = parseInt(document.getElementById(id).querySelector('.cart-item-price-total').getAttribute('data-price'))
+		const parent = document.getElementById(id)
+		const price = parseInt(parent.querySelector('.cart-item-price').getAttribute('data-price'))
+		const discount = parseInt(parent.querySelector('.cart-item-price').getAttribute('data-discount'))
+		const quantity = parseInt(parent.querySelector('.input-quantity').value)
+		const priceTotal = price * (100 - discount) / 100 * quantity
 		if (element.checked) {
 			priceTotalItemsChecked += priceTotal
 		} else {
@@ -128,8 +131,9 @@
 							$(`#input-${id}`).val(quantity)
 							const parent = document.getElementById(id)
 							const price = parseInt(parent.querySelector('.price').getAttribute('data-price'))
-							const priceTotal = parent.querySelector('.cart-item-price-total ')
-							priceTotal.innerText = (price * quantity).toLocaleString() + ' đ'
+							const discount = parseInt(parent.querySelector('.cart-item-price').getAttribute('data-discount'))
+							const priceTotalElement = parent.querySelector('.cart-item-price-total')
+							priceTotalElement.innerText = ((price * (100 - discount) / 100) * quantity).toLocaleString() + ' đ'
 							if (parent.querySelector('.checkbox-item').checked) {
 								if (e.target.classList.contains('plus')) {
 									priceTotalItemsChecked += price
@@ -139,6 +143,12 @@
 								document.querySelector('.priceTotalItems').innerText = 'Tổng: ' + priceTotalItemsChecked.toLocaleString() + ' đ'
 							}
 						} else {
+							const parent = document.getElementById(id)
+							const price = parseInt(parent.querySelector('.cart-item-price').getAttribute('data-price'))
+							const discount = parseInt(parent.querySelector('.cart-item-price').getAttribute('data-discount'))
+							priceTotalItemsChecked -= price * (100 - discount) / 100
+							document.querySelector('.priceTotalItems').innerText = 'Tổng: ' + priceTotalItemsChecked.toLocaleString() + ' đ'
+							checkboxItems = document.querySelectorAll('.checkbox-item')
 							$(`#${id}`).remove()
 						}
 					}

@@ -3,17 +3,17 @@
 <%- include('../partials/nav.ejs') %>
 
     <div id="product-store" style="margin: 10px auto;max-width: 1100px; min-height: 80vh;">
-        <h3 style="text-align: center">Kho</h3>
-        <a href="/store/product/pending">Sản phẩm đang chờ duyệt</a>
-        <a href="/store/product/block">Sản phẩm bị khóa</a>
+        <h3 style="text-align: center">Sản phẩm Bị khóa</h3>
+        <a href="/store/product">Kho</a>
+        <a href="/store/product/pending">Sản phẩm chờ duyệt</a>
         <table class="table">
             <thead>
               <tr>
                 <th scope="col">Ảnh bìa</th>
                 <th scope="col">Tên sản phẩm</th>
                 <th scope="col">Giá bán</th>
-                <th scope="col">Đã bán</th>
                 <th scope="col">Tồn kho</th>
+                <th scope="col">Đã bán</th>
                 <th scope="col">Tùy chọn</th>
               </tr>
             </thead>
@@ -25,8 +25,8 @@
                     </td>
                     <td><%= product.productName %></td>
                     <td><%= product.price * ( 100 - product.discount) / 100  %></td>
-                    <td><%= product.sold %></td>
                     <td><%= product.quantity%></td>
+                    <td><%= product.sold%></td>
                     <td>
                         <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-primary">Xem</button></a>
                         <a href="/store/product/edit/<%= product.slug %>"><button type="button" class="btn btn-success">Sửa</button></a>

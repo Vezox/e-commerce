@@ -40,9 +40,7 @@ class ProductController {
         try {
             const token = req.cookies.token
             const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-            let find = {}
-            if (req.role == 1) find = { userId }
-            let products = await Product.find(find, {
+            let products = await Product.find({userId}, {
                 coverImg: 1,
                 productName: 1,
                 price: 1,
@@ -53,8 +51,46 @@ class ProductController {
                 status: 1,
             })
             products.reverse()
-            if(req.role == 2) return res.render('admin/product', { products })
             res.render('product/store', { products })
+        } catch (error) {
+            res.status(500)
+        }
+    }
+
+    async getProductBlock(req, res) {
+        try {
+            const token = req.cookies.token
+            const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+            let products = await Product.find({status: 'block'}, {
+                coverImg: 1,
+                productName: 1,
+                price: 1,
+                discount: 1,
+                quantity: 1,
+                sold: 1,
+                slug: 1,
+            })
+            products.reverse()
+            res.render('product/product-block', { products })
+        } catch (error) {
+            res.status(500)
+        }
+    }
+
+    async getProductPending(req, res) {
+        try {
+            const token = req.cookies.token
+            const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+            let products = await Product.find({status: 'pending'}, {
+                coverImg: 1,
+                productName: 1,
+                price: 1,
+                discount: 1,
+                quantity: 1,
+                slug: 1,
+            })
+            products.reverse()
+            res.render('product/product-pending', { products })
         } catch (error) {
             res.status(500)
         }
@@ -99,30 +135,6 @@ class ProductController {
         } catch (error) {
             res.status(500)
         }
-    }
-
-    getPendingProduct(req, res) {
-        Product.find({ status: 'pending' }, (error, products) => {
-            if (error) return res.sendStatus(error)
-            res.render('admin/product-pending', { products })
-        })
-    }
-
-
-    acceptProduct(req, res) {
-        const slug = req.params.slug
-        Product.updateOne({ slug }, { status: 'accept' }, error => {
-            if (error) return res.sendStatus(error)
-            return res.sendStatus(200)
-        })
-    }
-
-    blockProduct(req, res) {
-        const slug = req.params.slug
-        Product.updateOne({ slug }, { status: 'block' }, error => {
-            if (error) return res.sendStatus(error)
-            return res.sendStatus(200)
-        })
     }
 }
 

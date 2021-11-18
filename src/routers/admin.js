@@ -1,5 +1,5 @@
 const Router = require('express').Router()
-const ProductController = require('../controllers/ProductController')
+const AdminController = require('../controllers/AdminController')
 const CodeController = require('../controllers/CodeController')
 
 Router.get('/code', CodeController.storeCode)
@@ -10,13 +10,13 @@ Router.post('/code/save', CodeController.saveCode)
 
 Router.delete('/code/delete/:id', CodeController.deleteCode)
 
-Router.get('/product', ProductController.getStore)
+Router.get('/product', AdminController.getAllProduct)
 
-Router.get('/product/pending', ProductController.getPendingProduct)
+Router.get('/product/pending', AdminController.getPendingProduct)
 
-Router.get('/product/accept/:slug', ProductController.acceptProduct)
+Router.get('/product/accept/:slug', AdminController.acceptProduct)
 
-Router.get('/product/block/:slug', ProductController.blockProduct)
+Router.get('/product/block/:slug', AdminController.blockProduct)
 
 
 module.exports = Router

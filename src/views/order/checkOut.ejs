@@ -6,6 +6,18 @@
 
 	<div id="cart" style="margin-bottom: 240px">
 		<div class="cart-container">
+			<div class="form-address" style="padding: 20px 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+				<div style="margin-bottom: 10px; font-size: 1.4rem; color: #4dabf7;">Địa chỉ nhận hàng</div>
+				<% address.forEach((item, index)=> { %>
+					<div class="form-check" style="border-bottom: 1px solid #ccc;padding: 20px 0; font-size: 1.2rem;">
+						<input class="form-check-input" type="radio" name="address" id="address<%= index %>" style="margin-right: 10px; margin-left: 0;" value="<%= item._id %>">
+						<label class="form-check-label" for="address<%= index %>">
+							<b><%= item.fullName + ' - ' +  item.phone %> </b> &emsp; <%= item.street + ', ' + item.village + ', ' + item.district + ', ' + item.province %> 
+						
+						</label>
+					</div>
+				<% }) %> 
+			</div>
 			<div class="cart-header">
 				<div class="all-check">
 					<span>Sản phẩm</span>
@@ -17,7 +29,7 @@
 			<div class="cart-body">
 				<div class="cart-items">
 					<% checkOutProducts.forEach(product=> { %>
-						<div class="cart-item" id="<%= product.id %>">
+						<div class="cart-item" data-id="<%= product.id %>">
 							<div class="cart-item-group">
 								<div class="cart-item-image">
 									<a href="/product/details/<%= product.slug %>">
@@ -32,9 +44,9 @@
 							</div>
 							<div class="cart-item-quantity">
 								<input class="input-quantity" type="text" value="<%= product.quantity %>"
-									id="input-<%= product.id %>" disabled>
+									id="input-<%= product.id %>" disabled style="border: 1px solid #ccc;">
 							</div>
-							<div class="cart-item-price-total price" data-price="<%= product.price * product.quantity %>">
+							<div class="cart-item-price-total price" data-price="<%= (product.price * (100 - product.discount) / 100 ) * product.quantity %>">
 							</div>
 						</div>
 						<% }) %>
@@ -70,7 +82,7 @@
 					</tr>
 					<tr>
 						<td>Mã giảm giá: </td>
-						<td style="display: flex; justify-content: flex-end; color: green;"><div><%= code?.code %></div></td>
+						<td style="display: flex; justify-content: flex-end; color: green;"><div id="code" data-code="<%= code?.code %>"><%= code?.code %></div></td>
 					</tr>
 					<tr>
 						<td>Giảm: </td>
@@ -82,7 +94,7 @@
 					</tr>
 					<tr >
 						<td colspan="2">
-							<button class="order" id="btn-checkout" style="width: 100%;margin-top: 10px">Đặt hàng</button>
+							<button class="order" id="btn-order" style="width: 100%;margin-top: 10px">Đặt hàng</button>
 						</td>
 					</tr>
 				</table>
@@ -93,6 +105,10 @@
 <%- include('../partials/footer.ejs') %>
 
 <script>
+	//checked address
+	const radioAddress = document.querySelectorAll('[name="address"]')
+	radioAddress[0].checked = true
+
 	// convert price to number
 	const prices = document.querySelectorAll('.price')
 	prices.forEach(price => {
@@ -115,4 +131,15 @@
 	// calculate total price after discount
 	const totalPriceAfterDiscount = document.querySelector('#total-price-after-discount')
 	totalPriceAfterDiscount.innerText = (totalPrice - (totalPrice * discountValue / 100)).toLocaleString() + ' đ'
+
+	// order
+	const btnOrder = document.querySelector('#btn-order')
+	const productItem = document.querySelectorAll('.cart-item')
+	btnOrder.onclick = () => {
+		const addressId = document.querySelector('[name="address"]:checked').value
+		const cartProductIds = Array.from(productItem).map(product => product.getAttribute('data-id'))
+		const code = document.querySelector('#code').getAttribute('data-code')
+		const url = '/checkout/order/?cartProductIds=' + cartProductIds.join(',') + '&addressId=' + addressId + '&code=' + code
+		window.location.href = url
+	}
 </script>

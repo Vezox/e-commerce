@@ -40,7 +40,7 @@ class AccountController {
     }
 
     logout(req, res) {
-        res.cookie('token', '', {maxAge: 2})
+        res.cookie('token', '', {maxAge: 1})
         res.cookie('role', '', {maxAge: 1})
         res.redirect('/auth/login')
     }

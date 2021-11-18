@@ -1,0 +1,95 @@
+<%- include('../partials/head.ejs') %>
+
+<script src="/js/jquery.js"></script>
+
+<%- include('../partials/nav.ejs') %>
+  
+  
+<div id="address">
+    <div class="address-header">
+        <span>Địa chỉ của tôi</span>
+        <div class="address-add">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#create-address">
+                Thêm địa chỉ
+            </button>
+        </div>
+    </div>
+    <div class="address-list">
+        <% address.forEach(item => { %> 
+            <div class="address-item">
+                <div class="address-item-content">
+                    <div class="left">
+                        <div>Họ và tên: </div>
+                        <div>Số điện thoại: </div>
+                        <div>Địa chỉ: </div>
+                    </div>
+                    <div class="right">
+                        <div><%= item.fullName %> </div>
+                        <div><%= item.phone %> </div>
+                        <div><%= item.street %> </div>
+                        <div><%= item.village %> </div>
+                        <div><%= item.district %> </div>
+                        <div><%= item.province %> </div>
+                    </div>
+                </div>
+                <div class="address-item-control">
+                    <div>
+                        <a href="/my/address/delete/<%= item._id %>">
+                            <button>Xóa</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% }) %> 
+    </div>
+</div>
+
+<!-- Create address Modal -->
+<div class="modal fade" id="create-address" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <form class="modal-content" method="post" action="/my/address">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Thêm địa chỉ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Họ và tên</label>
+                    <input type="text" class="form-control" name="fullName" id="fullName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Số điện thoại</label>
+                    <input type="number" class="form-control" name="phone" id="phone" required minlength="10" maxlength="10">
+                </div>
+                <div class="row g-2 justify-content-between">
+                    <div class="mb-3 col-auto">
+                        <label for="street" class="form-label">Địa chỉ cụ thể</label>
+                        <input type="text" class="form-control" style="width:360px" name="street" id="street">
+                    </div>
+                    <div class="mb-3 col-auto">
+                        <label for="village" class="form-label">Xã/Phường</label>
+                        <input type="text" class="form-control" style="width:360px" name="village" id="village">
+                    </div>
+                </div>
+                <div class="row g-2 justify-content-between">
+                    <div class="mb-3 col-auto">
+                        <label for="district" class="form-label">Quận/Huyện</label>
+                        <input type="text" class="form-control" style="width:360px" name="district" id="district">
+                    </div>
+                    <div class="mb-3 col-auto">
+                        <label for="province" class="form-label">Tỉnh/Thành</label>
+                        <input type="text" class="form-control" style="width:360px" name="province" id="province">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary">Thêm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<%- include('../partials/footer.ejs') %>
