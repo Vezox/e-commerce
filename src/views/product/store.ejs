@@ -28,7 +28,7 @@
                     <td><%= product.sold %></td>
                     <td><%= product.quantity%></td>
                     <td>
-                        <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-primary">Xem</button></a>
+                        <a href="/product/details/<%= product.slug %>.<%= product._id %>"><button type="button" class="btn btn-primary">Xem</button></a>
                         <a href="/store/product/edit/<%= product.slug %>"><button type="button" class="btn btn-success">Sửa</button></a>
                         <button type="button" class="btn btn-danger">Xóa</button>
                     </td>

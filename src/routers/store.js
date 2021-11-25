@@ -1,6 +1,6 @@
 const Router = require('express').Router()
 const ProductController = require('../controllers/ProductController')
-const CodeController = require('../controllers/CodeController')
+const OrderController = require('../controllers/OrderController')
 
 Router.get('/product/post', ProductController.getPost)
 
@@ -15,5 +15,7 @@ Router.get('/product/block', ProductController.getProductBlock)
 Router.get('/product/edit/:slug', ProductController.getEditProduct)
 
 Router.post('/product/edit/:slug', ProductController.updateProduct)
+
+Router.get('/ordered', OrderController.getOrder)
 
 module.exports = Router

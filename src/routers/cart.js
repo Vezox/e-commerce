@@ -8,6 +8,8 @@ Router.get('/add', CartController.addToCart)
 
 Router.get('/change', CartController.changeItemQuantity)
 
+Router.get('/delete', CartController.deleteItem)
+
 Router.get('/code/apply-code', CodeController.applyCode)
 
 

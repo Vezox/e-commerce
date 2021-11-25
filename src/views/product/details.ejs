@@ -57,7 +57,33 @@
                 </div>
             </div>
         </div>
+
         <div id="toast"></div>
+
+        <div id="reivews">
+            <div class="reviews-header">
+                Đánh giá sản phẩm
+            </div>
+            <div class="reviews-list">
+                <% if(reviews.length > 0) { %>
+                    <% reviews.forEach(review => { %>
+                        <div class="review-item">
+                            <div class="user-name">
+                                <i class="fas fa-user-circle"></i> <%= review.review.userName %> 
+                            </div>
+                            <p class="content"><%= review.review.content %> </p>
+                            <div class="img">
+                                <img src="<%= review.review.image %>" alt="">
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %> 
+                    <div class="review-item">
+                        <h6 style="text-align: center;">Chưa có đánh giá nào</h6>
+                    </div>
+                <% } %>
+            </div>
+        </div>
 
         <%- include('../partials/footer.ejs') %>
         <script src="/js/toast.js"></script>
@@ -80,7 +106,7 @@
                 }
             },
             error: (err) => {
-                console.log(err)
+                console.log(err.responseText)
                 showWarning()
             }
         })

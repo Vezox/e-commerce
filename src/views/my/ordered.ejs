@@ -1,0 +1,141 @@
+<%- include('../partials/head.ejs') %>
+
+<script src="/js/jquery.js"></script>
+
+<%- include('../partials/nav.ejs') %>
+
+<div id="ordered">
+    <div class="ordered-list">
+        <% orderDetail.forEach(order => { %>
+            <div class="ordered-item" id="<%= order._id %>">
+                <div class="ordered-item-header">
+                    <div class="ordered-item-header-left">
+                        <%= order.address.fullName + ' - ' +  order.address.phone %> </br>
+                        <%= order.address.street + ', ' + order.address.village + ', ' + order.address.district + ', ' + order.address.province %>
+                    </div>
+                    <div class="ordered-item-header-right">
+                        <div class="ordered-item-header-right-status">
+                            Trạng thái: <span class="text-blue"><%= order.status %></span>
+                        </div>
+                        <div class="ordered-item-header-right-date" data-date="<%= order.createdAt %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-img">
+                        <a href="/product/details/<%= order.slug %>.<%= order.productId %>">
+                            <img src="<%= order.coverImg %>" alt="">
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">
+                            <div class="name"><%= order.productName %> </div>
+                            <div class="quantity">x<%= order.quantity %> </div>
+                        </div>
+                        <div class="product-price">
+                            <span class="price" data-price="<%= order.price * (100 - order.discount) / 100 *  order.quantity %> "></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions" data-id="<%= order._id %>">
+                    <button class="review" <%= order.isReviewed == false ? '' : 'disabled' %> data-bs-target="#review-modal" data-bs-toggle="modal">
+                        Đánh giá <i class="<%= order.isReviewed == true ? 'fa-solid fa-check' : '' %>"></i>
+                    </button>
+                    <button class="received" <%= order.status == 'Đang giao' ? '' : 'disabled' %>>
+                        Đã nhận hàng <i class="<%= order.status == 'Đã nhận' ? 'fa-solid fa-check' : '' %>"></i>
+                    </button>
+                </div>
+            </div>
+        <% }) %> 
+    </div>
+</div>
+
+<!-- modal-review -->
+<div class="modal fade" id="review-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đánh giá sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="review-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Nội dung:</label>
+                        <textarea class="form-control" id="review-text" style="height: 100px" minlength="10" maxlength="200" name="content" required></textarea>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="img-review">Hình ảnh</label>
+                        <input type="file" class="form-control" id="image-review" name="image" accept="image/png, image/jpg, image/jpeg" >
+                    </div>
+                    <button id="submit-form-review" style="display: none;"></button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="btn-submit-review">Đánh giá</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer.ejs') %>
+
+<script>
+    (() => {
+        const prices = document.querySelectorAll('.price')
+        prices.forEach(price => {
+            price.innerText = (price.getAttribute('data-price') - 0).toLocaleString() + ' đ'
+        })
+    })();
+
+    // convert date
+    const date = document.querySelectorAll('.ordered-item-header-right-date')
+    date.forEach(item => {
+        const date = new Date(item.getAttribute('data-date'))
+        item.innerText = date.toLocaleString();
+    })
+
+
+    // add event listener for review button
+    const modalReview = document.querySelector('#review-modal')
+    const btnSubmitReview = document.querySelector('#btn-submit-review')
+    const btnReview = document.querySelectorAll('.review')
+    btnReview.forEach(btn => {
+        const orderId = btn.parentElement.getAttribute('data-id')
+        btn.addEventListener('click', e => {
+            const id = btn.parentElement.getAttribute('data-id')
+            btnSubmitReview.addEventListener('click', e => {
+                const form = document.querySelector('#review-form')
+                form.method = 'POST'
+                form.action = '/my/ordered/review/' + orderId
+                document.querySelector('#submit-form-review').click()
+            })
+        })
+    })
+
+
+    // add event listener for received button
+    const btnReceived = document.querySelectorAll('.received')
+    btnReceived.forEach(btn => {
+        const orderId = btn.parentElement.getAttribute('data-id')
+        btn.addEventListener('click', e => {
+            const url = '/my/ordered/received/?orderId=' + orderId
+            $.ajax({
+                url: url,
+                method: 'PATCH',
+                success: res => {
+                    if (res == "OK") {
+                        document.getElementById(orderId).querySelector('.text-blue').textContent = 'Đã nhận'
+                        btn.disabled = true
+                        btn.innerHTML = 'Đã nhận hàng <i class="fa-solid fa-check"></i>'
+                        btn.parentElement.querySelector('.review').disabled = false
+                    }
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+        })
+    })
+</script>

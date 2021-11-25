@@ -1,4 +1,5 @@
 const Product = require('../models/Product')
+const Order = require('../models/Order')
 const jwt = require('jsonwebtoken')
 const cloudinary = require('cloudinary').v2
 
@@ -29,7 +30,7 @@ class ProductController {
             product['img2'] = results[2].url
             Product.create(product, error => {
                 if (error) return res.sendStatus(error)
-                res.redirect('/store/product')
+                res.redirect('/store/product/pending')
             })
         }).catch(err => {
             res.send(err)
@@ -40,7 +41,7 @@ class ProductController {
         try {
             const token = req.cookies.token
             const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-            let products = await Product.find({userId}, {
+            let products = await Product.find({ userId, status: 'accept' }, {
                 coverImg: 1,
                 productName: 1,
                 price: 1,
@@ -61,7 +62,7 @@ class ProductController {
         try {
             const token = req.cookies.token
             const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-            let products = await Product.find({status: 'block'}, {
+            let products = await Product.find({ status: 'block' }, {
                 coverImg: 1,
                 productName: 1,
                 price: 1,
@@ -81,7 +82,7 @@ class ProductController {
         try {
             const token = req.cookies.token
             const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-            let products = await Product.find({status: 'pending'}, {
+            let products = await Product.find({ status: 'pending' }, {
                 coverImg: 1,
                 productName: 1,
                 price: 1,
@@ -129,13 +130,19 @@ class ProductController {
     }
 
     async getDetailsProduct(req, res) {
-        try {
-            const product = await Product.findOne({ slug: req.params.slug })
-            res.render('product/details', { product })
-        } catch (error) {
+        const slug = req.params.slug.split('.')
+        const name = slug[0]
+        const id = slug[1]
+        Promise.all([
+            Product.findById(id),
+            Order.find({ productId: id, isReviewed: true }, { review: 1 })
+        ]).then(([product, reviews]) => {
+            res.render('product/details', { product, reviews })
+        }).catch(err => {
             res.status(500)
-        }
+        })
     }
+
 }
 
 module.exports = new ProductController

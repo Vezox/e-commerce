@@ -41,7 +41,7 @@
                 <div class="content-list-product" id="content-list-product">
                     <% products.forEach(item=> { %>
                         <div class="product-item">
-                            <a href="/product/details/<%= item.slug %>">
+                            <a href="/product/details/<%= item.slug %>.<%= item._id %>">
                                 <div class="product-img">
                                     <img src="<%= item.coverImg %>" alt="">
                                 </div>

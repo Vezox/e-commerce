@@ -42,7 +42,7 @@ input.onkeyup = () => {
                     const html = products.reduce((acc, product) => {
                         acc.push(`
                             <div class="search-item">
-                                <a href="/product/details/${product.slug}">
+                                <a href="/product/details/${product.slug}.${product._id}">
                                     <div class="search-img">
                                         <img src="${product.coverImg}" alt="" class="search-link">
                                     </div>
@@ -98,7 +98,7 @@ selects.forEach(select => {
         const html = products.reduce((acc, product) => {
             acc.push(`
                 <div class="product-item">
-                    <a href="/product/details/${product.slug}">
+                    <a href="/product/details/${product.slug}.${product._id}">
                         <div class="product-img">
                             <img src="${product.coverImg}" alt="">
                         </div>
@@ -145,7 +145,7 @@ btnLoadPage.onclick = async () => {
 
         loadProducts.forEach(product => {
             const html = `
-                <a href="/product/details/${product.slug}">
+                <a href="/product/details/${product.slug}.${product._id}">
                     <div class="product-img">
                         <img src="${product.coverImg}" alt="">
                     </div>

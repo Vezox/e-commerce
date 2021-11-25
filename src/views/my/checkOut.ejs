@@ -7,9 +7,9 @@
 	<div id="cart" style="margin-bottom: 240px">
 		<div class="cart-container">
 			<div class="form-address" style="padding: 20px 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
-				<div style="margin-bottom: 10px; font-size: 1.4rem; color: #4dabf7;">Địa chỉ nhận hàng</div>
+				<div style="margin-bottom: 10px; font-size: 1.2rem; color: #4dabf7;">Địa chỉ nhận hàng</div>
 				<% address.forEach((item, index)=> { %>
-					<div class="form-check" style="border-bottom: 1px solid #ccc;padding: 20px 0; font-size: 1.2rem;">
+					<div class="form-check" style="border-bottom: 1px solid #ccc;padding: 20px 0; font-size: 1.1rem;">
 						<input class="form-check-input" type="radio" name="address" id="address<%= index %>" style="margin-right: 10px; margin-left: 0;" value="<%= item._id %>">
 						<label class="form-check-label" for="address<%= index %>">
 							<b><%= item.fullName + ' - ' +  item.phone %> </b> &emsp; <%= item.street + ', ' + item.village + ', ' + item.district + ', ' + item.province %> 
@@ -32,7 +32,7 @@
 						<div class="cart-item" data-id="<%= product.id %>">
 							<div class="cart-item-group">
 								<div class="cart-item-image">
-									<a href="/product/details/<%= product.slug %>">
+									<a href="/product/details/<%= product.slug %>.<%= product.product_id %>">
 										<img src="<%= product.coverImg %>" alt="<%= product.productName %>">
 									</a>
 								</div>
@@ -55,23 +55,23 @@
 			<div class="cart-footer" style="height: 200px;">
 				<div class="check">
 					<div>
-						<i class="fa-solid fa-check-double"></i>
+						<i class="fa-solid fa-circle-check"></i>
 						Miễn phí vận chuyển với đơn hàng trên 500.000đ
 					</div>
 					<div>
-						<i class="fa-solid fa-check-double"></i>
+						<i class="fa-solid fa-circle-check"></i>
 						Giao hàng 24/7
 					</div>
 					<div>
-						<i class="fa-solid fa-check-double"></i>
+						<i class="fa-solid fa-circle-check"></i>
 						Cam kết giao hàng trong vòng 3 ngày
 					</div>
 					<div>
-						<i class="fa-solid fa-check-double"></i>
+						<i class="fa-solid fa-circle-check"></i>
 						Thanh toán khi nhận hàng
 					</div>
 					<div>
-						<i class="fa-solid fa-check-double"></i>
+						<i class="fa-solid fa-circle-check"></i>
 						Hoàn 300% nếu hàng nhái, kém chất lượng
 					</div>
 				</div>
@@ -139,7 +139,7 @@
 		const addressId = document.querySelector('[name="address"]:checked').value
 		const cartProductIds = Array.from(productItem).map(product => product.getAttribute('data-id'))
 		const code = document.querySelector('#code').getAttribute('data-code')
-		const url = '/checkout/order/?cartProductIds=' + cartProductIds.join(',') + '&addressId=' + addressId + '&code=' + code
+		const url = '/my/order/confirm/?cartProductIds=' + cartProductIds.join(',') + '&addressId=' + addressId + '&code=' + code
 		window.location.href = url
 	}
 </script>

@@ -1,0 +1,36 @@
+<%- include('../partials/head.ejs') %>
+<script src="/js/jquery.js"></script>
+<%- include('../partials/nav.ejs') %>
+
+    <div id="product-store" style="margin: 10px auto;max-width: 1100px; min-height: 80vh;">
+        <h3 style="text-align: center">Đơn hàng đã giao</h3>
+        <a href="/ordered/pending">Đơn hàng chờ duyệt</a>
+        <a href="/ordered/accept">Đơn hàng đang giao</a>
+        <a href="/ordered/đã hủy">Đơn hàng đã hủy</a>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Ảnh bìa</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                    <tr id="<%= order._id %>" >
+                        <td style="width: 100px;">
+                        <img src="<%= order.coverImg %>" alt="">
+                        </td>
+                        <td><%= order.productName %></td>
+                        <td><%= order.price * ( 100 - order.discount) / 100  %></td>
+                        <td><%= order.quantity%></td>
+                        <td><%= order.price * ( 100 - order.discount) / 100 * order.quantity %></td>
+                    </tr>
+                <% }) %>  
+            </tbody>
+          </table>
+    </div>
+
+<%- include('../partials/footer.ejs') %>

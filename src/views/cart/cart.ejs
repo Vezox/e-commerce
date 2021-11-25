@@ -14,15 +14,22 @@
 				<span class="header-price">Đơn giá</span>
 				<span class="header-quantity">Số lượng</span>
 				<span class="header-price-total">Số tiền</span>
+				<span style="width: 60px;"></span>
 			</div>
 			<div class="cart-body">
 				<div class="cart-items">
+					<% if(cartProducts.length == 0){ %> 
+						<div class="empty-cart" style="text-align: center;">
+							<h3>Giỏ hàng trống</h3>
+							<a href="/">Tiếp tục mua hàng</a>
+						</div>
+					<% } %> 
 					<% cartProducts.forEach(product=> { %>
 						<div class="cart-item" id="<%= product.id %>">
 							<div class="cart-item-group">
 								<input class="form-check-input checkbox-item" type="checkbox" data-id="<%= product.id %>">
 								<div class="cart-item-image">
-									<a href="/product/details/<%= product.slug %>">
+									<a href="/product/details/<%= product.slug %>.<%= product.productId %>">
 										<img src="<%= product.coverImg %>" alt="<%= product.productName %>">
 									</a>
 								</div>
@@ -38,10 +45,10 @@
 									id="input-<%= product.id %>" disabled>
 								<button class="plus btn-quantity" data-id="<%= product.id %>">+</button>
 							</div>
-							<div class="cart-item-price-total price" data-price="<%= (product.price * (100 - product.discount) / 100) * product.quantity %>" >
-							</div>
+							<div class="cart-item-price-total price" data-price="<%= (product.price * (100 - product.discount) / 100) * product.quantity %>" ></div>
+							<button class="btn-del" data-id="<%= product.id %>">Xóa</button>
 						</div>
-						<% }) %>
+					<% }) %>
 				</div>
 			</div>
 			<div class="cart-footer cart-fixed">
@@ -161,6 +168,35 @@
 		}
 	})
 
+	// add event listener to delete button
+	const btnDelete = document.querySelectorAll('.btn-del')
+	btnDelete.forEach(btn => {
+		btn.onclick = e => {
+			const id = e.target.getAttribute('data-id')
+			$.ajax({
+				url: '/cart/delete/?id=' + id,
+				type: 'GET',
+				success: data => {
+					if (data == 'OK') {
+						const parent = document.getElementById(id)
+						if (parent.querySelector('.checkbox-item').checked) {
+							const price = parseInt(parent.querySelector('.cart-item-price').getAttribute('data-price'))
+							const quantity = parseInt(parent.querySelector('.input-quantity').value)
+							const discount = parseInt(parent.querySelector('.cart-item-price').getAttribute('data-discount'))
+							priceTotalItemsChecked -= price * (100 - discount) / 100 * quantity
+							document.querySelector('.priceTotalItems').innerText = 'Tổng: ' + priceTotalItemsChecked.toLocaleString() + ' đ'
+							checkboxItems = document.querySelectorAll('.checkbox-item')
+						}
+						$(`#${id}`).remove()
+					}
+				},
+				error: err => {
+					console.log(err)
+				}
+			})
+		}
+	})
+
 
 	// scroll
 	window.addEventListener('scroll', e => {
@@ -216,7 +252,7 @@
 			return
 		}
 		const discountCode = isValidCode ? document.querySelector('#discount-code').value : ''
-		const url = '/checkout/?cartProductIds=' + cartProductIds.join(',') + '&code=' + discountCode
+		const url = '/my/order/checkout/?cartProductIds=' + cartProductIds.join(',') + '&code=' + discountCode
 		window.location.href = url
 	}
 

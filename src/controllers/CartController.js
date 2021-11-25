@@ -10,7 +10,7 @@ class CartController {
         try {
             const cartProducts = await Cart.find({ userId }).sort({ updatedAt: -1 })
             const productIds = cartProducts.map(product => product.productId)
-            const products = await Product.find({ _id: { $in: productIds }, status: 'accept'}, {
+            const products = await Product.find({ _id: { $in: productIds }, status: 'accept' }, {
                 productName: 1,
                 price: 1,
                 coverImg: 1,
@@ -18,10 +18,11 @@ class CartController {
                 slug: 1,
             })
             let newCartProducts = []
-            for(let i = 0; i < cartProducts.length; i++) {
+            for (let i = 0; i < cartProducts.length; i++) {
                 let product = products.find(product => product._id == cartProducts[i].productId)
-                if(product) {
+                if (product) {
                     product['quantity'] = cartProducts[i].quantity
+                    product['productId'] = product._id
                     product._id = cartProducts[i]._id
                     newCartProducts.push(product)
                 }
@@ -39,15 +40,17 @@ class CartController {
         const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
         const productId = req.query.productId
         try {
-            const isProduct = await Product.findById(productId, {status: 1})
-                if (isProduct.status == 'accept') {
+            const product = await Product.findById(productId, { status: 1, userId: 1 })
+            if (product.userId == userId) {
+                return res.status(403).send('You can not add your own product to cart')
+            } else if (product.status == 'accept') {
                 const cart = await Cart.findOne({ userId, productId })
-                const product = {
+                const newCartProduct = {
                     userId,
                     productId,
                     quantity: cart ? cart.quantity + 1 : 1
                 }
-                await Cart.updateOne({ userId, productId }, product, { upsert: 1 })
+                await Cart.updateOne({ userId, productId }, newCartProduct, { upsert: 1 })
                 return res.sendStatus(200)
             } else {
                 return res.sendStatus(400)
@@ -70,6 +73,16 @@ class CartController {
                 if (err) return res.sendStatus(500)
                 return res.sendStatus(200)
             })
+        }
+    }
+
+    async deleteItem(req, res) {
+        const id = req.query.id
+        try {
+            await Cart.deleteOne({ _id: id })
+            return res.sendStatus(200)
+        } catch (err) {
+            return res.status(500).send(err)
         }
     }
 }
