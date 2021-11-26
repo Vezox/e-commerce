@@ -1,13 +1,50 @@
 <%- include('../partials/head.ejs') %>
 <script src="/js/jquery.js"></script>
+<style>
+
+    #product-store {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: 10px auto;
+        min-height: 80vh;
+    }
+
+    .action {
+        margin: 40px 10px 0 0;
+    }
+    .action div{
+        height: 50px;
+        width: 200px;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        padding: 5px;
+    }
+
+    .action div a {
+        text-decoration: none;
+    }
+</style>
 <%- include('../partials/nav.ejs') %>
 
-    <div id="product-store" style="margin: 10px auto;max-width: 1100px; min-height: 80vh;">
-        <h3 style="text-align: center">Đơn hàng đã hủy</h3>
-        <a href="/ordered/pending">Đơn hàng chờ duyệt</a>
-        <a href="/ordered/accept">Đơn hàng đang giao</a>
-        <a href="/ordered/received">Đơn hàng đã giao</a>
-        <table class="table">
+<h4 style="text-align: center; margin-top: 20px;">Sản phẩm đã giao</h4>
+    <div id="product-store">
+        <div class="action">
+            <div>
+                <a href="/ordered/pending">Đơn hàng chờ duyệt</a>
+            </div>
+            <div>
+                <a href="/ordered/accept">Đơn hàng đang giao</a>
+            </div>
+            <div>
+                <a href="/ordered/reject">Đơn hàng đã hủy</a>
+            </div>
+            <div>
+                <a href="/ordered/received">Đơn hàng đã giao</a>
+            </div>
+        </div>
+        <table class="table" style="max-width: 1100px;">
             <thead>
               <tr>
                 <th scope="col">Ảnh bìa</th>
