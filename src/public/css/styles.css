@@ -329,30 +329,46 @@ footer {
     outline: none;
     box-shadow: 1px 5px 15px rgba(0, 0, 0, 0.1); }
 
-#product-store a {
-  font-weight: 600;
-  margin: 20px 20px 20px 5px; }
-
-#product-store table {
+#product-store {
+  display: flex;
+  justify-content: center;
   width: 100%;
-  margin-top: 10px; }
-  #product-store table td {
-    height: 100px;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: wrap; }
-    #product-store table td a {
-      margin: 0; }
-    #product-store table td img {
-      height: 100%;
-      width: 80%;
-      object-fit: cover; }
-    #product-store table td button {
-      min-width: 60px;
-      margin-bottom: 10px;
-      border-radius: 4px;
-      transition: all 0.2s ease-in-out; }
+  margin: 10px auto;
+  min-height: 80vh; }
+  #product-store .action {
+    margin: 40px 10px 0 0; }
+    #product-store .action div {
+      height: 50px;
+      width: 200px;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      padding: 5px; }
+      #product-store .action div a {
+        text-decoration: none; }
+  #product-store a {
+    font-weight: 600;
+    margin: 20px 20px 20px 5px; }
+  #product-store table {
+    max-width: 1100px;
+    margin-top: 10px; }
+    #product-store table td {
+      height: 100px;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: wrap; }
+      #product-store table td a {
+        margin: 0; }
+      #product-store table td img {
+        height: 100%;
+        width: 80%;
+        object-fit: cover; }
+      #product-store table td button {
+        min-width: 60px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        transition: all 0.2s ease-in-out; }
 
 #details {
   max-width: 1100px;

@@ -2,10 +2,19 @@
    
 <%- include('../partials/nav.ejs') %>
 
-    <div id="product-store" style="margin: 10px auto;max-width: 1100px; min-height: 80vh;">
-        <h3 style="text-align: center">Sản phẩm Bị khóa</h3>
-        <a href="/store/product">Kho</a>
-        <a href="/store/product/pending">Sản phẩm chờ duyệt</a>
+<h4 style="text-align: center; margin-top: 20px;">Sản phẩm bị khóa</h4>
+    <div id="product-store">
+        <div class="action">
+          <div>
+            <a href="/store/product">Kho</a>
+          </div>
+          <div>
+            <a href="/store/product/pending">Sản phẩm chờ duyệt</a>
+          </div>
+          <div>
+            <a href="/store/product/block">Sản phẩm bị khóa</a>
+          </div>
+        </div>
         <table class="table">
             <thead>
               <tr>
