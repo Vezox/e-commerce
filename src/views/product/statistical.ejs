@@ -3,6 +3,12 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <%- include('../partials/nav.ejs') %>
 
+<div id="loading" style="width: 100%; height: 80vh;display: flex; justify-content: center; align-items: center;">
+    <div class="spinner-border text-info" role="status" >
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
 <div style="max-width: 1250px; margin: 20px auto 80px;">
     <canvas id="chart"></canvas>
 </div>
@@ -24,6 +30,10 @@
             url: '/store/data-statistical',
             type: 'GET',
             success: data => {
+                // remove loading animation
+                $('#loading').remove();
+
+
                 const revenueData = data.orders.reduce((acc, cur) => {
                     const date = new Date(cur.createdAt).getDate()
                     return acc.set(date, (acc.get(date) || 0) + cur.price * cur.quantity)
