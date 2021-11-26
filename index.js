@@ -5,7 +5,7 @@ const dotenv = require('dotenv')
 
 
 const routers = require('./src/routers')
-const dataBase = require('./src/configs/dataBase.js')
+const dataBase = require('./src/configs/dataBase')
 
 const app = express()
 
