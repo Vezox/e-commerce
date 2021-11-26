@@ -1,0 +1,150 @@
+<%- include('../partials/head.ejs') %>
+<script src="/js/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<%- include('../partials/nav.ejs') %>
+
+<div style="max-width: 1250px; margin: 20px auto 80px;">
+    <canvas id="chart"></canvas>
+</div>
+
+<div style="max-width: 1350px; margin: 20px auto 60px; display: flex; justify-content: space-between;">
+    <div style="width: 840px">
+        <canvas id="chart1"></canvas>
+    </div>
+    <div style="width: 440px">
+        <canvas id="chart2"></canvas>
+    </div>
+</div>
+
+
+<%- include('../partials/footer.ejs') %>
+<script>
+    window.onload = () => {
+        $.ajax({
+            url: '/store/data-statistical',
+            type: 'GET',
+            success: data => {
+                const revenueData = data.orders.reduce((acc, cur) => {
+                    const date = new Date(cur.createdAt).getDate()
+                    return acc.set(date, (acc.get(date) || 0) + cur.price * cur.quantity)
+                }, new Map())
+
+                chartDraw(revenueData, 'chart', 'bar', 'Thống kê doanh thu trong 30 ngày gần nhất')
+
+                const turnoverData = data.orders.reduce((acc, cur) => {
+                    const date = new Date(cur.createdAt).getDate()
+                    return acc.set(date, (acc.get(date) || 0) + cur.quantity)
+                }, new Map())
+
+                chartDraw(turnoverData, 'chart1', 'line', 'Thống kê doanh số trong 30 ngày gần nhất')
+
+                // draw function
+                function chartDraw(data, id, type, label) {
+                    const labels = []
+                    const dataChart = []
+
+
+                    const today = new Date().getTime()
+                    for (let i = 0; i < 30; i++) {
+                        const date = new Date(today - i * 24 * 60 * 60 * 1000)
+                        dataChart.unshift(data.get(date.getDate()) || 0)
+                        labels.unshift(date.getDate() + '/' + (date.getMonth() + 1))
+                    }
+
+                    const ctx = document.getElementById(id).getContext('2d')
+                    const myChart = new Chart(ctx, {
+                        type: type,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: dataChart,
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    Chart.defaults.font.size = 12
+                }
+
+                const ProductData = data.orders.reduce((acc, cur) => {
+                    return acc.set(cur.productName, (acc.get(cur.productName) || 0) + cur.quantity)
+                }, new Map())
+
+                const sortProductData = [...ProductData.entries()].sort((a, b) => b[1] - a[1])
+                if(sortProductData.length > 5) {
+                    sortProductData.length = 5
+                }
+                const hotProductData = new Map(sortProductData)
+
+                const ctx = document.getElementById('chart2').getContext('2d')
+                    const myChart = new Chart(ctx, {
+                        type: 'polarArea',
+                        data: {
+                            labels: [...hotProductData.keys()],
+                            datasets: [{
+                                data: [...hotProductData.values()],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.3)',
+                                    'rgba(54, 162, 235, 0.3)',
+                                    'rgba(255, 206, 86, 0.3)',
+                                    'rgba(75, 192, 192, 0.3)',
+                                    'rgba(153, 102, 255, 0.3)',
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                ],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        // This more specific font property overrides the global property
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    })
+            },
+
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
+</script>

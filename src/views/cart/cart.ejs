@@ -252,7 +252,7 @@
 			return
 		}
 		const discountCode = isValidCode ? document.querySelector('#discount-code').value : ''
-		const url = '/my/order/checkout/?cartProductIds=' + cartProductIds.join(',') + '&code=' + discountCode
+		const url = '/ordered/checkout/?cartProductIds=' + cartProductIds.join(',') + '&code=' + discountCode
 		window.location.href = url
 	}
 

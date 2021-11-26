@@ -2,9 +2,6 @@ const Router = require('express').Router()
 const MyController = require('../controllers/MyController')
 const OrderController = require('../controllers/OrderController')
 
-Router.get('/order/checkout', MyController.checkOut)
-
-Router.get('/order/confirm', MyController.orderConfirm)
 
 Router.get('/password-change', MyController.getPasswordChange)
 

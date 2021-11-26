@@ -489,14 +489,16 @@ footer {
           color: #c4c3c3; }
       #reivews .reviews-list .review-item .content {
         font-size: 16px;
-        margin-left: 30px; }
+        margin-left: 30px;
+        margin-bottom: 0; }
       #reivews .reviews-list .review-item .img {
         width: 100%;
-        height: 100px;
-        margin-left: 30px; }
+        max-height: 100px;
+        margin-left: 30px;
+        margin-top: 10px; }
         #reivews .reviews-list .review-item .img img {
           width: auto;
-          height: 100%;
+          max-height: 100px;
           object-fit: cover; }
 
 .login-register {

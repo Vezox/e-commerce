@@ -18,4 +18,8 @@ Router.post('/product/edit/:slug', ProductController.updateProduct)
 
 Router.get('/ordered', OrderController.getOrder)
 
+Router.get('/statistical', OrderController.getStatistical)
+
+Router.get('/data-statistical', OrderController.getDataStatistical)
+
 module.exports = Router

@@ -3,6 +3,8 @@ const cloudinary = require('cloudinary').v2
 const Order = require('../models/Order')
 const Product = require('../models/Product')
 const Account = require('../models/Account')
+const Cart = require('../models/Cart')
+const Address = require('../models/Address')
 
 cloudinary.config({
     cloud_name: 'lazapee',
@@ -11,6 +13,97 @@ cloudinary.config({
 })
 
 class OrderController {
+
+    checkOut(req, res) {
+        const token = req.cookies.token
+        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        const cartProductIds = req.query.cartProductIds.split(',')
+        const code = req.query.code.trim()
+        Promise.all([
+            Cart.find({ _id: { $in: cartProductIds } }, { productId: 1, quantity: 1 }),
+            Address.find({ userId }),
+            code ? Code.findOne({ code: code }) : null
+        ]).then(async ([cartProducts, address, code]) => {
+            if (cartProductIds.length !== cartProducts.length) {
+                return res.status(400).json({
+                    message: 'Invalid cart product id'
+                })
+            }
+            const productIds = cartProducts.map(product => product.productId)
+            const products = await Product.find({ _id: { $in: productIds } }, {
+                productName: 1,
+                price: 1,
+                coverImg: 1,
+                discount: 1,
+                slug: 1
+            })
+            const checkOutProducts = cartProducts.map(cartProduct => {
+                let product = products.find(product => product._id == cartProduct.productId)
+                product['quantity'] = cartProduct.quantity
+                product['productId'] = product._id
+                product._id = cartProduct._id
+                return product
+            })
+            return res.render('order/checkOut', { checkOutProducts, address, code })
+
+
+        }).catch(err => {
+            res.sendStatus(500)
+        })
+    }
+
+    orderConfirm(req, res) {
+        const token = req.cookies.token
+        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        const cartProductIds = req.query.cartProductIds.split(',')
+        const addressId = req.query.addressId
+        const code = req.query.code.trim()
+        Promise.all([
+            Cart.find({ _id: { $in: cartProductIds } }, { productId: 1, quantity: 1 }),
+            Address.findById(addressId),
+            code ? Code.findOne({ code: code }) : null
+        ]).then(async ([cartProducts, address, code]) => {
+            if (!address) {
+                return res.status(400).json({
+                    message: 'Invalid address'
+                })
+            }
+            if (cartProductIds.length !== cartProducts.length) {
+                return res.status(400).json({
+                    message: 'Invalid cart product id'
+                })
+            }
+            const productIds = cartProducts.map(product => product.productId)
+            const products = await Product.find({ _id: { $in: productIds } }, {
+                price: 1,
+                discount: 1,
+                coverImg: 1,
+                slug: 1,
+                productName: 1
+            })
+            const orderProducts = []
+            for (let cartProduct of cartProducts) {
+                const product = products.find(product => product._id == cartProduct.productId)
+                let orderProduct = {
+                    productId: cartProduct.productId,
+                    price: product.price,
+                    discount: product.discount + code ? code.discount : 0,
+                    coverImg: product.coverImg,
+                    slug: product.slug,
+                    productName: product.productName,
+                    quantity: cartProduct.quantity,
+                    addressId,
+                    userId,
+                }
+                orderProducts.push(orderProduct)
+            }
+            await Order.insertMany(orderProducts)
+            await Cart.deleteMany({ _id: { $in: cartProductIds } })
+            return res.redirect('/my/ordered')
+        }).catch(err => {
+            res.status(500).json({ err })
+        })
+    }
 
     async getOrder(req, res) {
         try {
@@ -104,7 +197,14 @@ class OrderController {
             const token = req.cookies.token
             const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
             const orderId = req.query.orderId
-            await Order.updateOne({ _id: orderId, userId, status: 'Đang giao' }, { status: 'Đã nhận', isReviewed: false })
+            await Order.updateOne({
+                _id: orderId,
+                userId,
+                status: 'Đang giao'
+            }, {
+                status: 'Đã nhận',
+                isReviewed: false
+            })
             res.sendStatus(200)
         } catch (error) {
             res.status(500)
@@ -118,8 +218,12 @@ class OrderController {
             const account = await Account.findById(userId, { firstName: 1 })
             const orderId = req.params.orderId
             const content = req.body
-            const image = req.files.image
-            const imageUrl = await cloudinary.uploader.upload(image.tempFilePath)
+            const file = req.files?.image
+            let image = null
+            if (file) {
+                const imageUrl = await cloudinary.uploader.upload(file.tempFilePath)
+                image = imageUrl.url
+            }
             await Order.updateOne({
                 _id: orderId,
                 userId,
@@ -129,7 +233,7 @@ class OrderController {
                 review: {
                     userName: account.firstName,
                     content: content.content,
-                    image: imageUrl.url
+                    image
                 },
                 isReviewed: true
             })
@@ -137,6 +241,31 @@ class OrderController {
         } catch (error) {
             res.status(500)
         }
+    }
+
+    getStatistical(req, res) {
+        res.render('product/statistical')
+    }
+
+    async getDataStatistical(req, res) {
+        const token = req.cookies.token
+        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        const product = await Product.find({ userId }, { _id: 1 })
+        const productIds = product.map(item => item._id)
+        const orders = await Order.find({
+            productId: { $in: productIds },
+            createdAt: {
+                $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toString(),
+                $lt: new Date(Date.now()).toString()
+            },
+            status: 'Đã nhận'
+        }, {
+            productName: 1,
+            quantity: 1,
+            price: 1,
+            createdAt: 1,
+        })
+        res.json({ orders })
     }
 }
 

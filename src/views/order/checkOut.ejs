@@ -8,15 +8,19 @@
 		<div class="cart-container">
 			<div class="form-address" style="padding: 20px 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
 				<div style="margin-bottom: 10px; font-size: 1.2rem; color: #4dabf7;">Địa chỉ nhận hàng</div>
-				<% address.forEach((item, index)=> { %>
-					<div class="form-check" style="border-bottom: 1px solid #ccc;padding: 20px 0; font-size: 1.1rem;">
-						<input class="form-check-input" type="radio" name="address" id="address<%= index %>" style="margin-right: 10px; margin-left: 0;" value="<%= item._id %>">
-						<label class="form-check-label" for="address<%= index %>">
-							<b><%= item.fullName + ' - ' +  item.phone %> </b> &emsp; <%= item.street + ', ' + item.village + ', ' + item.district + ', ' + item.province %> 
-						
-						</label>
-					</div>
-				<% }) %> 
+				<% if(address.length > 0) { %> 
+					<% address.forEach((item, index)=> { %>
+						<div class="form-check" style="border-bottom: 1px solid #ccc;padding: 20px 0; font-size: 1.1rem;">
+							<input class="form-check-input" type="radio" name="address" id="address<%= index %>" style="margin-right: 10px; margin-left: 0;" value="<%= item._id %>">
+							<label class="form-check-label" for="address<%= index %>">
+								<b><%= item.fullName + ' - ' +  item.phone %> </b> &emsp; <%= item.street + ', ' + item.village + ', ' + item.district + ', ' + item.province %> 
+							
+							</label>
+						</div>
+					<% }) %> 
+				<% } else {%> 
+					<a href="/my/address">Chưa có địa chỉ , ấn để thêm</a>
+				<% } %> 
 			</div>
 			<div class="cart-header">
 				<div class="all-check">
@@ -107,7 +111,7 @@
 <script>
 	//checked address
 	const radioAddress = document.querySelectorAll('[name="address"]')
-	radioAddress[0].checked = true
+	if(radioAddress.length > 0) radioAddress[0].checked = true
 
 	// convert price to number
 	const prices = document.querySelectorAll('.price')
@@ -136,10 +140,15 @@
 	const btnOrder = document.querySelector('#btn-order')
 	const productItem = document.querySelectorAll('.cart-item')
 	btnOrder.onclick = () => {
-		const addressId = document.querySelector('[name="address"]:checked').value
-		const cartProductIds = Array.from(productItem).map(product => product.getAttribute('data-id'))
-		const code = document.querySelector('#code').getAttribute('data-code')
-		const url = '/my/order/confirm/?cartProductIds=' + cartProductIds.join(',') + '&addressId=' + addressId + '&code=' + code
-		window.location.href = url
+		const address = document.querySelector('[name="address"]:checked')
+		if(address) {
+			const addressId = address.value
+			const cartProductIds = Array.from(productItem).map(product => product.getAttribute('data-id'))
+			const code = document.querySelector('#code').getAttribute('data-code')
+			const url = '/ordered/confirm/?cartProductIds=' + cartProductIds.join(',') + '&addressId=' + addressId + '&code=' + code
+			window.location.href = url
+		} else {
+			alert('Vui lòng thêm địa chỉ giao hàng')
+		}
 	}
 </script>
