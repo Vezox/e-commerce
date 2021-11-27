@@ -16,6 +16,8 @@ Router.get('/product/edit/:slug', ProductController.getEditProduct)
 
 Router.post('/product/edit/:slug', ProductController.updateProduct)
 
+Router.delete('/product/delete/:id', ProductController.deleteProduct)
+
 Router.get('/ordered', OrderController.getOrder)
 
 Router.get('/statistical', OrderController.getStatistical)

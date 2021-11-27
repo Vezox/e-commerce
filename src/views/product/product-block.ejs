@@ -1,50 +1,128 @@
 <%- include('../partials/head.ejs') %>
-   
-<%- include('../partials/nav.ejs') %>
 
-<h4 style="text-align: center; margin-top: 20px;">Sản phẩm bị khóa</h4>
+  <%- include('../partials/nav.ejs') %>
+
+    <h4 style="text-align: center; margin-top: 20px;">Sản phẩm bị khóa</h4>
     <div id="product-store">
-        <div class="action">
-          <div>
-            <a href="/store/product">Kho</a>
-          </div>
-          <div>
-            <a href="/store/product/pending">Sản phẩm chờ duyệt</a>
-          </div>
-          <div>
-            <a href="/store/product/block">Sản phẩm bị khóa</a>
-          </div>
+      <div class="action">
+        <div>
+          <a href="/store/product">Kho</a>
         </div>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Ảnh bìa</th>
-                <th scope="col">Tên sản phẩm</th>
-                <th scope="col">Giá bán</th>
-                <th scope="col">Tồn kho</th>
-                <th scope="col">Đã bán</th>
-                <th scope="col">Tùy chọn</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% products.forEach(product => { %>
-                <tr>
-                    <td style="width: 100px;">
-                      <img src="<%= product.coverImg %>" alt="">
-                    </td>
-                    <td><%= product.productName %></td>
-                    <td><%= product.price * ( 100 - product.discount) / 100  %></td>
-                    <td><%= product.quantity%></td>
-                    <td><%= product.sold%></td>
-                    <td>
-                        <a href="/product/details/<%= product.slug %>.<%= product._id %>"><button type="button" class="btn btn-primary">Xem</button></a>
-                        <a href="/store/product/edit/<%= product.slug %>"><button type="button" class="btn btn-success">Sửa</button></a>
-                        <button type="button" class="btn btn-danger">Xóa</button>
-                    </td>
-                </tr>
-                <% }) %>  
-            </tbody>
-          </table>
+        <div>
+          <a href="/store/product/pending">Sản phẩm chờ duyệt</a>
+        </div>
+        <div>
+          <a href="/store/product/block">Sản phẩm bị khóa</a>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Ảnh bìa</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Giá bán</th>
+            <th scope="col">Tồn kho</th>
+            <th scope="col">Đã bán</th>
+            <th scope="col">Tùy chọn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(product=> { %>
+            <tr id="<%= product._id %>">
+              <td style="width: 100px;">
+                <img src="<%= product.coverImg %>" alt="">
+              </td>
+              <td>
+                <%= product.productName %>
+              </td>
+              <td>
+                <%= product.price * ( 100 - product.discount) / 100 %>
+              </td>
+              <td>
+                <%= product.quantity%>
+              </td>
+              <td>
+                <%= product.sold%>
+              </td>
+              <td>
+                <a href="/product/details/<%= product.slug %>.<%= product._id %>"><button type="button"
+                    class="btn btn-primary">Xem</button></a>
+                <a href="/store/product/edit/<%= product.slug %>"><button type="button"
+                    class="btn btn-success">Sửa</button></a>
+                <button data-id="<%= product._id %>" type="button" class="btn btn-danger btn-del" data-bs-toggle="modal"
+                  data-bs-target="#delete-product">
+                  Xóa
+                </button>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="delete-product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Xóa sản phẩm</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Xác nhận xóa sản phẩm này? Sẽ không thể khôi phục!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-close">Đóng</button>
+            <button type="button" class="btn btn-primary" id="btn-accept">Xác nhận</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="toast"></div>
+
     <%- include('../partials/footer.ejs') %>
+
+      <script src="/js/toast.js"></script>
+      <script src="/js/jquery.js"></script>
+
+      <script>
+        const btnDel = document.querySelectorAll('.btn-del')
+        const btnAccept = document.querySelector('#btn-accept')
+        const modalFooter = document.querySelector('.modal-footer')
+        btnDel.forEach(btn => {
+          btn.addEventListener('click', e => {
+            const id = e.target.getAttribute('data-id')
+            btnAccept.onclick = () => {
+              modalFooter.innerHTML = `
+              <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button>
+              `
+              $.ajax({
+                url: `/store/product/delete/${id}`,
+                type: 'DELETE',
+                success: result => {
+                  if (result == "OK") {
+                    modalFooter.innerHTML = `
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-close">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="btn-accept">Xác nhận</button>
+                    `
+                    document.querySelector('#btn-close').click()
+                    toast({
+                      title: 'Thành công',
+                      message: 'Đã xóa sản phẩm',
+                      type: 'success',
+                      duration: 1500
+                    })
+                    $('#' + id).remove()
+                  }
+                },
+                error: err => {
+                  console.log(err)
+                }
+              })
+            }
+          })
+        })
+      </script>

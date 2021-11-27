@@ -138,6 +138,7 @@ class OrderController {
                 userId: 0,
                 status: 0,
             })
+            orders.reverse()
             res.render(url, { orders })
         } catch (error) {
             res.status(500)

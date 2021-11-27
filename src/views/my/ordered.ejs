@@ -101,11 +101,18 @@
     const modalReview = document.querySelector('#review-modal')
     const btnSubmitReview = document.querySelector('#btn-submit-review')
     const btnReview = document.querySelectorAll('.review')
+    const modalFooter = document.querySelector('.modal-footer')
     btnReview.forEach(btn => {
         const orderId = btn.parentElement.getAttribute('data-id')
         btn.addEventListener('click', e => {
             const id = btn.parentElement.getAttribute('data-id')
             btnSubmitReview.addEventListener('click', e => {
+                modalFooter.innerHTML = `
+                <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+                </button>
+                `
                 const form = document.querySelector('#review-form')
                 form.method = 'POST'
                 form.action = '/my/ordered/review/' + orderId

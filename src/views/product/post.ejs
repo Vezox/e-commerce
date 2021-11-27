@@ -53,8 +53,25 @@
                 <span class="input-group-text">Mô tả sản phẩm</span>
                 <textarea class="form-control" name="description" placeholder required></textarea>
               </div>
-            <button type="submit" class="btn btn-primary mt-3" style="width:100%">Thêm sản phẩm</button>
+              <div class="submit">
+                  <button type="submit" class="btn btn-primary mt-3" style="width:100%" id="btn-submit">Thêm sản phẩm</button>
+              </div>
         </form>
     </div>
 
     <%- include('../partials/footer.ejs') %>
+
+    <script>
+        const submit = document.querySelector('.submit')
+        const btnSubmit = document.getElementById('btn-submit')
+        const form = document.querySelector('form')
+        btnSubmit.addEventListener('click', () => {
+            form.submit()
+            submit.innerHTML = `
+                <button class="btn btn-primary mt-3" type="submit" disabled style="width:100%">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+                </button>
+                `
+        })
+    </script>

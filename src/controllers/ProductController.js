@@ -129,6 +129,16 @@ class ProductController {
         })
     }
 
+    deleteProduct(req, res) {
+        const token = req.cookies.token
+        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        const id = req.params.id
+        Product.deleteOne({ _id: id, userId }, error => {
+            if (error) return res.sendStatus(error)
+            res.sendStatus(200)
+        })
+    }
+
     async getDetailsProduct(req, res) {
         const slug = req.params.slug.split('.')
         const name = slug[0]
