@@ -17,5 +17,4 @@ Router.get('/checkout', CartController.checkOut)
 Router.get('/confirm', CartController.orderConfirm)
 
 
-
 module.exports = Router
