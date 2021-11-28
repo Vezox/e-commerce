@@ -30,13 +30,16 @@ window.onclick = (e) => {
     }
 }
 
+let isLoaded = true
 input.onkeyup = () => {
     let text = input.value
-    if (text != '') {
+    if (text != ''&& isLoaded) {
+        isLoaded = false
         $.ajax({
             url: '/search-products/?search=' + text,
             type: 'GET',
             success: (data) => {
+                isLoaded = true
                 let products = data.products
                 if (products.length > 0) {
                     const html = products.reduce((acc, product) => {

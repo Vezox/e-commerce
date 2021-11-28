@@ -120,8 +120,11 @@
 
 
 	// add event listener to plus and minus button
+	let isLoaded = true
 	document.querySelectorAll('.btn-quantity').forEach(btn => {
 		btn.onclick = e => {
+			if(!isLoaded) return
+			isLoaded = false
 			const id = e.target.getAttribute('data-id')
 			let quantity = $(`#input-${id}`).val() - 0
 			if (e.target.classList.contains('plus')) {
@@ -133,6 +136,7 @@
 				url: '/cart/change/?id=' + id + '&quantity=' + quantity,
 				type: 'GET',
 				success: data => {
+					isLoaded = true
 					if (data == 'OK') {
 						if (quantity > 0) {
 							$(`#input-${id}`).val(quantity)
