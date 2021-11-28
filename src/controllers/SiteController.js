@@ -1,4 +1,5 @@
 const Product = require('../models/Product')
+const Order = require('../models/Order')
 
 class SiteController {
     home(req, res) {
@@ -66,6 +67,22 @@ class SiteController {
             res.json({ products })
         }).limit(5)
     }
+
+    
+    async getDetailsProduct(req, res) {
+        const slug = req.params.slug.split('.')
+        const name = slug[0]
+        const id = slug[1]
+        Promise.all([
+            Product.findById(id),
+            Order.find({ productId: id, isReviewed: true }, { review: 1 })
+        ]).then(([product, reviews]) => {
+            res.render('site/details', { product, reviews })
+        }).catch(err => {
+            res.status(500)
+        })
+    }
+
 
 }
 

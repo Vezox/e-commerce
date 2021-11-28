@@ -13,5 +13,9 @@ Router.get('/register/success', AuthController.success)
 
 Router.get('/logout', AuthController.logout)
 
+Router.get('/password-change', AuthController.getPasswordChange)
+
+Router.post('/password-change', AuthController.verifyPasswordChange)
+
 
 module.exports =  Router

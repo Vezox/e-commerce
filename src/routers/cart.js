@@ -12,5 +12,10 @@ Router.get('/delete', CartController.deleteItem)
 
 Router.get('/code/apply-code', CodeController.applyCode)
 
+Router.get('/checkout', CartController.checkOut)
+
+Router.get('/confirm', CartController.orderConfirm)
+
+
 
 module.exports = Router

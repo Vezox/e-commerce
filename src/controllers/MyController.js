@@ -1,40 +1,16 @@
 const jwt = require('jsonwebtoken')
-const createHmac = require('create-hmac')
+const cloudinary = require('cloudinary').v2
 const Account = require('../models/Account')
 const Address = require('../models/Address')
 const Order = require('../models/Order')
 
+cloudinary.config({
+    cloud_name: 'lazapee',
+    api_key: '934919176775488',
+    api_secret: 'Fy30k9Qpk1bWiE889ZdeLnelkro'
+})
+
 class MyController {
-
-    getPasswordChange(req, res) {
-        res.render('my/password-change')
-    }
-
-    verifyPasswordChange(req, res) {
-        const token = req.cookies.token
-        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
-        const oldPassword = req.body.oldPassword
-        const newPassword = req.body.newPassword
-        Account.findById(userId, {
-            password: 1
-        }, (err, acc) => {
-            if (err) return res.status(401)
-            const hmac = createHmac('sha256', Buffer.from(process.env.HASH_KEY))
-            hmac.update(oldPassword)
-            let hashPass = hmac.digest("hex")
-            if (acc.password != hashPass) {
-                return res.json({ message: 'password' })
-            } else {
-                const hmac = createHmac('sha256', Buffer.from(process.env.HASH_KEY))
-                hmac.update(newPassword)
-                let hashPass = hmac.digest("hex")
-                Account.updateOne({ _id: userId }, { password: hashPass }, err => {
-                    if (err) return res.status(401)
-                    return res.json({ message: 'success' })
-                })
-            }
-        })
-    }
 
     async myAddress(req, res) {
         const token = req.cookies.token
@@ -85,6 +61,58 @@ class MyController {
             res.render('my/ordered', { orderDetail })
         } catch (err) {
             return res.status(401)
+        }
+    }
+
+    
+    async receivedOrder(req, res) {
+        try {
+            const token = req.cookies.token
+            const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+            const orderId = req.query.orderId
+            await Order.updateOne({
+                _id: orderId,
+                userId,
+                status: 'Đang giao'
+            }, {
+                status: 'Đã nhận',
+                isReviewed: false
+            })
+            res.sendStatus(200)
+        } catch (error) {
+            res.status(500)
+        }
+    }
+
+    async reviewOrder(req, res) {
+        try {
+            const token = req.cookies.token
+            const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+            const account = await Account.findById(userId, { firstName: 1 })
+            const orderId = req.params.orderId
+            const content = req.body
+            const file = req.files?.image
+            let image = null
+            if (file) {
+                const imageUrl = await cloudinary.uploader.upload(file.tempFilePath)
+                image = imageUrl.url
+            }
+            await Order.updateOne({
+                _id: orderId,
+                userId,
+                status: 'Đã nhận',
+                isReviewed: false
+            }, {
+                review: {
+                    userName: account.firstName,
+                    content: content.content,
+                    image
+                },
+                isReviewed: true
+            })
+            res.redirect('/my/ordered')
+        } catch (error) {
+            res.status(500)
         }
     }
 }

@@ -2,7 +2,6 @@ const siteRouter = require('./site')
 const storeRouter = require('./store')
 const authRouter = require('./auth')
 const cartRouter = require('./cart')
-const orderRouter = require('./order')
 const checkAuth = require('../middleware/checkAuth')
 const adminRouter = require('./admin')
 const myRouter = require('./my')
@@ -17,8 +16,6 @@ module.exports = app => {
     app.use('/store',checkAuth.checkUser, storeRouter)
 
     app.use('/cart',checkAuth.checkUser, cartRouter)
-
-    app.use('/ordered',checkAuth.checkUser, orderRouter)
 
     app.use('/admin', checkAuth.checkAdmin, adminRouter)
 

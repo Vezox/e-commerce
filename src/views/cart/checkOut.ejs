@@ -145,7 +145,7 @@
 			const addressId = address.value
 			const cartProductIds = Array.from(productItem).map(product => product.getAttribute('data-id'))
 			const code = document.querySelector('#code').getAttribute('data-code')
-			const url = '/ordered/confirm/?cartProductIds=' + cartProductIds.join(',') + '&addressId=' + addressId + '&code=' + code
+			const url = '/cart/confirm/?cartProductIds=' + cartProductIds.join(',') + '&addressId=' + addressId + '&code=' + code
 			window.location.href = url
 		} else {
 			alert('Vui lòng thêm địa chỉ giao hàng')

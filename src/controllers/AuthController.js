@@ -69,6 +69,36 @@ class AccountController {
     success(req, res) {
         res.render('auth/success')
     }
+
+    getPasswordChange(req, res) {
+        res.render('auth/password-change')
+    }
+
+    verifyPasswordChange(req, res) {
+        const token = req.cookies.token
+        const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        const oldPassword = req.body.oldPassword
+        const newPassword = req.body.newPassword
+        Account.findById(userId, {
+            password: 1
+        }, (err, acc) => {
+            if (err) return res.status(401)
+            const hmac = createHmac('sha256', Buffer.from(process.env.HASH_KEY))
+            hmac.update(oldPassword)
+            let hashPass = hmac.digest("hex")
+            if (acc.password != hashPass) {
+                return res.json({ message: 'password' })
+            } else {
+                const hmac = createHmac('sha256', Buffer.from(process.env.HASH_KEY))
+                hmac.update(newPassword)
+                let hashPass = hmac.digest("hex")
+                Account.updateOne({ _id: userId }, { password: hashPass }, err => {
+                    if (err) return res.status(401)
+                    return res.json({ message: 'success' })
+                })
+            }
+        })
+    }
 }
 
 module.exports = new AccountController

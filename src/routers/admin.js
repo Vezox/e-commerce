@@ -1,6 +1,9 @@
 const Router = require('express').Router()
 const AdminController = require('../controllers/AdminController')
 const CodeController = require('../controllers/CodeController')
+const AuthController = require('../controllers/AuthController')
+
+
 
 Router.get('/code', CodeController.storeCode)
 

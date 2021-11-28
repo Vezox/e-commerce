@@ -1,11 +1,5 @@
 const Router = require('express').Router()
 const MyController = require('../controllers/MyController')
-const OrderController = require('../controllers/OrderController')
-
-
-Router.get('/password-change', MyController.getPasswordChange)
-
-Router.post('/password-change', MyController.verifyPasswordChange)
 
 Router.get('/address', MyController.myAddress)
 
@@ -15,9 +9,9 @@ Router.get('/address/delete/:id', MyController.deleteAddress)
 
 Router.get('/ordered', MyController.ordered)
 
-Router.post('/ordered/review/:orderId', OrderController.reviewOrder)
+Router.patch('/ordered/received',MyController.receivedOrder )
 
-Router.patch('/ordered/received',OrderController.receivedOrder )
+Router.post('/ordered/review/:orderId', MyController.reviewOrder)
 
 
 module.exports = Router
