@@ -1,5 +1,8 @@
 const Cart = require('../models/Cart')
 const Product = require('../models/Product')
+const Address = require('../models/Address')
+const Code = require('../models/Code')
+const Order = require('../models/Order')
 const jwt = require('jsonwebtoken')
 
 class CartController {
@@ -174,7 +177,7 @@ class CartController {
             await Cart.deleteMany({ _id: { $in: cartProductIds } })
             return res.redirect('/my/ordered')
         }).catch(err => {
-            res.status(500).json({ err })
+            res.status(500).json({ err: err.message })
         })
     }
 }
