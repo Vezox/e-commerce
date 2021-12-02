@@ -39,14 +39,14 @@
                     return acc.set(date, (acc.get(date) || 0) + cur.price * cur.quantity)
                 }, new Map())
 
-                chartDraw(revenueData, 'chart', 'bar', 'Thống kê doanh thu trong 30 ngày gần nhất')
+                chartDraw(revenueData, 'chart', 'bar', 'Doanh thu trong 30 ngày gần nhất')
 
                 const turnoverData = data.orders.reduce((acc, cur) => {
                     const date = new Date(cur.createdAt).getDate()
                     return acc.set(date, (acc.get(date) || 0) + cur.quantity)
                 }, new Map())
 
-                chartDraw(turnoverData, 'chart1', 'line', 'Thống kê doanh số trong 30 ngày gần nhất')
+                chartDraw(turnoverData, 'chart1', 'line', 'Doanh số trong 30 ngày gần nhất')
 
                 // draw function
                 function chartDraw(data, id, type, label) {
@@ -108,31 +108,32 @@
                 }, new Map())
 
                 const sortProductData = [...ProductData.entries()].sort((a, b) => b[1] - a[1])
+                console.log(sortProductData.length)
                 if(sortProductData.length > 5) {
-                    sortProductData.length = 5
+                    let other = ['other', 0]
+                    const length = sortProductData.length
+                    for(let i = 5; i < length; i++) {
+                        other[1] += sortProductData.pop()[1]
+                    }
+                    sortProductData.push(other)
                 }
+
                 const hotProductData = new Map(sortProductData)
 
                 const ctx = document.getElementById('chart2').getContext('2d')
                     const myChart = new Chart(ctx, {
-                        type: 'polarArea',
+                        type: 'pie',
                         data: {
                             labels: [...hotProductData.keys()],
                             datasets: [{
                                 data: [...hotProductData.values()],
                                 backgroundColor: [
-                                    'rgba(255, 99, 132, 0.3)',
-                                    'rgba(54, 162, 235, 0.3)',
-                                    'rgba(255, 206, 86, 0.3)',
-                                    'rgba(75, 192, 192, 0.3)',
-                                    'rgba(153, 102, 255, 0.3)',
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 220, 86, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 140, 64, 1)',
+                                'rgba(108, 122, 137, 1)',
                                 ],
                                 borderWidth: 2
                             }]
