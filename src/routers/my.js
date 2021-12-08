@@ -7,7 +7,7 @@ Router.post('/address', MyController.createAddress)
 
 Router.get('/address/delete/:id', MyController.deleteAddress)
 
-Router.get('/ordered', MyController.ordered)
+Router.get('/ordered/:option', MyController.ordered)
 
 Router.patch('/ordered/received',MyController.receivedOrder )
 

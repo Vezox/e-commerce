@@ -12,9 +12,9 @@
         <p>Tên</p>
         <input class="input-register" type="text" name="firstName" id="firstName" placeholder="VD: Đức Thăng">
         <label for="firstName"></label>
-        <p>Tên đăng nhập</p>
-        <input class="input-register" type="text" name="username" id="username" placeholder="VD: thangTD123">
-        <label for="username"></label>
+        <p>Email</p>
+        <input class="input-register" type="email" name="email" id="email" placeholder="VD: email@gmail.com">
+        <label for="email"></label>
         <p>Mật khẩu</p>
         <input class="input-register" type="password" name="password" id="password" placeholder="VD: tD9@$5">
         <label for="password"></label>
@@ -34,46 +34,39 @@
     const inputs = document.querySelectorAll('.input-register')
     const firstName = document.getElementById('firstName')
     const lastName = document.getElementById('lastName')
-    const username = document.getElementById('username')
+    const email = document.getElementById('email')
     const password = document.getElementById('password')
     const passwordConfirm = document.getElementById('passwordConfirm')
     btn.onclick = () => {
-        let isValidated = false
-        const usernameRegex = /^[a-zA-Z0-9]+$/
+        let isValidatedEmail = false
+        let isValidatedPassword = false
+        const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/
 
         inputs.forEach(input => {
-            if(input.value.length == 0) {
+            if (input.value.length == 0) {
                 input.classList.add('err')
                 document.querySelector(`[for="${input.id}"]`).innerText = 'Vui lòng nhập trường này'
             } else {
-                // check username
-                if(username.value.length < 5) {
-                    username.classList.add('err')
-                    document.querySelector(`[for="username"]`).innerText = 'Tên đăng nhập tối thiểu 6 kí tự'
-                    isValidated = false
-                } else if(!username.value.match(usernameRegex)) {
-                    username.classList.add('err')
-                    document.querySelector(`[for="username"]`).innerText = 'Tên đăng nhập phải thuộc a-z, A-Z, 0-9'
-                    isValidated = false
+                // check email
+                if (!email.value.match(emailRegex)) {
+                    email.classList.add('err')
+                    document.querySelector(`[for="email"]`).innerText = 'Email không hợp lệ'
                 } else {
-                    isValidated = true
+                    isValidatedEmail = true
                 }
                 // check password
-                if(password.value.length < 6) {
+                if (password.value.length < 6) {
                     password.classList.add('err')
                     document.querySelector(`[for="password"]`).innerText = 'Mật khẩu tối thiểu 6 kí tự'
-                    isValidated = false
-                } else if(!password.value.match(passwordRegex)) {
+                } else if (!password.value.match(passwordRegex)) {
                     password.classList.add('err')
                     document.querySelector(`[for="password"]`).innerText = 'Mật khẩu phải bao gồm chữ hoa, chữ thường, số và kí tự đặc biệt'
-                    isValidated = false
-                } else if(password.value != passwordConfirm.value) {
+                } else if (password.value != passwordConfirm.value) {
                     passwordConfirm.classList.add('err')
                     document.querySelector(`[for="passwordConfirm"]`).innerText = 'Mật khẩu không khớp'
-                    isValidated = false
                 } else {
-                    isValidated = true
+                    isValidatedPassword = true
                 }
             }
             input.onkeyup = () => {
@@ -82,22 +75,29 @@
             }
         })
 
-        if(isValidated) {
+        if (isValidatedPassword && isValidatedEmail) {
+            btn.innerHTML = `
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+            `
+            const data = {
+                firstName: firstName.value,
+                lastName: lastName.value,
+                email: email.value,
+                password: password.value
+            }
             $.ajax({
                 url: '/auth/register',
                 type: 'POST',
-                data: {
-                    firstName: firstName.value,
-                    lastName: lastName.value,
-                    username: username.value,
-                    password: password.value
-                },
-                success: (data) => {
-                    if(data.message == 'username') {
-                        username.classList.add('err')
-                        document.querySelector(`[for="username"]`).innerText = 'Tên đăng nhập đã tồn tại'
-                    } else if(data.message == 'success'){
-                        window.location.href = '/auth/register/success'
+                data,
+                success: (res) => {
+                    if (res.message == 'email') {
+                        email.classList.add('err')
+                        document.querySelector(`[for="email"]`).innerText = 'Email đã tồn tại'
+                        btn.innerHTML = ` Đăng kí`
+                    } else if (res.message == 'success') {
+                        localStorage.setItem('email-account', data.email)
+                        window.location.href = '/auth/register/verify'
                     }
                 },
                 error: (error) => {

@@ -50,8 +50,26 @@ class MyController {
     async ordered(req, res) {
         const token = req.cookies.token
         const userId = jwt.verify(token, process.env.JWT_TOKEN_SECRET)['_id']
+        const option = req.params.option
+        const find = { userId }
+        switch (option) {
+            case 'pending':
+                find.status = 'Đang chờ'
+                break
+            case 'delivering':
+                find.status = 'Đang giao'
+                break
+            case 'delivered':
+                find.status = 'Đã nhận'
+                break
+            case 'cancelled':
+                find.status = 'Đã hủy'
+                break
+            default:
+                break
+        }
         try {
-            const orders = await Order.find({ userId }, { review: 0 })
+            const orders = await Order.find(find, { review: 0 })
             const addressId = orders.map(order => order.addressId)
             const addressList = await Address.find({ _id: { $in: addressId } })
             const orderDetail = orders.map(order => {
@@ -64,7 +82,7 @@ class MyController {
         }
     }
 
-    
+
     async receivedOrder(req, res) {
         try {
             const token = req.cookies.token

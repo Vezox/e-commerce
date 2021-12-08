@@ -5,6 +5,13 @@
 <%- include('../partials/nav.ejs') %>
 
 <div id="ordered">
+    <div class="ordered-header">
+        <div><a id="all" href="/my/ordered/all">Tất cả</a></div>
+        <div><a id="pending" href="/my/ordered/pending">Đang chờ</a></div>
+        <div><a id="delivering" href="/my/ordered/delivering">Đang giao</a></div>
+        <div><a id="delivered" href="/my/ordered/delivered">Đã nhận</a></div>
+        <div><a id="cancelled" href="/my/ordered/cancelled">Bị hủy</a></div>
+    </div>
     <div class="ordered-list">
         <% orderDetail.forEach(order => { %>
             <div class="ordered-item" id="<%= order._id %>">
@@ -82,7 +89,10 @@
 <%- include('../partials/footer.ejs') %>
 
 <script>
-    (() => {
+    const url = window.location.href.split('/')
+    const id = url[url.length - 1]
+    document.getElementById(id).classList.add('current')
+    ;(() => {
         const prices = document.querySelectorAll('.price')
         prices.forEach(price => {
             price.innerText = (price.getAttribute('data-price') - 0).toLocaleString() + ' đ'
@@ -133,6 +143,10 @@
                 method: 'PATCH',
                 success: res => {
                     if (res == "OK") {
+                        if(id == 'delivering') {
+                            document.getElementById(orderId).remove()
+                            return
+                        }
                         document.getElementById(orderId).querySelector('.text-blue').textContent = 'Đã nhận'
                         btn.disabled = true
                         btn.innerHTML = 'Đã nhận hàng <i class="fa-solid fa-check"></i>'

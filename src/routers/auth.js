@@ -9,7 +9,9 @@ Router.get('/register', AuthController.register)
 
 Router.post('/register', AuthController.createAccount)
 
-Router.get('/register/success', AuthController.success)
+Router.get('/register/verify', AuthController.getVerifyAccount)
+
+Router.post('/register/verify', AuthController.verifyAccount)
 
 Router.get('/logout', AuthController.logout)
 

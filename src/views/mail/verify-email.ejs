@@ -1,0 +1,94 @@
+<%- include('../partials/head.ejs') %>
+
+<%- include('../partials/nav.ejs') %>
+
+<div class="login-register">
+    <div class="login-register-form">
+        <div class="title">Xác nhận</div>
+        <p>Nhập mã xác nhận trong email</p>
+        <input class="input-register" type="text" name="code" id="code">
+        <label for="code"></label>
+        <p>Mật khẩu</p>
+        <input class="input-register" class="input-register" type="password" name="password" id="password" placeholder="VD: tD9@$5">
+        <label for="password"></label>
+        <p>Nhập lại mật khẩu</p>
+        <input class="input-register" class="input-register" type="password" name="passwordConfirm" id="passwordConfirm">
+        <label for="passwordConfirm"></label>
+        <div id="btn"><button id="btn-submit" class="btn">Xác nhận</button></div>
+    </div>
+</div>
+<div id="toast"></div>
+
+<%- include('../partials/footer.ejs') %>
+<script src="/js/jquery.js"></script>
+<script src="/js/toast.js"></script>
+<script>
+    const inputs = document.querySelectorAll('.input-register')
+    const btnSubmit = document.getElementById('btn-submit')
+    const code = document.getElementById('code')
+    const password = document.getElementById('password')
+    const passwordConfirm = document.getElementById('passwordConfirm')
+    
+    btnSubmit.addEventListener('click', function () {
+        let check = true
+        inputs.forEach(input => {
+            if(input.value.length == 0) {
+                input.classList.add('err')
+                document.querySelector(`[for="${input.id}"]`).innerText = 'Vui lòng nhập trường này'
+                check = false
+            }
+        })
+        if(!check) return
+        if (!password.value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/)) {
+            password.classList.add('err')
+            document.querySelector(`[for="password"]`).innerText = 'Mật khẩu bao gồm chữ hoa, chữ thường, số và kí tự đặc biệt'
+        } else if (password.value !== passwordConfirm.value) {
+            passwordConfirm.classList.add('err')
+            document.querySelector(`[for="passwordConfirm"]`).innerText = 'Mật khẩu không trùng khớp'
+        } else {
+            btnSubmit.innerHTML = `
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+            `
+            const url = '/mail/verify-email'
+            const type = 'POST'
+            const email = localStorage.getItem('email-reset')
+            const data = {
+                email: email,
+                code: code.value,
+                password: password.value
+            }
+            $.ajax({
+                url, type, data,
+                success: (res) => {
+                    if (res.status === 'success') {
+                        localStorage.setItem('firstName', res.firstName)
+                        localStorage.setItem('avatar', res.avatar)
+                        toast({
+                            title: 'Thành công',
+                            message: 'Thay đổi mật khẩu thành công',
+                            type: 'success',
+                            duration: 1500
+                        })
+                        setTimeout(() => {
+                            window.location.href = '/'
+                        }, 1000)
+                    } else {
+                        code.classList.add('err')
+                        document.querySelector(`[for="code"]`).innerText = 'Mã xác nhận không chính xác'
+                        btnSubmit.innerHTML = `Xác nhận`
+                    }
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+            })
+        }
+    })
+    inputs.forEach(input => {
+        input.onkeyup = (evt) => {
+            evt.target.classList.remove('err')
+            document.querySelector(`[for="${evt.target.id}"]`).innerText = ''
+        }
+    })
+</script>

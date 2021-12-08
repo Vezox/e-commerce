@@ -748,6 +748,23 @@ footer {
   margin: 20px auto; }
   #ordered .text-blue {
     color: #4dabf7; }
+  #ordered .ordered-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+    #ordered .ordered-header div {
+      padding: 20px;
+      height: 100%;
+      text-align: center;
+      width: 100%;
+      border: 1px solid #e6e6e6;
+      font-size: 1.2rem; }
+      #ordered .ordered-header div a {
+        text-decoration: none;
+        color: #000; }
+      #ordered .ordered-header div a.current {
+        color: #4dabf7; }
   #ordered .ordered-list .ordered-item {
     margin-bottom: 20px;
     padding: 20px;
