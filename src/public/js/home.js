@@ -30,11 +30,9 @@ window.onclick = (e) => {
     }
 }
 
-let isLoaded = true
 input.onkeyup = () => {
     let text = input.value
-    if (text != ''&& isLoaded) {
-        isLoaded = false
+    if (text != '') {
         $.ajax({
             url: '/search-products/?search=' + text,
             type: 'GET',
@@ -132,11 +130,16 @@ selects.forEach(select => {
 const btnLoadPage = document.querySelector('#load-page')
 btnLoadPage.onclick = async () => {
     if (pageTotal > pageIndex) {
+        btnLoadPage.innerHTML = `
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+            `
         let loadProducts = null
         await $.ajax({
             url: '/filter-products/?options=' + options.value + '&sort=' + sort.value + '&pageIndex=' + pageIndex,
             type: 'GET',
             success: (data) => {
+                btnLoadPage.innerHTML = `Xem Thêm`
                 loadProducts = data.products
                 pageTotal = data.pageTotal
                 pageIndex++

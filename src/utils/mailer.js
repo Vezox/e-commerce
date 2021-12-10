@@ -14,10 +14,10 @@ const nodeMailer = require('nodemailer')
    })
  
    const options = {
-     from: process.env.ADMIN_MAIL, // địa chỉ admin email bạn dùng để gửi
-     to: to, // địa chỉ gửi đến
-     subject: subject, // Tiêu đề của mail
-     html: htmlContent // Phần nội dung mail mình sẽ dùng html thay vì thuần văn bản thông thường.
+     from: process.env.ADMIN_MAIL,
+     to: to,
+     subject: subject, 
+     html: htmlContent 
    }
  
    // hàm transporter.sendMail() này sẽ trả về cho chúng ta một Promise
