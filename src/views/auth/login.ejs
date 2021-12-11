@@ -8,10 +8,10 @@
     <div class="login-register-form">
         <div class="title">Đăng nhập</div>
         <p>Email</p>
-        <input type="email" name="email" id="email">
+        <input class="input-register" type="email" name="email" id="email" placeholder="VD: email@gmail.com">
         <label for="email"></label>
         <p>Mật khẩu</p>
-        <input type="password" name="password" id="password">
+        <input class="input-register" type="password" name="password" id="password" placeholder="VD: tD9@$5">
         <label for="password"></label>
         <div><button id="btn-login">Đăng nhập</button></div>
     </div>
@@ -70,7 +70,7 @@
         }
     }
 
-    const inputs = document.querySelectorAll('input')
+    const inputs = document.querySelectorAll('.input-register')
     inputs.forEach(input => {
         input.onkeyup = (evt) => {
             evt.target.classList.remove('err')
