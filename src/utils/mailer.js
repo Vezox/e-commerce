@@ -6,7 +6,7 @@ const nodeMailer = require('nodemailer')
    const transporter = nodeMailer.createTransport({
      host: process.env.MAIL_HOST,
      port: process.env.MAIL_PORT,
-     secure: false, // nếu các bạn dùng port 465 (smtps) thì để true, còn lại hãy để false cho tất cả các port khác
+     secure: true, // nếu các bạn dùng port 465 (smtps) thì để true, còn lại hãy để false cho tất cả các port khác
      auth: {
        user: process.env.ADMIN_MAIL,
        pass: process.env.ADMIN_PASS
