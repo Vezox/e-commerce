@@ -22,7 +22,7 @@
                         <td><%= product.price * ( 100 - product.discount) / 100  %></td>
                         <td><%= product.description %></td>
                         <td>
-                            <a href="/product/details/<%= product.slug %>"><button type="button" class="btn btn-primary">Xem</button></a>
+                            <a href="/product/details/<%= product.slug %>.<%= product._id %>"><button type="button" class="btn btn-primary">Xem</button></a>
                             <button type="button" class="btn btn-success admin-product accept" data-slug="<%= product.slug %>">Chấp nhận</button>
                             <button type="button" class="btn btn-danger admin-product block" data-slug="<%= product.slug %>">Khóa</button>
                         </td>
