@@ -175,7 +175,7 @@ class CartController {
             }
             await Order.insertMany(orderProducts)
             await Cart.deleteMany({ _id: { $in: cartProductIds } })
-            return res.redirect('/my/ordered')
+            return res.redirect('/my/ordered/all')
         }).catch(err => {
             res.status(500).json({ err: err.message })
         })

@@ -92,7 +92,6 @@ class AccountController {
             sampleAccount = JSON.parse(JSON.stringify(sampleAccount))
             delete sampleAccount.verifyCode
             sampleAccount.createdAt = Date.now()
-            console.log(sampleAccount)
             await Promise.all([
                 SampleAccount.deleteOne(find),
                 Account.replaceOne({ email }, sampleAccount, { upsert: true })
